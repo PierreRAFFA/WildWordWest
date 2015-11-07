@@ -4,19 +4,21 @@
 {
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////  CONSTRUCTOR
-    function ClassifiedListController($scope, Classifieds, WegeooService)
+    function GamePageController()
     {
-        this.wegeooService = WegeooService;
-        this.Classifieds = Classifieds;
-        this.$scope = $scope;
 
+        this._init();
     }
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////   INIT MAP
+    GamePageController.prototype._init = function()
+    {
+
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////// ANGULAR REGISTERING
-    ClassifiedListController.$inject = [];
-    angular.module('main').controller('ClassifiedListController', ClassifiedListController);
+    GamePageController.$inject = [];
+    angular.module('main').controller('GamePageController', GamePageController);
 
 })(angular);

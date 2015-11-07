@@ -1,0 +1,83 @@
+.loadingPage.pane{
+  background: #4C4D63;
+
+  .preloader{
+    width: 100vw;
+    height: 171vw;
+    max-height: 100vh;
+    max-width: 58vh;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    h1{
+      position:absolute;
+      display: block;
+      color:#4C4D63;
+    }
+    h2{
+      position:absolute;
+      display: block;
+      color:#4C4D63;
+    }
+
+    .homeTitle{
+      position:relative;
+      width: 100%;
+
+      .preloaderProgress
+      {
+        position: absolute;
+        top: 36%;
+        width: 100%;
+        text-align: center;
+
+        .value {
+          font: 6em RioGrande-Bold-Striped;
+        }
+
+        .percent {
+          font: 2em FuturaStd-Bold;
+          display:none;
+        }
+      }
+
+      img {
+        bottom: 0;
+        display: block;
+        width: 100%;
+      }
+    }
+
+    .balad{
+      position:absolute;
+      width: 100%;
+      bottom:0;
+
+      a{
+        cursor:pointer;
+        display: inline-block;
+      }
+
+      .content {
+        position: absolute;
+        top: 21%;
+        left: 11%;
+        width: 84%;
+      }
+
+      .adTime{
+        position: absolute;
+        right: 8%;
+        top: 7%;
+        font: 2.2em FuturaStd-Bold;
+        color: white;
+
+      }
+    }
+  }
+}
+

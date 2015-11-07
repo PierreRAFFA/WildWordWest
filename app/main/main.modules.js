@@ -9,12 +9,28 @@ angular.module('main', [
 
         // ROUTING with ui.router
         $urlRouterProvider.otherwise('/');
+
+        /**
+         * This state contains the loading page and the balad (3s)
+         */
         $stateProvider
-            // this state is placed in the <ion-nav-view> in the index.html
             .state('loadingPage', {
                 url: '/',
-                templateUrl: 'main/templates/loadingPage.html'
+                templateUrl: 'main/templates/loadingPage.html',
+                controller: 'LoadingPageController as pc'
             });
+
+        /**
+         * This state contains the game
+         */
+        $stateProvider
+            .state('game', {
+                url: '/game',
+                templateUrl: 'main/templates/game.html',
+                controller: 'GamePageController as pc'
+            });
+
+
         //.state('main.list', {
         //  url: '/list',
         //  views: {
