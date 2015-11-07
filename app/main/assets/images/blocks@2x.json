@@ -1,0 +1,43 @@
+﻿{"frames": [
+
+    {
+        "filename": "basic",
+        "frame": {"x":0,"y":0,"w":100,"h":100},
+        "trimmed": true,
+        "spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+        "sourceSize": {"w":100,"h":100}
+    }
+    ,{
+        "filename": "selected",
+        "frame": {"x":100,"y":0,"w":100,"h":100},
+        "rotated": false,
+        "trimmed": true,
+        "spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+        "sourceSize": {"w":100,"h":100}
+    }
+    ,{
+        "filename": "bonus",
+        "frame": {"x":200,"y":0,"w":100,"h":100},
+        "rotated": false,
+        "trimmed": true,
+        "spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+        "sourceSize": {"w":100,"h":100}
+    }
+    ,{
+        "filename": "bomb",
+        "frame": {"x":300,"y":0,"w":100,"h":100},
+        "rotated": false,
+        "trimmed": true,
+        "spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+        "sourceSize": {"w":100,"h":100}
+    }
+],
+    "meta": {
+        "app": "Adobe Flash CS6",
+        "version": "12.0.0.481",
+        "image": "blocks.png",
+        "format": "RGBA8888",
+        "size": {"w":300,"h":100},
+        "scale": "1"
+    }
+}

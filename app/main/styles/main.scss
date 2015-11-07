@@ -1,0 +1,124 @@
+/*
+To customize the look and feel of Ionic, you can override the variables
+in ionic's _variables.scss file.
+
+For example, you might change some of the default colors:
+*/
+
+$light:                           #fff !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #4a87ee !default;
+$calm:                            #43cee6 !default;
+$balanced:                        #66cc33 !default;
+$energized:                       #f0b840 !default;
+$assertive:                       #ef4e3a !default;
+$royal:                           #8a6de9 !default;
+$dark:                            #444 !default;
+
+// The path for our ionicons font files, relative to the built & temporary main.css
+$ionicons-font-path: "../assets/fonts" !default;
+
+// Include all of Ionic
+@import "../../bower_components/ionic/scss/ionic";
+
+
+@font-face
+{
+  font-family: 'RioGrande-Bold';
+  src: url('main/assets/fonts/RioGrande.ttf');
+}
+
+
+body{
+
+  padding: 0;
+  margin: 0;
+}
+
+.view-container {
+  background: #4C4D63;
+
+  .pane {
+    background: none;
+
+    .preloader{
+      width: 100vw;
+      height: 171vw;
+      max-height: 100vh;
+      max-width: 58vh;
+      margin-left: auto;
+      margin-right: auto;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+
+      h1{
+        position:absolute;
+        display: block;
+        color:#4C4D63;
+      }
+      h2{
+        position:absolute;
+        display: block;
+        color:#4C4D63;
+      }
+
+      .homeTitle{
+        position:relative;
+        width: 100%;
+
+        .preloaderProgress
+        {
+          position: absolute;
+          top: 36%;
+          width: 100%;
+          text-align: center;
+
+          .value {
+            font: 6em RioGrande-Bold-Striped;
+          }
+
+          .percent {
+            font: 2em FuturaStd-Bold;
+            display:none;
+          }
+        }
+
+        img {
+          bottom: 0;
+          display: block;
+          width: 100%;
+        }
+      }
+
+      .balad{
+        position:absolute;
+        width: 100%;
+        bottom:0;
+
+        a{
+          cursor:pointer;
+          display: inline-block;
+        }
+
+        .content {
+          position: absolute;
+          top: 21%;
+          left: 11%;
+          width: 84%;
+        }
+
+        .adTime{
+          position: absolute;
+          right: 8%;
+          top: 7%;
+          font: 2.2em FuturaStd-Bold;
+          color: white;
+
+        }
+      }
+    }
+  }
+}
+
