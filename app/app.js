@@ -1,5 +1,5 @@
 'use strict';
-angular.module('test', [
-  // load your modules here
-  'main', // starting with the main module
+angular.module('wildwordwest', [
+    // load your modules here
+    'main', // starting with the main module
 ]);
