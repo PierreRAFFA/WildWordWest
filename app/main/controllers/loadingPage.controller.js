@@ -31,7 +31,7 @@
 
     LoadingPageController.prototype._onHoldComplete = function()
     {
-        this.$state.go('game');
+        this.$state.go('home');
     }
     ///////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////// ANGULAR REGISTERING

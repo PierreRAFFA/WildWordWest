@@ -15,8 +15,11 @@ $assertive:                       #ef4e3a !default;
 $royal:                           #8a6de9 !default;
 $dark:                            #444 !default;
 
+$href: #35221B;
+$hrefHover: #C65634;
+
 // The path for our ionicons font files, relative to the built & temporary main.css
-$ionicons-font-path: "../assets/fonts" !default;
+$ionicons-font-path: "../assets../../main/assets/fonts" !default;
 
 // Include all of Ionic
 @import "../../bower_components/ionic/scss/ionic";
@@ -25,9 +28,24 @@ $ionicons-font-path: "../assets/fonts" !default;
 @font-face
 {
   font-family: 'RioGrande-Bold';
-  src: url('main/assets/fonts/RioGrande.ttf');
+  src: url('../../main/assets/fonts/RioGrande.ttf');
 }
 
+@font-face
+{
+  font-family: 'RioGrande-Bold-Striped';
+  src: url('../../main/assets/fonts/RioGrande-Striped.ttf');
+}
+@font-face
+{
+  font-family: 'FuturaStd-Bold';
+  src: url('../../main/assets/fonts/FuturaStd-Bold.otf');
+}
+@font-face
+{
+  font-family: 'FuturaStd-Book';
+  src: url('../../main/assets/fonts/FuturaStd-Book.otf');
+}
 
 body{
 
@@ -38,4 +56,19 @@ body{
 [nav-view-transition="ios"][nav-view-direction="forward"],
 [nav-view-transition="ios"][nav-view-direction="back"]  {
   background: #4C4D63;
+}
+
+.text{
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+  -o-user-select: none;
+  user-select: none;
+  cursor: default;
+
+  color: $href;
+
+  &:hover{
+    color:$hrefHover;
+  }
 }

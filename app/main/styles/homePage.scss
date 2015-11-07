@@ -1,0 +1,133 @@
+.homePage.pane {
+  background-color: #4C4D63;
+
+  .splash{
+    width: 100vw;
+    height: 171vw;
+    max-height: 100vh;
+    max-width: 58vh;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    .homeTitle{
+      position:relative;
+      width: 100%;
+
+      img {
+        bottom: 0;
+        display: block;
+        width: 100%;
+      }
+
+      .facebookLike {
+        position: absolute;
+        top: 14%;
+        right: 65%;
+      }
+    }
+
+    .homeRanking{
+      position:absolute;
+      width: 100%;
+      bottom:0;
+
+      img {
+        bottom: 0;
+        display: block;
+      }
+
+      .flags{
+        position: absolute;
+        top: 21%;
+        left: 9%;
+        height:7%;
+
+        .gbFlag, .frFlag{
+          position: relative;
+          float:left;
+          height:100%;
+          margin-right: 5px;
+
+          img{
+            max-width: 100%;
+            max-height: 100%;
+            width: initial;
+          }
+        }
+      }
+
+      .ranking{
+        position: absolute;
+        top: 30%;
+        left: 11%;
+        width: 65%;
+        height: 46%;
+        overflow: auto;
+
+        .rankingContents{
+          position: absolute;
+        }
+
+        .score{
+          position: relative;
+          margin-bottom: 0px;
+          float: left;
+          width: 100%;
+        }
+        .scoreIndex{
+          position: relative;
+          font: 0.7em FuturaStd-Book;
+          float: left;
+          width: 21%;
+          line-height: 1.7em;
+        }
+        .rankingScoreValue{
+          position:relative;
+          font: 1em FuturaStd-Bold;
+          float:left;
+          width:29%;
+        }
+      }
+
+      .homePlay{
+        position: absolute;
+        top: 78.5%;
+        width: 90%;
+        text-align: center;
+
+        img {
+          width: 100%;
+        }
+
+        a {
+          text-decoration: none;
+          .text {
+            font: 2.5em RioGrande-Bold;
+          }
+        }
+      }
+
+      .homeInstructions{
+        position: absolute;
+        top: 89.2%;
+        left: 0%;
+        width: 91%;
+        text-align: center;
+
+        img {
+          width: 100%;
+        }
+
+        .text{
+          font: 1.3em RioGrande-Bold;
+          color: #4B4C4C;
+        }
+      }
+
+    }
+  }
+}

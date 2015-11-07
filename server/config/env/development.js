@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://localhost/wildwordwest-dev',
+	db: 'mongodb://localhost/wildwordwest',
 	app: {
 		title: 'WildWordWest - Development Environment'
 	},

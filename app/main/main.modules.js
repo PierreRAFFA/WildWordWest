@@ -21,6 +21,17 @@ angular.module('main', [
             });
 
         /**
+         * This state contains the home with the rankings per language, the play button
+         */
+        $stateProvider
+            .state('home', {
+                url: '/home',
+                templateUrl: 'main/templates/home.html',
+                controller: 'HomePageController as pc'
+            });
+
+
+        /**
          * This state contains the game
          */
         $stateProvider
