@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('game').directive('wildBoard', [
+angular.module('game').directive('wildGame', [
     function() {
         return {
-            templateUrl: 'game/directives/board/board.html',
+            templateUrl: 'game/directives/game/game.html',
             restrict: 'E',
             replace: false,
             transclude: true,
@@ -13,7 +13,7 @@ angular.module('game').directive('wildBoard', [
                 'numRows': '@',
                 'locale': '@'
             },
-            controller: 'BoardController',
+            controller: 'GameController',
             controllerAs: 'vm'
         };
     }

@@ -18,6 +18,7 @@
 
     <!-- build:css main/styles/app.css -->
     <!-- inject:css -->
+    <link rel="stylesheet" href="game/styles/game.css">
     <link rel="stylesheet" href="main/styles/gamePage.css">
     <link rel="stylesheet" href="main/styles/homePage.css">
     <link rel="stylesheet" href="main/styles/loadingPage.css">
@@ -37,6 +38,7 @@
 
     <!-- will be a 404 during development -->
     <script src="cordova.js"></script>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
@@ -54,13 +56,14 @@
     <script src="bower_components/angular-localForage/dist/angular-localForage.js"></script>
     <script src="bower_components/sprintf/src/angular-sprintf.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-tiny-eventemitter/dist/angular-tiny-eventemitter.js"></script>
+    <script src="bower_components/angular-socket-io/socket.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js scripts/app.js -->
     <!-- inject:js -->
     <script src="main/main.modules.js"></script>
-    <script src="main/services/socket.service.js"></script>
     <script src="main/services/scores.service.js"></script>
     <script src="main/services/balad.service.js"></script>
     <script src="main/filters/time.filter.js"></script>
@@ -70,8 +73,23 @@
     <script src="main/controllers/debug.controller.js"></script>
     <script src="main/constants/config-const.js"></script>
     <script src="game/game.modules.js"></script>
+    <script src="game/services/socket.factory.js"></script>
+    <script src="game/services/selection.service.js"></script>
+    <script src="game/services/game.service.js"></script>
+    <script src="game/filters/range.filter.js"></script>
+    <script src="game/directives/game/game.directive.js"></script>
+    <script src="game/directives/game/game.controller.js"></script>
+    <script src="game/directives/column/column.service.js"></script>
     <script src="game/directives/board/board.directive.js"></script>
-    <script src="game/directives/block/block.directive.js"></script>
+    <script src="game/directives/board/board.controller.js"></script>
+    <script src="game/directives/block/normal/blockNormal.directive.js"></script>
+    <script src="game/directives/block/normal/blockNormal.controller.js"></script>
+    <script src="game/directives/block/bonus/blockBonus.directive.js"></script>
+    <script src="game/directives/block/bonus/blockBonus.controller.js"></script>
+    <script src="game/directives/block/bomb/blockBomb.directive.js"></script>
+    <script src="game/directives/block/bomb/blockBomb.controller.js"></script>
+    <script src="game/controllers/wildwordwest.controller.js"></script>
+    <script src="game/constants/blockType.constant.js"></script>
     <script src="app.js"></script>
     <!-- endinject -->
     <!-- endbuild -->

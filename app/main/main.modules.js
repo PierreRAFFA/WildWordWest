@@ -26,7 +26,7 @@ angular.module('main', [
         $stateProvider
             .state('home', {
                 url: '/home',
-                templateUrl: 'main/templates/home.html',
+                templateUrl: 'main/templates/homePage.html',
                 controller: 'HomePageController as pc'
             });
 
@@ -37,7 +37,7 @@ angular.module('main', [
         $stateProvider
             .state('game', {
                 url: '/game',
-                templateUrl: 'main/templates/game.html',
+                templateUrl: 'main/templates/gamePage.html',
                 controller: 'GamePageController as pc'
             });
 

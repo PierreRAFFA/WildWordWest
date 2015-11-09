@@ -3,9 +3,11 @@
  * Module dependencies.
  */
 var init = require('./config/init')(),
+    http = require('http'),
 	config = require('./config/config'),
 	mongoose = require('mongoose'),
 	chalk = require('chalk');
+var socket = require("./config/socket");
 
 /**
  * Main application entry file.
@@ -23,11 +25,19 @@ var db = mongoose.connect(config.db, function(err) {
 // Init the express application
 var app = require('./config/express')(db);
 
+// Socket initialisation
+var server = http.Server(app);
+server.listen(config.port);
+//var io = require('socket.io')(server);
+
+//create the socket and link to the server
+socket.setServer(server);
+
 // Bootstrap passport config
 require('./config/passport')();
 
 // Start the app by listening on <port>
-app.listen(config.port);
+//app.listen(config.port);
 
 // Expose app
 exports = module.exports = app;

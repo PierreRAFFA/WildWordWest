@@ -44,6 +44,7 @@ module.exports = function(db) {
 	app.use(function(req, res, next) {
 
         // Website you wish to allow to connect
+        //res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
 
 		res.locals.url = req.protocol + '://' + req.headers.host + req.url;
@@ -116,6 +117,10 @@ module.exports = function(db) {
 
 	// Setting the app router and static folder
 	app.use(express.static(path.resolve('./public')));
+
+    //console.log(__dirname + '/../node_modules/socket.io/lib/client');
+    //app.use(express.static(__dirname + '/../node_modules/socket.io/lib/client'));
+
 
 	// Globbing routing files
 	config.getGlobbedFiles('./app/routes/**/*.js').forEach(function(routePath) {

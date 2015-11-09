@@ -2,5 +2,7 @@
 angular.module('game', [
     'ionic',
     'ngCordova',
-    // TODO: load other modules selected during generation
+    'rt.eventemitter',
+    'btford.socket-io',
+    'sprintf'
 ]);
