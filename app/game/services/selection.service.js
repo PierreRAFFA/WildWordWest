@@ -2,23 +2,42 @@
 
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
+/**
+ * This service manages the block selection
+ * It may dispatch an event when the selection has changed.
+ * It may dispatch an event when the selection is validated.
+ *
+ * @param eventEmitter
+ * @constructor
+ */
 function SelectionService(eventEmitter)
 {
-    console.log('SelectionService');
-
     /**
-     * Array of block
+     * Array of informations of selected blocks (columnIndex, rowIndex, letter )
      * @type {Array}
      * @private
      */
     this._selectedBlocks = [];
 
+    /**
+     * For code optimisation, to search some blocks.
+     * @type {{}}
+     * @private
+     */
     this._selectedBlocksMap = {};
 
     eventEmitter.inject(SelectionService);
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  NEW GAME
+/**
+ * Manages the selection depending on the parameters sent.
+ * 2 events may be dispatched.
+ *
+ * @param columnIndex
+ * @param rowIndex
+ * @param letter
+ */
 SelectionService.prototype.select = function(columnIndex, rowIndex, letter)
 {
     //the key of the new selection
@@ -39,6 +58,9 @@ SelectionService.prototype.select = function(columnIndex, rowIndex, letter)
             if (key === lastSelectedBlockKey)
             {
                 angular.$log.log('submit the word');
+
+                this.emit('selectionValidated', this._selectedBlocks);
+                return;
             }else{
                 return;
             }
@@ -46,19 +68,14 @@ SelectionService.prototype.select = function(columnIndex, rowIndex, letter)
 
             var columnIndexDiff    = Math.abs(lastSelectedBlock.columnIndex - columnIndex);
             var rowIndexDiff       = Math.abs(lastSelectedBlock.rowIndex - rowIndex);
-            console.log(columnIndexDiff)
-            console.log(rowIndexDiff)
-            if ( columnIndexDiff <= 1 && rowIndexDiff <= 1)
+            if ( columnIndexDiff > 1 || rowIndexDiff > 1)
             {
-
-            }else{
                 //new start of selection => init
                 this._selectedBlocks = [];
                 this._selectedBlocksMap = {};
             }
         }
     }
-
 
     //add the block the the selection
     var value = {
@@ -73,14 +90,28 @@ SelectionService.prototype.select = function(columnIndex, rowIndex, letter)
     this.emit('selectionChanged');
 }
 
-SelectionService.prototype.getSelectedBlocks = function()
-{
-    return this._selectedBlocks;
-}
+/**
+ * Specifies whether or not a block is a part of the current selection
+ *
+ * @param columnIndex
+ * @param rowIndex
+ * @param letter
+ * @returns {*}
+ */
 SelectionService.prototype.isBlockSelected = function(columnIndex, rowIndex, letter)
 {
     var key = columnIndex + '-' +  rowIndex + '-' + letter;
     return this._selectedBlocksMap.hasOwnProperty(key);
+}
+
+/**
+ * SelectedBlocks getter
+ *
+ * @returns {Array}
+ */
+SelectionService.prototype.getSelectedBlocks = function()
+{
+    return this._selectedBlocks;
 }
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING
