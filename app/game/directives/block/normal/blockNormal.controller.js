@@ -37,7 +37,7 @@
         this.selectionService.on('selectionChanged' , function()
         {
             self.selected  = self.selectionService.isBlockSelected(self.getColumnIndex(), self.getRowIndex(), self.letter);
-            console.log(self.selected);
+            //console.log(self.selected);
         })
 
     }
