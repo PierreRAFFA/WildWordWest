@@ -1,11 +1,12 @@
 'use strict';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function BoardController($scope, $element, gameService, selectionService, blockAllocatorService)
+function BoardController($scope, $element, gameService, socketService, selectionService, blockAllocatorService)
 {
     this.$scope = $scope;
     this.$element = $element;
     this.gameService = gameService;
+    this.socketService = socketService;
     this.selectionService = selectionService;
     this.blockAllocatorService = blockAllocatorService;
 
@@ -26,7 +27,7 @@ function BoardController($scope, $element, gameService, selectionService, blockA
 
 
     //socket events
-    this.gameService.on('updateGame' , this._onUpdate.bind(this));
+    this.socketService.on('updateGame' , this._onUpdate.bind(this));
 
     //selection events
     this.selectionService.on('selectionValidated' , this._onSelectionValidated.bind(this));
@@ -125,24 +126,12 @@ BoardController.prototype.addBlocks = function(newBlocks)
     }
 };
 
-
-BoardController.prototype._getWordFromSelectedBlocks = function()
-{
-    var word = "";
-    for(var iB = 0 ; iB < this.mSubmittedBlocks.length ; iB++)
-    {
-        var block = this.mSubmittedBlocks[iB];
-        word += block.getLetter();
-    }
-    return word.toUpperCase();
-}
-
 BoardController.prototype._onSelectionValidated = function(selectedBlocks)
 {
 
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-BoardController.$inject = ['$scope', '$element', 'gameService', 'selectionService', 'blockAllocatorService'];
+BoardController.$inject = ['$scope', '$element', 'gameService', 'socketService', 'selectionService', 'blockAllocatorService'];
 angular.module('game').controller('BoardController', BoardController);
 

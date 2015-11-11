@@ -7,9 +7,9 @@
  * @param eventEmitter
  * @constructor
  */
-function BlockAllocatorService(eventEmitter, Column, $compile, $controller, BlockType)
+function BlockAllocatorService(Column, $compile, $controller, BlockType)
 {
-    this._column = Column;
+    this.Column = Column;
     this.$compile = $compile;
     this.$controller = $controller;
     this.BlockType = BlockType;
@@ -40,9 +40,12 @@ function BlockAllocatorService(eventEmitter, Column, $compile, $controller, Bloc
      */
     this._scope = null;
 
+    /**
+     * Block size when creation ( computed in board.controller.js )
+     * @type {number}
+     * @private
+     */
     this._blockSize = 0;
-
-    eventEmitter.inject(BlockAllocatorService);
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  INIT
@@ -61,13 +64,19 @@ BlockAllocatorService.prototype.init = function(numColumns, numRows, blockSize, 
 
     for(var iC = 0 ; iC < this._numColumns ; iC++)
     {
-        this._columns.push(this._column.getInstance());
+        this._columns.push(this.Column.getInstance());
     }
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  ALLOCATE A BLOCK
+/**
+ * Allocates a block to a column
+ * @param blockInfo
+ * @returns {*} the created block as HtmlElement
+ */
 BlockAllocatorService.prototype.allocate = function(blockInfo)
 {
+    //create the block
     var blockElement = this._createBlock(blockInfo);
 
     //store
@@ -85,7 +94,7 @@ BlockAllocatorService.prototype.allocate = function(blockInfo)
         blockElement.css('position' , 'absolute');
 
     } else {
-        console.error("Some blocks have to be added but no column can accept them.")
+        angular.$log.warn("Some blocks have to be added but no column can accept them.");
     }
 
     return blockElement;
@@ -118,11 +127,17 @@ BlockAllocatorService.prototype._createBlock = function(blockInfo)
     block.attr('type' , blockInfo._type);
     block.attr('size' , this._blockSize);
 
-    var blockElement = this.$compile(block)(this._scope);
-    return blockElement;
+    return this.$compile(block)(this._scope);
 }
 ///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////  CONSTRUCTOR
+///////////////////////////////////////////////////////////  COLUMN MANAGEMENT
+/**
+ * Add a block to a column
+ *
+ * @param blockElement
+ * @returns {*}
+ * @private
+ */
 BlockAllocatorService.prototype._addBlockToColumInNeed = function(blockElement)
 {
     var columnIndex = this._getColumnIndexInNeed();
@@ -133,6 +148,12 @@ BlockAllocatorService.prototype._addBlockToColumInNeed = function(blockElement)
     }
     return columnIndex;
 }
+/**
+ * Returns the column which need a block while respecting a specific priority to allocate the block to the column
+ *
+ * @returns {*}
+ * @private
+ */
 BlockAllocatorService.prototype._getColumnIndexInNeed = function()
 {
     var returnedColumnIndex = null;
@@ -151,5 +172,5 @@ BlockAllocatorService.prototype._getColumnIndexInNeed = function()
 }
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING
-BlockAllocatorService.$inject = ['eventEmitter', 'Column', '$compile', '$controller','BlockType'];
+BlockAllocatorService.$inject = ['Column', '$compile', '$controller','BlockType'];
 angular.module('game').service('blockAllocatorService', BlockAllocatorService);
