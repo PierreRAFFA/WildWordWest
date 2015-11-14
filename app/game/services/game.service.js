@@ -38,32 +38,11 @@ function GameService(socketService)
  */
 GameService.prototype.newGame = function(numColumns, numRows, locale)
 {
-    if ( numColumns && numColumns > 0 )
-    {
-        if ( numRows && numRows > 0 )
-        {
-            if (locale)
-            {
-                this.numColumns = numColumns;
-                this.numRows = numRows;
-                this.locale = locale;
+    this.numColumns = numColumns;
+    this.numRows = numRows;
+    this.locale = locale;
 
-
-                this.socketService.emitNewGame({
-                    "numColumns": this.numColumns ,
-                    "numRows": this.numRows,
-                    "locale" : this.locale
-                });
-
-            }else{
-                angular.$log.warn('Can not create the game. The locale has to be defined');
-            }
-        }else{
-            angular.$log.warn('Can not create the game. The number of rows has to be defined');
-        }
-    }else{
-        angular.$log.warn('Can not create the game. The number of columns has to be defined');
-    }
+    this.socketService.newGame(this.numColumns, this.numRows, this.locale);
 }
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING

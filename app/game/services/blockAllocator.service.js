@@ -71,23 +71,24 @@ BlockAllocatorService.prototype.init = function(numColumns, numRows, blockSize, 
 ///////////////////////////////////////////////////////////  ALLOCATE A BLOCK
 /**
  * Allocates a block to a column
- * @param blockInfo
+ *
+ * @param blockInfo (_type, _letter)
  * @returns {*} the created block as HtmlElement
  */
 BlockAllocatorService.prototype.allocate = function(blockInfo)
 {
-    //create the block
-    var blockElement = this._createBlock(blockInfo);
-
     //store
-    var columnIndex = this._addBlockToColumInNeed(blockElement);
+    var coordinates = this._addBlockToColumInNeed(blockInfo);
 
-    if (columnIndex != null)
+    //create the block
+    var blockElement = this._createBlock(blockInfo,coordinates);
+
+    if (coordinates.columnIndex != null)
     {
-        var column = this._columns[columnIndex];
+        var column = this._columns[coordinates.columnIndex];
 
-        var left = columnIndex * this._blockSize;
-        var top = ((this._numRows - 1) * this._blockSize - column.getBlockIndex(blockElement) * this._blockSize);
+        var left = coordinates.columnIndex * this._blockSize;
+        var top = ((this._numRows - 1) * this._blockSize - column.getBlockIndex(blockInfo) * this._blockSize);
 
         blockElement.css('left' , left + 'px');
         blockElement.css('top' , top + 'px');
@@ -99,14 +100,16 @@ BlockAllocatorService.prototype.allocate = function(blockInfo)
 
     return blockElement;
 }
+
 /**
  * Creates a block depending on its type anf injects the letter, type and size
  *
- * @param blockInfo
+ * @param blockInfo (_type, _letter)
+ * @param coordinates (columnIndex, rowIndex)
  * @returns {*} the block as HtmlElement
  * @private
  */
-BlockAllocatorService.prototype._createBlock = function(blockInfo)
+BlockAllocatorService.prototype._createBlock = function(blockInfo, coordinates)
 {
     //create block
     var block = null;
@@ -126,27 +129,47 @@ BlockAllocatorService.prototype._createBlock = function(blockInfo)
     block.attr('letter' , blockInfo._letter);
     block.attr('type' , blockInfo._type);
     block.attr('size' , this._blockSize);
+    block.attr('uid' , this._guid(blockInfo, coordinates));
 
     return this.$compile(block)(this._scope);
+}
+/**
+ * Generates an uuid for the block
+ *
+ * @param blockInfo
+ * @param coordinates (columnIndex, rowIndex)
+ * @returns {string}
+ * @private
+ */
+BlockAllocatorService.prototype._guid = function(blockInfo,coordinates)
+{
+    return coordinates.columnIndex + '-' +
+    coordinates.rowIndex + '-' + blockInfo._letter + '-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  COLUMN MANAGEMENT
 /**
- * Add a block to a column
+ * Adds a block to a column and returns the block coordinates in the grid
  *
- * @param blockElement
- * @returns {*}
+ * @param blockInfo (_type, _letter)
+ * @returns {*} coordinates (columnIndex, rowIndex)
  * @private
  */
-BlockAllocatorService.prototype._addBlockToColumInNeed = function(blockElement)
+BlockAllocatorService.prototype._addBlockToColumInNeed = function(blockInfo)
 {
+    var coordinates = {};
+
     var columnIndex = this._getColumnIndexInNeed();
 
     if ( columnIndex != null && columnIndex >= 0)
     {
-        this._columns[columnIndex].addBlock(blockElement);
+        this._columns[columnIndex].addBlock(blockInfo);
+
+        coordinates.columnIndex = columnIndex;
+        coordinates.rowIndex = this._columns.length;
     }
-    return columnIndex;
+
+    return coordinates;
 }
 /**
  * Returns the column which need a block while respecting a specific priority to allocate the block to the column
@@ -169,6 +192,83 @@ BlockAllocatorService.prototype._getColumnIndexInNeed = function()
     }
 
     return returnedColumnIndex;
+}
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////  DEALLOCATE BLOCKS
+/**
+ * Deallocates some blocks
+ *
+ * @param blockInfos array of blockInfos (columnIndex, rowIndex, letter, type, uid)
+ */
+BlockAllocatorService.prototype.deallocate = function(blockInfos)
+{
+    var self = this;
+
+    //extend the submitted blocks with closest blocks of bomb
+    var explodedBlocks = [];
+    for(var iB = 0 ; iB < blockInfos.length ; iB++)
+    {
+        var block = blockInfos[iB];
+        if ( block.type === this.BlockType.bomb)
+        {
+            explodedBlocks = explodedBlocks.concat(this.getClosestBlocks(block));
+        }
+    }
+
+    //concatenate selected blocks + closest blocks in case of bomb(s)
+    var blockListToRemove = blockInfos.concat(explodedBlocks);
+
+    //prepare the remove
+    for(var iB = 0 ; iB < blockListToRemove.length ; iB++)
+    {
+        var block = blockListToRemove[iB];
+
+        //get block column
+        var column = this._columns[block.columnIndex];
+
+        //remove blocks from the column
+        var blocksToDown = column.prepareToRemoveBlock(block);
+        console.log(blocksToDown);
+    }
+
+    //execute the remove
+    for(var iC = 0 ; iC < this._columns.length ; iC++)
+    {
+        var column = this._columns[iC];
+        column.executeRemoveBlocks();
+    }
+
+    //reset submitted blocks
+    //blockInfos = [];
+}
+BlockAllocatorService.prototype.getClosestBlocks = function(block)
+{
+    var self = this;
+
+    var closestBlocks = [];
+
+    //define the distance of the bomb impact
+    var impactDistance = 1;
+
+    var column = block.columnIndex;
+    var row    = block.rowIndex;
+
+    for(var iC = column - impactDistance; iC <= column + impactDistance ; iC++)
+    {
+        for(var iR = row - impactDistance; iR <= row + impactDistance ; iR++)
+        {
+            //detect limit of the grid and ignore the block whose position is the same than the parameters
+            if ( iC >= 0 && iC < this.numColumns
+                && iR >= 0 && iR < this.numRows
+                && (iC == column && iR == row) == false )
+            {
+                closestBlocks.push(this._columns[iC].getBlockByIndex(iR));
+            }
+        }
+    }
+
+    return closestBlocks;
+
 }
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING

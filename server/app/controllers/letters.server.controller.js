@@ -5,102 +5,109 @@
  */
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
-	Word = mongoose.model('Word'),
 	_ = require('lodash');
 
 /**
- * Create a word
+ * Create a letter
  */
 exports.create = function(req, res) {
-	var word = new Word(req.body);
-	word.user = req.user;
+	var letter = new Letter(req.body);
+	letter.user = req.user;
 
-	word.save(function(err) {
+	letter.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(word);
+			res.json(letter);
 		}
 	});
 };
 
 /**
- * Show the current word
+ * Show the current letter
  */
 exports.read = function(req, res) {
-	res.json(req.word);
+	res.json(req.letter);
 };
 
 /**
- * Update a word
+ * Update a letter
  */
 exports.update = function(req, res) {
-	var word = req.word;
+	var letter = req.letter;
 
-	word = _.extend(word, req.body);
+	letter = _.extend(letter, req.body);
 
-	word.save(function(err) {
+	letter.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(word);
+			res.json(letter);
 		}
 	});
 };
 
 /**
- * Delete an word
+ * Delete an letter
  */
 exports.delete = function(req, res) {
-	var word = req.word;
+	var letter = req.letter;
 
-	word.remove(function(err) {
+	letter.remove(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(word);
+			res.json(letter);
 		}
 	});
 };
 
 /**
- * List of Words
+ * List of Letters
  */
-exports.list = function(req, res) {
-	Word.find().sort('-created').populate('user', 'displayName').exec(function(err, words) {
+exports.list = function(req, res, locale) {
+
+	Letter.find().sort('-created').populate('user', 'displayName').exec(function(err, letters) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(words);
+			res.json(letters);
 		}
 	});
 };
 
+exports.promiseList = function(locale)
+{
+
+    var Letter = require("../models/letter.server.model")(locale);
+    return Letter.find();
+}
+
 /**
- * Word middleware
+ * Letter middleware
  */
-exports.wordByID = function(req, res, next, id) {
-	Word.findById(id).populate('user', 'displayName').exec(function(err, word) {
+exports.letterByID = function(req, res, next, id) {
+	Letter.findById(id).populate('user', 'displayName').exec(function(err, letter) {
 		if (err) return next(err);
-		if (!word) return next(new Error('Failed to load word ' + id));
-		req.word = word;
+		if (!letter) return next(new Error('Failed to load letter ' + id));
+		req.letter = letter;
 		next();
 	});
 };
 
 /**
- * Word authorization middleware
+ * Letter authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.word.user.id !== req.user.id) {
+	if (req.letter.user.id !== req.user.id) {
 		return res.status(403).send({
 			message: 'User is not authorized'
 		});

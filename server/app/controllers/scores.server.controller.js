@@ -73,7 +73,15 @@ exports.delete = function(req, res) {
  * List of Scores
  */
 exports.list = function(req, res) {
-	Score.find().sort('-created').populate('user', 'displayName').exec(function(err, scores) {
+
+    //res.json({ok:3});
+
+    //mongoose.Promise = global.Promise;
+    //req.setMaxListeners(0);
+    //console.log(require('events'));
+    //require('events').EventEmitter.prototype._maxListeners = 0;
+    //process.setMaxListeners(0);
+	var p = Score.find().populate('user', 'displayName').exec(function(err, scores) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

@@ -7,7 +7,8 @@ var BlockType   = require('./blockType.js');
 var dal         = require('./dal');
 var Countdown   = require('./countdown');
 
-var letterController = require('../controllers/letter.server.controller');
+var lettersController = require('../controllers/letters.server.controller');
+var wordsController = require('../controllers/words.server.controller');
 
 /**
  * Module exports.
@@ -35,7 +36,7 @@ function Board(locale,numColumns,numRows)
      * Array of letters with frequency. used when creating block
      * @type {null}
      */
-    this.letterFrequency   = null;
+    this.letterFrequency   = {};
     /**
      * Defines the grid blocks. Array of Columns
      * @type {}
@@ -114,9 +115,14 @@ Board.prototype.constructor = Board;
 Board.prototype.loadLetterFrequency = function(locale)
 {
     var self = this;
-    letterController.promiseList(locale).exec(function(err, letters)
+    lettersController.promiseList(locale).exec(function(err, letters)
     {
-        self.letterFrequency = letters;
+        for(var iL = 0 ; iL < letters.length ; iL++)
+        {
+            var lLetter = letters[iL];
+            self.letterFrequency[lLetter["letter"]] = lLetter["frequency"];
+        }
+
         console.log(letters);
         self.initialize();
     });
@@ -232,18 +238,18 @@ Board.prototype.defineBlockLetter = function ()
     var float = Math.random() * 100;
 
     var pointer = 0;
-    for(var index in this.letterFrequency)
+    for(var letter in this.letterFrequency)
     {
-        var letter = this.letterFrequency[index];
-        pointer += letter.frequency;
+        var lLetterPercent = this.letterFrequency[letter];
+
+        pointer += lLetterPercent;
 
         if ( pointer > float)
         {
-            blockLetter = letter.letter;
+            blockLetter = letter;
             break;
         }
     }
-    console.log(blockLetter);
     return blockLetter;
 }
 ////////////////////////////////////////////////////////////////////////
@@ -396,15 +402,18 @@ Board.prototype.analyzeWord = function(selectedBlocks)
         if (this.isInARow(selectedBlocks)) {
             var lWord = this.getWordFromSelectedBlocks(selectedBlocks);
 
-            this.mDal.selectWord(lWord, this.mLocale);
-            this.mDal.once("wordLoadComplete", function (isValid) {
+
+            var self = this;
+            wordsController.promiseWordByName(lWord, this.mLocale).exec(function(err, word)
+            {
                 var lPoints = 0;
-                if (isValid) {
-                    //compute points
+
+                if ( word )
+                {
                     lPoints = self.getPointsFromSelectedBlocks(selectedBlocks);
                     self.mTotalPoints += lPoints;
                     self.renewBlocks(selectedBlocks);
-                } else {
+                }else{
 
                 }
 
@@ -416,7 +425,29 @@ Board.prototype.analyzeWord = function(selectedBlocks)
 
                 //check if we need to change the level
                 self.checkLevelUp();
-            })
+            });
+
+            //this.mDal.selectWord(lWord, this.mLocale);
+            //this.mDal.once("wordLoadComplete", function (isValid) {
+            //    var lPoints = 0;
+            //    if (isValid) {
+            //        //compute points
+            //        lPoints = self.getPointsFromSelectedBlocks(selectedBlocks);
+            //        self.mTotalPoints += lPoints;
+            //        self.renewBlocks(selectedBlocks);
+            //    } else {
+            //
+            //    }
+            //
+            //    //emit to the client side
+            //    self.emit("wordAnalyzed", lPoints);
+            //
+            //    //add points to the countdown
+            //    self.mCountdown.addPoints(lPoints);
+            //
+            //    //check if we need to change the level
+            //    self.checkLevelUp();
+            //})
         }
     }else{
         console.log("Hey the board is blocked. No more words will be accepted !!");
@@ -483,12 +514,13 @@ Board.prototype.getPointsFromSelectedBlocks = function(selectedBlocks)
  */
 Board.prototype.getPointFromBlock = function(block)
 {
+    console.log()
     var letter = block.getLetter();
     var letterFrequency = this.letterFrequency[letter];
 
     var lPoints = Math.sqrt(50/letterFrequency) * 4;
 
-    if ( block.getType() == BlockType.BONUS)
+    if ( block.getType() === BlockType.BONUS)
     {
         lPoints *= 2;
     }

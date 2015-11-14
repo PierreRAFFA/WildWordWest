@@ -26,6 +26,14 @@ function SelectionService(eventEmitter)
      */
     this._selectedBlocksMap = {};
 
+    /**
+     * Word formed by the selection
+     *
+     * @type {string}
+     * @private
+     */
+    this._word = '';
+
     eventEmitter.inject(SelectionService);
 }
 ///////////////////////////////////////////////////////////////////////////
@@ -38,28 +46,23 @@ function SelectionService(eventEmitter)
  * @param rowIndex
  * @param letter
  */
-SelectionService.prototype.select = function(columnIndex, rowIndex, letter)
+SelectionService.prototype.select = function(columnIndex, rowIndex, letter, type, uid)
 {
-    //the key of the new selection
-    var key = columnIndex + '-' +  rowIndex + '-' + letter;
-
     //get the last selected block
     var lastSelectedBlock = this._selectedBlocks[this._selectedBlocks.length - 1];
 
     if (this._selectedBlocks.length)
     {
-        var isBlockAlreadySelected = this._selectedBlocksMap.hasOwnProperty(key);
+        var isBlockAlreadySelected = this._selectedBlocksMap.hasOwnProperty(uid);
 
         if (isBlockAlreadySelected)
         {
-            var lastSelectedBlockKey = lastSelectedBlock.columnIndex + '-' +  lastSelectedBlock.rowIndex + '-' + lastSelectedBlock.letter;
+            var lastSelectedBlockUid = lastSelectedBlock.uid;
 
             //this means the block was clicked twice on the row => submit the word
-            if (key === lastSelectedBlockKey)
+            if (uid === lastSelectedBlockUid)
             {
-                angular.$log.log('submit the word');
-
-                this.emit('selectionValidated', this._selectedBlocks);
+                this.emit('selectionValidated', this._selectedBlocks, this._word);
                 return;
             }else{
                 return;
@@ -73,6 +76,7 @@ SelectionService.prototype.select = function(columnIndex, rowIndex, letter)
                 //new start of selection => init
                 this._selectedBlocks = [];
                 this._selectedBlocksMap = {};
+                this._word = '';
             }
         }
     }
@@ -81,27 +85,37 @@ SelectionService.prototype.select = function(columnIndex, rowIndex, letter)
     var value = {
         columnIndex:columnIndex,
         rowIndex:rowIndex,
-        letter:letter
+        letter:letter,
+        type: type,
+        uid: uid
     }
 
     this._selectedBlocks.push(value);
-    this._selectedBlocksMap[key] = value;
+    this._selectedBlocksMap[uid] = value;
+    this._word += letter;
 
     this.emit('selectionChanged');
 }
 
 /**
+ * Clears the selection
+ */
+SelectionService.prototype.clear = function()
+{
+    this._selectedBlocks = [];
+    this._selectedBlocksMap = {};
+    this._word = '';
+    this.emit('selectionChanged');
+}
+/**
  * Specifies whether or not a block is a part of the current selection
  *
- * @param columnIndex
- * @param rowIndex
- * @param letter
+ * @param uid
  * @returns {*}
  */
-SelectionService.prototype.isBlockSelected = function(columnIndex, rowIndex, letter)
+SelectionService.prototype.isBlockSelected = function(uid)
 {
-    var key = columnIndex + '-' +  rowIndex + '-' + letter;
-    return this._selectedBlocksMap.hasOwnProperty(key);
+    return this._selectedBlocksMap.hasOwnProperty(uid);
 }
 
 /**

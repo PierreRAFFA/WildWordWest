@@ -15,15 +15,13 @@ var fs = require('fs'),
 	cookieParser = require('cookie-parser'),
 	helmet = require('helmet'),
 	passport = require('passport'),
-	mongoStore = require('connect-mongo')({
-		session: session
-	}),
+	mongoStore = require('connect-mongo')(session),
 	flash = require('connect-flash'),
 	config = require('./config'),
 	consolidate = require('consolidate'),
 	path = require('path');
 
-module.exports = function(db) {
+module.exports = function(mongooseConnection) {
 	// Initialize express app
 	var app = express();
 
@@ -96,7 +94,7 @@ module.exports = function(db) {
 		resave: true,
 		secret: config.sessionSecret,
 		store: new mongoStore({
-			db: db.connection.db,
+            mongooseConnection: mongooseConnection,
 			collection: config.sessionCollection
 		})
 	}));

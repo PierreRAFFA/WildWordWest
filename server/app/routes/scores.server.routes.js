@@ -3,12 +3,15 @@
 /**
  * Module dependencies.
  */
-var scores = require('../../app/controllers/scores.server.controller');
+var scoresController = require('../../app/controllers/scores.server.controller');
 
 module.exports = function(app)
 {
 	// Scores Routes
 	app.route('/scores/:locale/:from')
-		.get(scores.list);
+		.get(scoresController.list);
 		//.post(users.requiresLogin, scores.create);
+        //.get(function(req,res){
+         //   res.json({ok:3});
+        //})
 };

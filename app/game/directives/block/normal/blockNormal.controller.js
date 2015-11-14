@@ -17,6 +17,18 @@
         this.type;
 
         /**
+         * Size applied to the block
+         * Binded
+         */
+        this.size;
+
+        /**
+         * uid
+         * Binded
+         */
+        this.uid;
+
+        /**
          * the block HTML Element
          */
         this.$element = $element;
@@ -36,7 +48,7 @@
         var self = this;
         this.selectionService.on('selectionChanged' , function()
         {
-            self.selected  = self.selectionService.isBlockSelected(self.getColumnIndex(), self.getRowIndex(), self.letter);
+            self.selected  = self.selectionService.isBlockSelected(self.uid);
             //console.log(self.selected);
         })
 
@@ -45,7 +57,7 @@
     /////////////////////////////////////////////////////////////// ON CLICK
     BlockNormalController.prototype.onClick = function()
     {
-        this.selectionService.select(this.getColumnIndex(), this.getRowIndex(), this.letter);
+        this.selectionService.select(this.getColumnIndex(), this.getRowIndex(), this.letter, this.type, this.uid);
     }
 
     ////////////////////////////////////////////////////////////////////////

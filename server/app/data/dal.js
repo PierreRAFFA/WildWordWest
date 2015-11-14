@@ -8,9 +8,7 @@ var mongoose    = require('mongoose');
 /**
  * Module exports.
  */
-module.exports = exports = function(db){
-    return new Dal(db);
-}
+
 
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
@@ -21,7 +19,7 @@ module.exports = exports = function(db){
  * @param {numColumns}
  * @param {numRows}
  */
-function Dal(db)
+function Dal()
 {
     if (!(this instanceof Dal)) return new Dal();
 
@@ -312,3 +310,7 @@ Dal.prototype.saveScore = function(scoreValue,locale,account)
 /////////////////////////////////////////////////////////////// GETTER
 Dal.prototype.isConnected = function() { return this.mConnected; }
 Dal.prototype.getRand = function() { return this.rand; }
+
+
+var dal = new Dal();
+module.exports = exports = dal;

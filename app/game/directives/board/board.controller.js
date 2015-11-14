@@ -23,7 +23,7 @@ function BoardController($scope, $element, gameService, socketService, selection
      * Select Block List. Used to remove this blocks if the word is valid
      * @type {Array}
      */
-    this.mSubmittedBlocks = [];
+    this._submittedBlocks = [];
 
 
     //socket events
@@ -82,12 +82,13 @@ BoardController.prototype._defineBlockRenderProperties = function()
  */
 BoardController.prototype._onUpdate = function(newBlocks, points)
 {
-    console.log('_onUpdate');
+    console.log('_onUpdate___');
 
     var isWordValid = points !== 0 && newBlocks && newBlocks.length;
 
     if (isWordValid )
     {
+        this.selectionService.clear();
         //var word = this._getWordFromSelectedBlocks();
         //this.events.onWordValid.dispatch(points,lWord);
 
@@ -109,8 +110,8 @@ BoardController.prototype._onUpdate = function(newBlocks, points)
 BoardController.prototype.addBlocks = function(newBlocks)
 {
     //clear the submitted blocks
-    if (this.mSubmittedBlocks.length) {
-        //this.removeSubmittedBlocks();
+    if (this._submittedBlocks.length) {
+        this.blockAllocatorService.deallocate(this._submittedBlocks);
     }
 
     //add blocks to the column who needs
@@ -128,7 +129,17 @@ BoardController.prototype.addBlocks = function(newBlocks)
 
 BoardController.prototype._onSelectionValidated = function(selectedBlocks)
 {
+    //format selection
+    var data = [];
+    angular.forEach(selectedBlocks, function(block) {
+        data.push([block.columnIndex, block.rowIndex]);
+    });
 
+    //store the blocks
+    this._submittedBlocks = selectedBlocks;
+
+    //emit socket event
+    this.socketService.submitWord(data);
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////

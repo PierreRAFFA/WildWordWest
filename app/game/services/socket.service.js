@@ -19,10 +19,46 @@ function SocketService(eventEmitter, socket)
     eventEmitter.inject(SocketService);
 
     //triggered when the server adds new blocks for the game
-    this._socket.on('updateGame' , this._onUpdateGame.bind(this));
+    this._socket.on('updateGame' , this._updateGame.bind(this));
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  ON EVENTS
+
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////  NEW GAME
+/**
+ * Get a new game by emitting a socket event
+ *
+ * @param numColumns
+ * @param numRows
+ * @param locale ex: en_GB, en_US, fr_FR
+ */
+SocketService.prototype.newGame = function(numColumns, numRows, locale)
+{
+    if ( numColumns && numColumns > 0 )
+    {
+        if ( numRows && numRows > 0 )
+        {
+            if (locale)
+            {
+                var data = {
+                    numColumns: numColumns ,
+                    numRows: numRows,
+                    locale : locale
+                };
+                this._socket.emit('new' , data , this._updateGame.bind(this));
+
+            }else{
+                angular.$log.warn('Can not create the game. The locale has to be defined');
+            }
+        }else{
+            angular.$log.warn('Can not create the game. The number of rows has to be defined');
+        }
+    }else{
+        angular.$log.warn('Can not create the game. The number of columns has to be defined');
+    }
+
+}
 /**
  * Updates the board with the new blocks and the points
  * blockInfos may be empty if the word previously selected was not valid.
@@ -31,17 +67,32 @@ function SocketService(eventEmitter, socket)
  * @param blockInfos new block to insert to the columns
  * @param points points to add
  */
-SocketService.prototype._onUpdateGame = function(newBlocks, points)
+SocketService.prototype._updateGame = function(newBlocks, points)
 {
     this.emit('updateGame' , newBlocks, points);
 }
 ///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////  EMIT EVENTS
-SocketService.prototype.emitNewGame = function(data)
+///////////////////////////////////////////////////////////  SUBMIT WORD
+/**
+ * Submits a word by emitting a socket event
+ *
+ * @param data an array of coordinates (columnIndex, rowIndex) ( per exemple [[5,4],[4,4],[4,3]] )
+ */
+SocketService.prototype.submitWord = function(data)
 {
-    this._socket.emit('new' , data , this._onUpdateGame.bind(this));
+    if (data && data.length)
+    {
+        this._socket.emit('submitWord' , data , this._onWordSubmitted.bind(this));
+    }else{
+        angular.$log.warn('Can not submit the word. The data is invalid');
+    }
 }
-
+SocketService.prototype._onWordSubmitted = function(newBlocks, points)
+{
+    this.emit('updateGame' , newBlocks, points);
+}
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////  GENERIC EMIT
 SocketService.prototype.emit = function(event, data)
 {
     this._socket.emit(event , data);

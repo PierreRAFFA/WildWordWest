@@ -15,11 +15,12 @@ function HomePageController(Scores)
 ///////////////////////////////////////////////////////////   INIT
 HomePageController.prototype._init = function()
 {
-    this._dislayRanking();
+    this._displayRanking();
 }
 
-HomePageController.prototype._dislayRanking = function()
+HomePageController.prototype._displayRanking = function()
 {
+    console.log('_displayRanking');
     var self = this;
     var scores = this.Scores.getScore().query({locale:'fr_FR' , from: 0} , function() {
 

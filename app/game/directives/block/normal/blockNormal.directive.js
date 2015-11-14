@@ -11,7 +11,8 @@ angular.module('game').directive('wildBlockNormal', [
             bindToController:{
                 'letter': '@',
                 'type': '@',
-                'size': '@'
+                'size': '@',
+                'uid': '@'
             },
             controller: 'BlockNormalController',
             controllerAs: 'vm'

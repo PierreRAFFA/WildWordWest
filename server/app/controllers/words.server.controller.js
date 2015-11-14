@@ -8,105 +8,104 @@ var mongoose = require('mongoose'),
 	_ = require('lodash');
 
 /**
- * Create a letter
+ * Create a word
  */
 exports.create = function(req, res) {
-	var letter = new Letter(req.body);
-	letter.user = req.user;
+	var word = new Word(req.body);
+	word.user = req.user;
 
-	letter.save(function(err) {
+	word.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(letter);
+			res.json(word);
 		}
 	});
 };
 
 /**
- * Show the current letter
+ * Show the current word
  */
 exports.read = function(req, res) {
-	res.json(req.letter);
+	res.json(req.word);
 };
 
 /**
- * Update a letter
+ * Update a word
  */
 exports.update = function(req, res) {
-	var letter = req.letter;
+	var word = req.word;
 
-	letter = _.extend(letter, req.body);
+	word = _.extend(word, req.body);
 
-	letter.save(function(err) {
+	word.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(letter);
+			res.json(word);
 		}
 	});
 };
 
 /**
- * Delete an letter
+ * Delete an word
  */
 exports.delete = function(req, res) {
-	var letter = req.letter;
+	var word = req.word;
 
-	letter.remove(function(err) {
+	word.remove(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(letter);
+			res.json(word);
 		}
 	});
 };
 
 /**
- * List of Letters
+ * List of Words
  */
-exports.list = function(req, res, locale) {
-
-	Letter.find().sort('-created').populate('user', 'displayName').exec(function(err, letters) {
+exports.list = function(req, res) {
+	Word.find().sort('-created').populate('user', 'displayName').exec(function(err, words) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(letters);
+			res.json(words);
 		}
 	});
 };
 
-exports.promiseList = function(locale) {
-
-    var Letter = require("../models/letter.server.model")(locale);
-    return Letter.find();
-}
-
 /**
- * Letter middleware
+ * Word middleware
  */
-exports.letterByID = function(req, res, next, id) {
-	Letter.findById(id).populate('user', 'displayName').exec(function(err, letter) {
+exports.wordByID = function(req, res, next, id) {
+	Word.findById(id).populate('user', 'displayName').exec(function(err, word) {
 		if (err) return next(err);
-		if (!letter) return next(new Error('Failed to load letter ' + id));
-		req.letter = letter;
+		if (!word) return next(new Error('Failed to load word ' + id));
+		req.word = word;
 		next();
 	});
 };
 
+exports.promiseWordByName = function(word, locale) {
+
+    var Word = require("../models/word.server.model")(locale);
+    return Word.findOne({cleanedWord:word});
+};
+
 /**
- * Letter authorization middleware
+ * Word authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.letter.user.id !== req.user.id) {
+	if (req.word.user.id !== req.user.id) {
 		return res.status(403).send({
 			message: 'User is not authorized'
 		});

@@ -13,6 +13,8 @@ var socket = require("./config/socket");
  * Main application entry file.
  * Please note that the order of loading is important.
  */
+//mongoose.Promise = global.Promise;
+//console.log(global.Promise);
 
 // Bootstrap db connection
 var db = mongoose.connect(config.db, function(err) {
@@ -23,12 +25,12 @@ var db = mongoose.connect(config.db, function(err) {
 });
 
 // Init the express application
-var app = require('./config/express')(db);
+var app = require('./config/express')(mongoose.connection);
 
 // Socket initialisation
 var server = http.Server(app);
 server.listen(config.port);
-//var io = require('socket.io')(server);
+var io = require('socket.io')(server);
 
 //create the socket and link to the server
 socket.setServer(server);

@@ -115,7 +115,7 @@ Socket.prototype.listen = function()
         });
 
         ////////////////////////////////////////////////////////////////////////
-        socket.on('submitWord', function (data)
+        socket.on('submitWord', function (data, callback)
         {
             socket.board.analyzeWord(data);
 
@@ -125,7 +125,8 @@ Socket.prototype.listen = function()
                 socket.board.visualize();
 
                 //getNonSynchronizedBlocks return new blocks. If the word is not valid, this array is empty and nothing happens in the game
-                socket.emit('updateBoard',socket.board.getNonSynchronizedBlocks(),points );
+                callback && callback.call(null, socket.board.getNonSynchronizedBlocks(), points);
+                //socket.emit('updateBoard',socket.board.getNonSynchronizedBlocks(),points );
             })
 
         });
