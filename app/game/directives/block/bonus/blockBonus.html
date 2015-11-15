@@ -1,67 +1,7 @@
 <div class="block" style="width:{{vm.size}}px; height:{{vm.size}}px; left:-{{vm.size/2}}px; top:-{{vm.size/2}}px;" data-ng-click="vm.onClick()">
 
-    <div class="container {{vm.selected == false ? 'selected' : ''}}">
-        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="100px" height="100px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
-            <g>
-
-                <radialGradient id="SVGID_1_bonus" cx="24.01" cy="35.56" r="54.459" gradientTransform="matrix(2 0 0 2 0 0)" gradientUnits="userSpaceOnUse">
-                    <stop  offset="0.1818" style="stop-color:#308651"/>
-                    <stop  offset="1" style="stop-color:#79BA43"/>
-                </radialGradient>
-                <path fill="url(#SVGID_1_bonus)" d="M6,99.5c-3,0-5.5-2.5-5.5-5.5V6C0.5,3,3,0.5,6,0.5h88c3,0,5.5,2.5,5.5,5.5v88c0,3-2.5,5.5-5.5,5.5H6
-                    z"/>
-                <path fill="#6D6E6E" d="M94,1c2.8,0,5,2.2,5,5v88c0,2.8-2.2,5-5,5H6c-2.8,0-5-2.2-5-5V6c0-2.8,2.2-5,5-5H94 M94,0H6
-                    C2.7,0,0,2.7,0,6v88c0,3.3,2.7,6,6,6h88c3.3,0,6-2.7,6-6V6C100,2.7,97.3,0,94,0L94,0z"/>
-            </g>
-            <g>
-                <defs>
-                    <path id="SVGID_2_bonus" d="M94,100H6c-3.3,0-6-2.7-6-6V6c0-3.3,2.7-6,6-6h88c3.3,0,6,2.7,6,6v88C100,97.3,97.3,100,94,100z"/>
-                </defs>
-                <clipPath id="SVGID_3_bonus">
-                    <use xlink:href="#SVGID_2_bonus"  overflow="visible"/>
-                </clipPath>
-
-                    <radialGradient id="SVGID_4_bonus" cx="-20.3407" cy="7.6555" r="50.0276" gradientTransform="matrix(2 0 0 2 0 0)" gradientUnits="userSpaceOnUse">
-                    <stop  offset="0" style="stop-color:#FFFFFF"/>
-                    <stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.3"/>
-                </radialGradient>
-                <path opacity="0.5" clip-path="url(#SVGID_3_bonus)" fill="url(#SVGID_4_bonus)" d="M59.4,15.3c0,55.3-44.8,100.1-100.1,100.1
-                    c-55.3,0-100.1-44.8-100.1-100.1c0-55.3,44.8-100.1,100.1-100.1C14.6-84.7,59.4-39.9,59.4,15.3z"/>
-            </g>
-        </svg>
-    </div>
-
     <div class="container {{vm.selected ? 'selected' : ''}}">
-        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="100px" height="100px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
-            <g>
-                <radialGradient id="SVGID_1_bonus_selected" cx="24.54" cy="35.74" r="52.8087" gradientTransform="matrix(2 0 0 2 -1 -1)" gradientUnits="userSpaceOnUse">
-                    <stop  offset="0.1818" style="stop-color:#E74131"/>
-                    <stop  offset="1" style="stop-color:#EF9A56"/>
-                </radialGradient>
-                <path fill="url(#SVGID_1_bonus_selected)" d="M6,98c-2.2,0-4-1.8-4-4V6c0-2.2,1.8-4,4-4h88c2.2,0,4,1.8,4,4v88c0,2.2-1.8,4-4,4H6z"/>
-
-            </g>
-            <g>
-                <defs>
-                    <path id="SVGID_2_bonus_selected" d="M94,100H6c-3.3,0-6-2.7-6-6V6c0-3.3,2.7-6,6-6h88c3.3,0,6,2.7,6,6v88C100,97.3,97.3,100,94,100z"/>
-                </defs>
-                <clipPath id="SVGID_3_bonus_selected">
-                    <use xlink:href="#SVGID_2_bonus_selected"  overflow="visible"/>
-                </clipPath>
-
-                    <radialGradient id="SVGID_4_bonus_selected" cx="-19.8407" cy="8.1555" r="50.0276" gradientTransform="matrix(2 0 0 2 -1 -1)" gradientUnits="userSpaceOnUse">
-                    <stop  offset="0" style="stop-color:#FFFFFF"/>
-                    <stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.3"/>
-                </radialGradient>
-                <path opacity="0.5" clip-path="url(#SVGID_3_bonus_selected)" fill="url(#SVGID_4_bonus_selected)" d="M59.4,15.3c0,55.3-44.8,100.1-100.1,100.1
-                    c-55.3,0-100.1-44.8-100.1-100.1c0-55.3,44.8-100.1,100.1-100.1C14.6-84.7,59.4-39.9,59.4,15.3z"/>
-
-                <path fill="#0C0D0D" d="M94,4c1.1,0,2,0.9,2,2v88c0,1.1-0.9,2-2,2H6c-1.1,0-2-0.9-2-2V6c0-1.1,0.9-2,2-2H94 M94,0H6
-                    C2.7,0,0,2.7,0,6v88c0,3.3,2.7,6,6,6h88c3.3,0,6-2.7,6-6V6C100,2.7,97.3,0,94,0L94,0z"/>
-            </g>
-        </svg>
+        <div class="blockImg {{vm.type}}"></div>
     </div>
 
 

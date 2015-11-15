@@ -20,14 +20,40 @@
         position: absolute;
         top: 0px;
         z-index:0;
+        width: 100%;
+        height: 100%;
 
         &.selected {
           z-index:1;
+
+          .blockImg{
+            background-position: 33.6% 0px !important;
+          }
+
         }
 
         svg{
           width: 100%;
           height: 100%;
+        }
+
+        .blockImg{
+          width: 100%;
+          height: 100%;
+          background: url('../../game/assets/images/blocks@2x.png');
+
+          background-position: 0px 0px;
+          background-size: 400% 100%;
+
+          &.n {
+            background-position: 0 0;
+          }
+          &.x {
+            background-position: 99.7% 0;
+          }
+          &.b {
+            background-position: 66.5% 0;
+          }
         }
       }
 

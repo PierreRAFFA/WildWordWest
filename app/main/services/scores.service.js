@@ -8,7 +8,7 @@ function Scores($resource)
 
     methods.getScore = function()
     {
-        return $resource('http://localhost:3000/scores/:locale/:from', {
+        return $resource('http://www.wildwordwest.com:3001/scores/:locale/:from', {
         }, {
             update: {
                 method: 'GET'

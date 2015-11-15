@@ -43,7 +43,7 @@ module.exports = function(mongooseConnection) {
 
         // Website you wish to allow to connect
         //res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
+        res.setHeader('Access-Control-Allow-Origin', '*');
 
 		res.locals.url = req.protocol + '://' + req.headers.host + req.url;
 		next();
