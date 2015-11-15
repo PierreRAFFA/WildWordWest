@@ -51,9 +51,9 @@ function BlockNormalController($element, selectionService, gameService) {
     this._numDecrements = 0;
 
     var self = this;
-    this.selectionService.on('selectionChanged', function () {
+    this.selectionService.on('selectionChanged', function ()
+    {
         self.selected = self.selectionService.isBlockSelected(self.uid);
-        //console.log(self.selected);
     })
 
     this.appear();
@@ -65,44 +65,53 @@ BlockNormalController.prototype.onClick = function () {
 }
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// DECREMENT POSITION
-BlockNormalController.prototype.decrementPosition = function () {
-    console.log('decrementPosition');
+/**
+ * This method is called by the ColumnService as much as the block has to move down in term of position
+ */
+BlockNormalController.prototype.decrementPosition = function ()
+{
     this._numDecrements++;
 }
-BlockNormalController.prototype.moveToDown = function () {
+/**
+ * Applies the movement to down
+ * This movement is defined by _numDecrements
+ */
+BlockNormalController.prototype.moveToDown = function ()
+{
     if (this._numDecrements === 0) {
         return;
     }
 
-    //console.log('=======moveToDown');
-    //console.log(this.getColumnIndex(), this.getRowIndex(), this.letter);
-    //console.log(this._numDecrements);
-
+    //compute new position
     var dY = this.size * this._numDecrements;
-    console.log(dY);
-
     var newY = (parseInt(this.$element.css('top'), 10) + dY) + 'px';
-    //this.$element.css('top', newY);
+
+    //animation
     TweenLite.to(this.$element, 0.25, {top: newY, ease: Bounce.easeOut});
 
+    //init the numDecrements
     this._numDecrements = 0;
 }
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// COLUMN / ROW
-BlockNormalController.prototype.getColumnIndex = function () {
+BlockNormalController.prototype.getColumnIndex = function ()
+{
     return Math.round(parseFloat(this.$element.css('left')) / this.$element.children()[0].clientWidth);
 };
-BlockNormalController.prototype.getRowIndex = function () {
+BlockNormalController.prototype.getRowIndex = function ()
+{
     var blockWidth = this.$element.children()[0].clientWidth
     var blockTop = parseFloat(this.$element.css('top'))
     return Math.round(((this.gameService.numRows - 1) * blockWidth - blockTop) / blockWidth);
 };
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////  REMOVE
-BlockNormalController.prototype.appear = function () {
+BlockNormalController.prototype.appear = function ()
+{
     TweenLite.from(this.$element, Math.random() * 2, {scaleX: 0, scaleY: 0, ease: Elastic.easeOut});
 }
-BlockNormalController.prototype.remove = function () {
+BlockNormalController.prototype.remove = function ()
+{
     this.$element.remove();
 }
 ////////////////////////////////////////////////////////////////////////

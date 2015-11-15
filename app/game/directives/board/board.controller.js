@@ -82,7 +82,7 @@ BoardController.prototype._defineBlockRenderProperties = function()
  */
 BoardController.prototype._onUpdate = function(newBlocks, points)
 {
-    console.log('_onUpdate___');
+    angular.$log.info('_onUpdate___');
 
     var isWordValid = points !== 0 && newBlocks && newBlocks.length;
 

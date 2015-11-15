@@ -224,8 +224,7 @@ BlockAllocatorService.prototype.deallocate = function(blockInfos)
         var column = this._columns[blockInfo.columnIndex];
 
         //remove blocks from the column
-        var blocksToDown = column.removeBlockByIndex(blockInfo.rowIndex);
-        console.log(blocksToDown);
+        column.removeBlockByIndex(blockInfo.rowIndex);
     }
 
     //execute the remove
@@ -234,9 +233,6 @@ BlockAllocatorService.prototype.deallocate = function(blockInfos)
         var columnForRemove = this._columns[iC];
         columnForRemove.applyRemove();
     }
-
-    //reset submitted blocks
-    //blockInfos = [];
 }
 /**
  * Returns the closest blocks at distance 1 as object with columnIndex, rowIndex

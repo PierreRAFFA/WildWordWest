@@ -23,9 +23,8 @@ Column.prototype.addBlock = function (blockElement) {
 
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-Column.prototype.removeBlockByIndex = function (blockIndex) {
-    console.log('removeBlockByIndex');
-    console.log(blockIndex);
+Column.prototype.removeBlockByIndex = function (blockIndex)
+{
     if (blockIndex >= 0 && blockIndex < this._blocks.length) {
         if (this._blocksToRemove.indexOf(this._blocks[blockIndex]) === -1) {
 
@@ -34,9 +33,9 @@ Column.prototype.removeBlockByIndex = function (blockIndex) {
     }
 }
 
-Column.prototype.applyRemove = function () {
+Column.prototype.applyRemove = function ()
+{
     var self = this;
-
 
     //arrange blocks from top to bottom
     this._blocksToRemove.sort(function (a, b) {
@@ -71,7 +70,8 @@ Column.prototype.applyRemove = function () {
     return blocksToDown;
 }
 
-Column.prototype._doRemoveBlockByIndex = function (index) {
+Column.prototype._doRemoveBlockByIndex = function (index)
+{
     var block = this._blocks[index];
     this._blocks.splice(index, 1);
 
