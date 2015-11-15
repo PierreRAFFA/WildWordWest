@@ -27,10 +27,10 @@ function BoardController($scope, $element, gameService, socketService, selection
 
 
     //socket events
-    this.socketService.on('updateGame' , this._onUpdate.bind(this));
+    this.socketService.on('updateGame', this._onUpdate.bind(this));
 
     //selection events
-    this.selectionService.on('selectionValidated' , this._onSelectionValidated.bind(this));
+    this.selectionService.on('selectionValidated', this._onSelectionValidated.bind(this));
 
 
     this.waitingForFirstBindings();
@@ -41,10 +41,10 @@ function BoardController($scope, $element, gameService, socketService, selection
 BoardController.prototype.waitingForFirstBindings = function()
 {
     var self = this;
-    var vm = this;
     this.$scope.$watch('vm.numColumns',
         function ( newValue, oldValue )
         {
+            oldValue;
             self.numColumns = newValue;
             self._init();
         }
@@ -94,20 +94,21 @@ BoardController.prototype._onUpdate = function(newBlocks, points)
 
         //this.displayPointsOnTheGrid(points);
 
-        this.addBlocks(newBlocks);
-    }else{
+        this._addBlocks(newBlocks);
+    } else {
         //here means that the word is invalid
         //this.notifyInvalidWord();
     }
 }
+
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// ADD BLOCKS
 /**
- * Add new blocks from the server ( synchronization )
+ * Removes all submitted blocks before adding the new ones. ( synchronization )
  *
  * @param blockinfos
  */
-BoardController.prototype.addBlocks = function(newBlocks)
+BoardController.prototype._addBlocks = function(newBlocks)
 {
     //clear the submitted blocks
     if (this._submittedBlocks.length) {

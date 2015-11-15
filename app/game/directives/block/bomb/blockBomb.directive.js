@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('game').directive('wildBlockBomb', [
-    function() {
+    function () {
         return {
             templateUrl: 'game/directives/block/bomb/blockBomb.html',
             restrict: 'E',
             replace: false,
             transclude: true,
             scope: {},
-            bindToController:{
+            bindToController: {
                 'letter': '@',
                 'type': '@',
                 'size': '@',

@@ -8,7 +8,7 @@
     <!-- custom meta tags -->
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Wild Word West</title>
+    <title>WildWordWest</title>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
     <!-- build:css styles/vendor.css -->
@@ -26,14 +26,8 @@
     <!-- endinject -->
     <!-- endbuild -->
   </head>
-  <body ng-app="wildwordwest">
+  <body ng-app="WildWordWest">
 
-    <!-- the nav bar will be updated as we navigate between views -->
-    <!-- <ion-nav-bar> can be removed when using sidemenu (contained in menu.html) -->
-    <!--<ion-nav-bar class="bar-positive">-->
-      <!--<ion-nav-back-button></ion-nav-back-button>-->
-    <!--</ion-nav-bar>-->
-    <!-- the current view will be rendered in the <ion-nav-view> directive -->
     <ion-nav-view></ion-nav-view>
 
     <!-- will be a 404 during development -->
@@ -54,31 +48,34 @@
     <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
     <script src="bower_components/localforage/dist/localforage.js"></script>
     <script src="bower_components/angular-localForage/dist/angular-localForage.js"></script>
-    <script src="bower_components/sprintf/src/angular-sprintf.js"></script>
+    <script src="bower_components/sprintf/src/sprintf.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-tiny-eventemitter/dist/angular-tiny-eventemitter.js"></script>
     <script src="bower_components/angular-socket-io/socket.js"></script>
+    <script src="bower_components/gsap/src/uncompressed/TweenMax.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js scripts/app.js -->
     <!-- inject:js -->
-    <script src="main/main.modules.js"></script>
+    <script src="main/main.js"></script>
     <script src="main/services/scores.service.js"></script>
+    <script src="main/services/main-serv.js"></script>
     <script src="main/services/balad.service.js"></script>
     <script src="main/filters/time.filter.js"></script>
     <script src="main/controllers/loadingPage.controller.js"></script>
     <script src="main/controllers/homePage.controller.js"></script>
     <script src="main/controllers/gamePage.controller.js"></script>
-    <script src="main/controllers/debug.controller.js"></script>
+    <script src="main/controllers/debug-ctrl.js"></script>
     <script src="main/constants/config-const.js"></script>
-    <script src="game/game.modules.js"></script>
+    <script src="game/game.js"></script>
     <script src="game/services/socket.service.js"></script>
     <script src="game/services/socket.factory.js"></script>
     <script src="game/services/selection.service.js"></script>
     <script src="game/services/game.service.js"></script>
     <script src="game/services/blockAllocator.service.js"></script>
     <script src="game/filters/range.filter.js"></script>
+    <script src="game/directives/testdir-dir.js"></script>
     <script src="game/directives/game/game.directive.js"></script>
     <script src="game/directives/game/game.controller.js"></script>
     <script src="game/directives/column/column.service.js"></script>
@@ -90,7 +87,7 @@
     <script src="game/directives/block/bonus/blockBonus.controller.js"></script>
     <script src="game/directives/block/bomb/blockBomb.directive.js"></script>
     <script src="game/directives/block/bomb/blockBomb.controller.js"></script>
-    <script src="game/controllers/wildwordwest.controller.js"></script>
+    <script src="game/constants/game-config-const.js"></script>
     <script src="game/constants/blockType.constant.js"></script>
     <script src="app.js"></script>
     <!-- endinject -->

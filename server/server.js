@@ -13,8 +13,6 @@ var socket = require("./config/socket");
  * Main application entry file.
  * Please note that the order of loading is important.
  */
-//mongoose.Promise = global.Promise;
-//console.log(global.Promise);
 
 // Bootstrap db connection
 var db = mongoose.connect(config.db, function(err) {

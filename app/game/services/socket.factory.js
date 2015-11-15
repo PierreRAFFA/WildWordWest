@@ -1,12 +1,10 @@
 'use strict';
 
-(function (angular)
-{
+(function (angular) {
     angular.module('game').factory('socket', function (socketFactory) {
 
-        var uri = window.location.protocol + "//" + window.location.hostname + ":" + 3000;
-        console.log(uri);
-        console.log(io);
+        var uri = window.location.protocol + '//' + window.location.hostname + ':' + 3000;
+        uri = 'http://localhost:3000';
         var myIoSocket = io.connect(uri);
         var socket = socketFactory({
             ioSocket: myIoSocket

@@ -64,10 +64,10 @@ SelectionService.prototype.select = function(columnIndex, rowIndex, letter, type
             {
                 this.emit('selectionValidated', this._selectedBlocks, this._word);
                 return;
-            }else{
+            } else {
                 return;
             }
-        }else{
+        } else {
 
             var columnIndexDiff    = Math.abs(lastSelectedBlock.columnIndex - columnIndex);
             var rowIndexDiff       = Math.abs(lastSelectedBlock.rowIndex - rowIndex);
@@ -83,9 +83,9 @@ SelectionService.prototype.select = function(columnIndex, rowIndex, letter, type
 
     //add the block the the selection
     var value = {
-        columnIndex:columnIndex,
-        rowIndex:rowIndex,
-        letter:letter,
+        columnIndex: columnIndex,
+        rowIndex: rowIndex,
+        letter: letter,
         type: type,
         uid: uid
     }

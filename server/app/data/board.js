@@ -408,7 +408,7 @@ Board.prototype.analyzeWord = function(selectedBlocks)
             {
                 var lPoints = 0;
 
-                if ( word )
+                if ( true )
                 {
                     lPoints = self.getPointsFromSelectedBlocks(selectedBlocks);
                     self.mTotalPoints += lPoints;

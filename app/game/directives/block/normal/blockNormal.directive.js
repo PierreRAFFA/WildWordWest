@@ -8,7 +8,7 @@ angular.module('game').directive('wildBlockNormal', [
             replace: false,
             transclude: true,
             scope: {},
-            bindToController:{
+            bindToController: {
                 'letter': '@',
                 'type': '@',
                 'size': '@',

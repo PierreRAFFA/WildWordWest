@@ -1,5 +1,5 @@
 'use strict';
-angular.module('main').constant('Config', {
+angular.module('game').constant('GameConfig', {
 
     // gulp environment: injects environment vars
     // https://github.com/mwaylabs/generator-m-ionic#gulp-environment

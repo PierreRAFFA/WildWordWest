@@ -19,7 +19,7 @@ function SocketService(eventEmitter, socket)
     eventEmitter.inject(SocketService);
 
     //triggered when the server adds new blocks for the game
-    this._socket.on('updateGame' , this._updateGame.bind(this));
+    this._socket.on('updateGame', this._updateGame.bind(this));
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  ON EVENTS
@@ -42,19 +42,19 @@ SocketService.prototype.newGame = function(numColumns, numRows, locale)
             if (locale)
             {
                 var data = {
-                    numColumns: numColumns ,
+                    numColumns: numColumns,
                     numRows: numRows,
-                    locale : locale
+                    locale: locale
                 };
-                this._socket.emit('new' , data , this._updateGame.bind(this));
+                this._socket.emit('new', data, this._updateGame.bind(this));
 
-            }else{
+            } else {
                 angular.$log.warn('Can not create the game. The locale has to be defined');
             }
-        }else{
+        } else {
             angular.$log.warn('Can not create the game. The number of rows has to be defined');
         }
-    }else{
+    } else {
         angular.$log.warn('Can not create the game. The number of columns has to be defined');
     }
 
@@ -69,7 +69,7 @@ SocketService.prototype.newGame = function(numColumns, numRows, locale)
  */
 SocketService.prototype._updateGame = function(newBlocks, points)
 {
-    this.emit('updateGame' , newBlocks, points);
+    this.emit('updateGame', newBlocks, points);
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  SUBMIT WORD
@@ -82,20 +82,20 @@ SocketService.prototype.submitWord = function(data)
 {
     if (data && data.length)
     {
-        this._socket.emit('submitWord' , data , this._onWordSubmitted.bind(this));
-    }else{
+        this._socket.emit('submitWord', data, this._onWordSubmitted.bind(this));
+    } else {
         angular.$log.warn('Can not submit the word. The data is invalid');
     }
 }
 SocketService.prototype._onWordSubmitted = function(newBlocks, points)
 {
-    this.emit('updateGame' , newBlocks, points);
+    this.emit('updateGame', newBlocks, points);
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  GENERIC EMIT
 SocketService.prototype.emit = function(event, data)
 {
-    this._socket.emit(event , data);
+    this._socket.emit(event, data);
 }
 
 ///////////////////////////////////////////////////////////////////////////

@@ -1,14 +1,13 @@
 'use strict';
-
 angular.module('game').directive('wildBlockBonus', [
-    function() {
+    function () {
         return {
             templateUrl: 'game/directives/block/bonus/blockBonus.html',
             restrict: 'E',
             replace: false,
             transclude: true,
             scope: {},
-            bindToController:{
+            bindToController: {
                 'letter': '@',
                 'type': '@',
                 'size': '@',

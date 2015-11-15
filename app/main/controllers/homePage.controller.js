@@ -1,6 +1,4 @@
 'use strict';
-
-
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
 function HomePageController(Scores)
@@ -22,7 +20,7 @@ HomePageController.prototype._displayRanking = function()
 {
     console.log('_displayRanking');
     var self = this;
-    var scores = this.Scores.getScore().query({locale:'fr_FR' , from: 0} , function() {
+    var scores = this.Scores.getScore().query({locale: 'fr_FR', from: 0}, function() {
 
         self.scores = scores;
 

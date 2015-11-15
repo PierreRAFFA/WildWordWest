@@ -12,7 +12,7 @@ function GamePageController(gameService)
 ///////////////////////////////////////////////////////////   INIT MAP
 GamePageController.prototype._init = function()
 {
-    this.gameService.newGame(7,9,'fr_FR');
+    this.gameService.newGame(7, 9, 'fr_FR');
 }
 
 ///////////////////////////////////////////////////////////////////////////

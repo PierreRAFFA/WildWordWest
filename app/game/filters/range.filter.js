@@ -1,3 +1,4 @@
+'use strict';
 angular.module('game').filter('range', function()
 {
     return function(n) {

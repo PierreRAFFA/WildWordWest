@@ -1,5 +1,6 @@
+'use strict';
 angular.module('game').constant('BlockType', {
-   normal: 'n',
-   bomb: 'x',
-   bonus: 'b'
+    normal: 'n',
+    bomb: 'x',
+    bonus: 'b'
 });

@@ -1,8 +1,8 @@
 {
   "generator-m-ionic": {
     "answers": {
-      "appName": "test",
-      "appId": "com.test.text",
+      "appName": "WildWordWest",
+      "appId": "com.wildwordwest.game",
       "ionicCss": false,
       "bowerPackages": [
         "angular-dynamic-locale#~0.1.27",
@@ -16,10 +16,11 @@
       ],
       "plugins": [
         "cordova-plugin-device",
+        "cordova-plugin-network-information",
         "cordova-plugin-splashscreen",
         "cordova-plugin-statusbar"
       ],
-      "appModule": "test"
+      "appModule": "WildWordWest"
     }
   }
 }

@@ -62,7 +62,7 @@ BlockAllocatorService.prototype.init = function(numColumns, numRows, blockSize, 
     this._blockSize = blockSize;
     this._scope = scope;
 
-    for(var iC = 0 ; iC < this._numColumns ; iC++)
+    for (var iC = 0 ; iC < this._numColumns ; iC++)
     {
         this._columns.push(this.Column.getInstance());
     }
@@ -77,25 +77,25 @@ BlockAllocatorService.prototype.init = function(numColumns, numRows, blockSize, 
  */
 BlockAllocatorService.prototype.allocate = function(blockInfo)
 {
-    //store
-    var coordinates = this._addBlockToColumInNeed(blockInfo);
-
     //create the block
-    var blockElement = this._createBlock(blockInfo,coordinates);
+    var blockElement = this._createBlock(blockInfo);
 
-    if (coordinates.columnIndex != null)
+    //store
+    var coordinates = this._addBlockToColumInNeed(blockInfo, blockElement);
+
+    if (coordinates.columnIndex !== null)
     {
         var column = this._columns[coordinates.columnIndex];
 
         var left = coordinates.columnIndex * this._blockSize;
-        var top = ((this._numRows - 1) * this._blockSize - column.getBlockIndex(blockInfo) * this._blockSize);
+        var top = ((this._numRows - 1) * this._blockSize - column.getBlockIndex(blockElement) * this._blockSize);
 
-        blockElement.css('left' , left + 'px');
-        blockElement.css('top' , top + 'px');
-        blockElement.css('position' , 'absolute');
+        blockElement.css('left', left + 'px');
+        blockElement.css('top', top + 'px');
+        blockElement.css('position', 'absolute');
 
     } else {
-        angular.$log.warn("Some blocks have to be added but no column can accept them.");
+        angular.$log.warn('Some blocks have to be added but no column can accept them.');
     }
 
     return blockElement;
@@ -109,7 +109,7 @@ BlockAllocatorService.prototype.allocate = function(blockInfo)
  * @returns {*} the block as HtmlElement
  * @private
  */
-BlockAllocatorService.prototype._createBlock = function(blockInfo, coordinates)
+BlockAllocatorService.prototype._createBlock = function(blockInfo)
 {
     //create block
     var block = null;
@@ -126,10 +126,10 @@ BlockAllocatorService.prototype._createBlock = function(blockInfo, coordinates)
             break;
     }
 
-    block.attr('letter' , blockInfo._letter);
-    block.attr('type' , blockInfo._type);
-    block.attr('size' , this._blockSize);
-    block.attr('uid' , this._guid(blockInfo, coordinates));
+    block.attr('letter', blockInfo._letter);
+    block.attr('type', blockInfo._type);
+    block.attr('size', this._blockSize);
+    block.attr('uid', this._guid(blockInfo));
 
     return this.$compile(block)(this._scope);
 }
@@ -141,10 +141,9 @@ BlockAllocatorService.prototype._createBlock = function(blockInfo, coordinates)
  * @returns {string}
  * @private
  */
-BlockAllocatorService.prototype._guid = function(blockInfo,coordinates)
+BlockAllocatorService.prototype._guid = function(blockInfo)
 {
-    return coordinates.columnIndex + '-' +
-    coordinates.rowIndex + '-' + blockInfo._letter + '-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
+    return blockInfo._letter + '-' + Date.now() + '-' + Math.floor(Math.random() * 1000000000000000000000000);
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  COLUMN MANAGEMENT
@@ -155,15 +154,15 @@ BlockAllocatorService.prototype._guid = function(blockInfo,coordinates)
  * @returns {*} coordinates (columnIndex, rowIndex)
  * @private
  */
-BlockAllocatorService.prototype._addBlockToColumInNeed = function(blockInfo)
+BlockAllocatorService.prototype._addBlockToColumInNeed = function(blockInfo, blockElement)
 {
     var coordinates = {};
 
     var columnIndex = this._getColumnIndexInNeed();
 
-    if ( columnIndex != null && columnIndex >= 0)
+    if ( columnIndex !== null && columnIndex >= 0)
     {
-        this._columns[columnIndex].addBlock(blockInfo);
+        this._columns[columnIndex].addBlock(blockElement);
 
         coordinates.columnIndex = columnIndex;
         coordinates.rowIndex = this._columns.length;
@@ -181,7 +180,7 @@ BlockAllocatorService.prototype._getColumnIndexInNeed = function()
 {
     var returnedColumnIndex = null;
 
-    for(var iC = 0 ; iC < this._columns.length ; iC++)
+    for (var iC = 0 ; iC < this._columns.length ; iC++)
     {
         var column = this._columns[iC];
         if ( column.getNumBlocks() < this._numRows)
@@ -202,11 +201,9 @@ BlockAllocatorService.prototype._getColumnIndexInNeed = function()
  */
 BlockAllocatorService.prototype.deallocate = function(blockInfos)
 {
-    var self = this;
-
     //extend the submitted blocks with closest blocks of bomb
     var explodedBlocks = [];
-    for(var iB = 0 ; iB < blockInfos.length ; iB++)
+    for (var iB = 0 ; iB < blockInfos.length ; iB++)
     {
         var block = blockInfos[iB];
         if ( block.type === this.BlockType.bomb)
@@ -219,50 +216,58 @@ BlockAllocatorService.prototype.deallocate = function(blockInfos)
     var blockListToRemove = blockInfos.concat(explodedBlocks);
 
     //prepare the remove
-    for(var iB = 0 ; iB < blockListToRemove.length ; iB++)
+    for (var iBR = 0 ; iBR < blockListToRemove.length ; iBR++)
     {
-        var block = blockListToRemove[iB];
+        var blockInfo = blockListToRemove[iBR];
 
         //get block column
-        var column = this._columns[block.columnIndex];
+        var column = this._columns[blockInfo.columnIndex];
 
         //remove blocks from the column
-        var blocksToDown = column.prepareToRemoveBlock(block);
+        var blocksToDown = column.removeBlockByIndex(blockInfo.rowIndex);
         console.log(blocksToDown);
     }
 
     //execute the remove
-    for(var iC = 0 ; iC < this._columns.length ; iC++)
+    for (var iC = 0 ; iC < this._columns.length ; iC++)
     {
-        var column = this._columns[iC];
-        column.executeRemoveBlocks();
+        var columnForRemove = this._columns[iC];
+        columnForRemove.applyRemove();
     }
 
     //reset submitted blocks
     //blockInfos = [];
 }
-BlockAllocatorService.prototype.getClosestBlocks = function(block)
+/**
+ * Returns the closest blocks at distance 1 as object with columnIndex, rowIndex
+ *
+ * @param blockInfo
+ * @returns {Array} Array of Object ( columnIndex, rowIndex )
+ */
+BlockAllocatorService.prototype.getClosestBlocks = function(blockInfo)
 {
-    var self = this;
-
     var closestBlocks = [];
 
     //define the distance of the bomb impact
     var impactDistance = 1;
 
-    var column = block.columnIndex;
-    var row    = block.rowIndex;
+    var column = blockInfo.columnIndex;
+    var row    = blockInfo.rowIndex;
 
-    for(var iC = column - impactDistance; iC <= column + impactDistance ; iC++)
+    for (var iC = column - impactDistance; iC <= column + impactDistance ; iC++)
     {
-        for(var iR = row - impactDistance; iR <= row + impactDistance ; iR++)
+        for (var iR = row - impactDistance; iR <= row + impactDistance ; iR++)
         {
             //detect limit of the grid and ignore the block whose position is the same than the parameters
-            if ( iC >= 0 && iC < this.numColumns
-                && iR >= 0 && iR < this.numRows
-                && (iC == column && iR == row) == false )
+            if ( iC >= 0 && iC < this._numColumns &&
+                iR >= 0 && iR < this._numRows &&
+                (iC === column && iR === row) === false )
             {
-                closestBlocks.push(this._columns[iC].getBlockByIndex(iR));
+                //var blockElement = this._columns[iC].getBlockByIndex(iR);
+                closestBlocks.push({
+                    columnIndex: iC,
+                    rowIndex: iR
+                });
             }
         }
     }
@@ -272,5 +277,5 @@ BlockAllocatorService.prototype.getClosestBlocks = function(block)
 }
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING
-BlockAllocatorService.$inject = ['Column', '$compile', '$controller','BlockType'];
+BlockAllocatorService.$inject = ['Column', '$compile', '$controller', 'BlockType'];
 angular.module('game').service('blockAllocatorService', BlockAllocatorService);
