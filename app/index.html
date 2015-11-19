@@ -32,7 +32,10 @@
 
     <!-- will be a 404 during development -->
     <script src="cordova.js"></script>
-    <script src="http://www.wildwordwest.com:3001/socket.io/socket.io.js"></script>
+
+    <!-- build:socketio -->
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <!-- endbuild -->
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
@@ -75,6 +78,8 @@
     <script src="game/services/game.service.js"></script>
     <script src="game/services/blockAllocator.service.js"></script>
     <script src="game/filters/range.filter.js"></script>
+    <script src="game/directives/word/word.directive.js"></script>
+    <script src="game/directives/word/word.controller.js"></script>
     <script src="game/directives/testdir-dir.js"></script>
     <script src="game/directives/game/game.directive.js"></script>
     <script src="game/directives/game/game.controller.js"></script>

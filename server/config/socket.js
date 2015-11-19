@@ -17,7 +17,7 @@ var socket = module.exports = exports = new Socket;
  */
 
 function Socket(){
-    if (!(this instanceof Socket)) return new Socket();
+    //if (!(this instanceof Socket)) return new Socket();
 
     this.io             = null;
     this.userSockets =   [];
@@ -28,7 +28,7 @@ function Socket(){
 Socket.prototype.setServer = function(server)
 {
     this.server = server;
-    this.io = socketio.listen(server);
+    this.io = socketio(server);
 
     this.configure();
     this.listen();
@@ -46,8 +46,7 @@ Socket.prototype.configure = function()
             // note that you will need to use the same key to grad the
             // session id, as you specified in the Express setup.
             handshakeData.cookie = cookie.parse(handshakeData.headers.cookie);
-            //console.log(handshakeData.cookie);
-            handshakeData.sessionId = cookieParser.signedCookie(handshakeData.cookie['express.sid'], 'keyboard cat');
+            handshakeData.sessionId = cookieParser.signedCookie(handshakeData.cookie['connect.sid'], 'MEAN');
             console.log("handshakeData.sessionId:"+handshakeData.sessionId);
         } else {
             // if there isn't, turn down the connection with a message
@@ -64,8 +63,8 @@ Socket.prototype.listen = function()
     this.io.on('connection', function (socket)
     {
 
-        self.session = socket.handshake.session;
-
+        //self.session = socket.handshake.session;
+        //console.log(socket.request.sessionId);
         self.addUserSocket(socket);
 
         console.log("A new player visits the game");

@@ -8,7 +8,7 @@ var fs = require('fs');
 // config
 gulp.paths = {
   dist: 'www',
-  jsFiles: ['app/**/*.js', '!app/bower_components/**/*.js'],
+  jsFiles: ['app/**/*.js', '!app/bower_components/**/*.js', '!app/**/*.spec.js'],
   jsonFiles: ['app/**/*.json', '!app/bower_components/**/*.json'],
   templates: ['app/*/templates/**/*', 'app/*/directives/**/*.html'],
   karma: ['test/karma/**/*.js'],
@@ -54,6 +54,11 @@ if (options.cordova) {
       break;
     }
   }
+}
+
+options.socketIoUrl = {
+  'dev' : 'http://localhost:3000/socket.io/socket.io.js',
+  'prod': 'http://www.wildwordwest.com:3001/socket.io/socket.io.js'
 }
 
 // load tasks

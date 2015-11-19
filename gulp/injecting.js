@@ -11,7 +11,7 @@ var mainBowerFiles = require('main-bower-files');
 
 // inject app/**/*.js, bower components, css into index.html
 // inject environment variables into config.js constant
-gulp.task('inject-all', ['styles', 'wiredep', 'bower-fonts', 'environment', 'build-vars'], function () {
+gulp.task('inject-all', ['styles', 'wiredep', 'bower-fonts', 'environment', 'socketio', 'build-vars'], function () {
 
   return gulp.src('app/index.html')
     .pipe(
@@ -71,17 +71,18 @@ gulp.task('bower-fonts', function () {
  * @return {String}     properly formatted string
  */
 var injectFormat = function (obj) {
+  console.log(obj);
   // indentation of 2
-  obj = JSON.stringify(obj, null, 2);
+  obj = JSON.stringify(obj, null, 4);
   // replace all doublequotes with singlequotes
   obj = obj.replace(/\"/g, '\'');
   // remove first and last line curly braces
   obj = obj.replace(/^\{\n/, '').replace(/\n\}$/, '');
   // remove indentation of first line
-  obj = obj.replace(/^( ){2}/, '');
+  obj = obj.replace(/^( ){4}/, '');
   // insert padding for all remaining lines
-  obj = obj.replace(/\n( ){2}/g, '\n    ');
-
+  obj = obj.replace(/\n( ){4}/g, '\n        ');
+  console.log(obj);
   return obj;
 };
 
@@ -97,6 +98,7 @@ gulp.task('environment', function () {
             var json;
             try {
               json = JSON.parse(file.contents.toString('utf8'));
+              json.socketio = options.socketIoUrl[options.env];
             }
             catch (e) {
               console.log(e);
@@ -110,6 +112,13 @@ gulp.task('environment', function () {
         }))
     .pipe(gulp.dest('app/'));
 });
+
+gulp.task('socketio', function () {
+  return gulp.src('app/index.html')
+      .pipe($.htmlReplace({socketio: options.socketIoUrl[options.env]} , {keepBlockTags: true}))
+      .pipe(gulp.dest('app/'));
+});
+
 
 gulp.task('build-vars', ['environment'], function () {
   return gulp.src('app/*/constants/*config-const.js')

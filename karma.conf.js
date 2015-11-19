@@ -29,9 +29,10 @@ module.exports = function (config) {
       // other
       'app/!(bower_components)/**/*.js',
       // test
-      'test/karma/**/*.js',
+      'app/!(bower_components)/**/*.spec.js',
       // templates
-      'app/**/templates/*.html'
+      'app/**/templates/*.html',
+      'app/**/directives/**/*.html'
     ]),
 
     // list of files to exclude
@@ -40,7 +41,8 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'app/**/templates/*.html': ['ng-html2js']
+      'app/**/templates/*.html': ['ng-html2js'],
+      'app/**/directives/**/*.html': ['ng-html2js'],
     },
 
     // use template cache to avoid unexpected $http requests from ui-router

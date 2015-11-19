@@ -1,22 +1,22 @@
 'use strict';
 
-angular.module('game').directive('wildGame', [
+angular.module('game').directive('wildWord', [
     function () {
         return {
-            templateUrl: 'game/directives/game/game.html',
+            templateUrl: 'game/directives/board/board.html',
             restrict: 'E',
             replace: false,
+            transclude: true,
             scope: {},
             bindToController: {
                 'numColumns': '@',
                 'numRows': '@',
                 'locale': '@'
             },
-            controller: 'GameController',
+            controller: 'BoardController',
             controllerAs: 'vm',
-            link: function(scope, element, attrs, GameController) {
-
-                GameController.newGame();
+            link: function(scope, element, attrs, BoardController) {
+                BoardController.init();
             }
         };
     }

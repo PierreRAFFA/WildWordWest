@@ -28,7 +28,7 @@ var app = require('./config/express')(mongoose.connection);
 // Socket initialisation
 var server = http.Server(app);
 server.listen(config.port);
-var io = require('socket.io')(server);
+//var io = require('socket.io')(server);
 
 //create the socket and link to the server
 socket.setServer(server);

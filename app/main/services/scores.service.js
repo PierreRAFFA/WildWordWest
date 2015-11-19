@@ -1,14 +1,13 @@
 'use strict';
-
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function Scores($resource)
+function Scores($resource, Config)
 {
     var methods = {};
 
     methods.getScore = function()
     {
-        return $resource('http://www.wildwordwest.com:3001/scores/:locale/:from', {
+        return $resource( Config.ENV.server_url + '/scores/:locale/:from', {
         }, {
             update: {
                 method: 'GET'
@@ -22,5 +21,5 @@ function Scores($resource)
 ///////////////////////////////////////////////////////////   INIT MAP
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING
-Scores.$inject = ['$resource'];
+Scores.$inject = ['$resource', 'Config'];
 angular.module('main').factory('Scores', Scores);

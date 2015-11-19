@@ -14,7 +14,10 @@ angular.module('game').directive('wildBoard', [
                 'locale': '@'
             },
             controller: 'BoardController',
-            controllerAs: 'vm'
+            controllerAs: 'vm',
+            link: function(scope, element, attrs, BoardController) {
+                BoardController.init();
+            }
         };
     }
 ]);

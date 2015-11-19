@@ -5,7 +5,9 @@ angular.module('main').constant('Config', {
     // https://github.com/mwaylabs/generator-m-ionic#gulp-environment
     ENV: {
         /*inject-env*/
-        'SERVER_URL': 'https://DEVSERVER/api'
+        'server_url': 'http://localhost:3000',
+        'test': 'ok',
+        'socketio': 'http://localhost:3000/socket.io/socket.io.js'
         /*endinject*/
     },
 

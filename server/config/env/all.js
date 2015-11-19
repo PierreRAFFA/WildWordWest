@@ -6,7 +6,7 @@ module.exports = {
 		description: 'Letter Games',
 		keywords: 'game, letter, casual'
 	},
-	port: process.env.PORT || 3001,
+	port: process.env.PORT || 3000,
 	templateEngine: 'swig',
 	sessionSecret: 'MEAN',
 	sessionCollection: 'sessions',

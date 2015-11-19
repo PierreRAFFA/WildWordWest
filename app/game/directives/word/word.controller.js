@@ -1,7 +1,7 @@
 'use strict';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function BoardController($scope, $element, socketService, selectionService, blockAllocatorService)
+function WordController($scope, $element, socketService, selectionService, blockAllocatorService)
 {
     this.$scope = $scope;
     this.$element = $element;
@@ -35,7 +35,7 @@ function BoardController($scope, $element, socketService, selectionService, bloc
 ///**
 // * Initialises the directive as soon as the binded values are set.
 // */
-//BoardController.prototype._waitingForFirstBindings = function()
+//WordController.prototype._waitingForFirstBindings = function()
 //{
 //    var self = this;
 //    this.$scope.$watch('vm.numColumns',
@@ -49,7 +49,7 @@ function BoardController($scope, $element, socketService, selectionService, bloc
 //}
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  INIT
-BoardController.prototype.init = function()
+WordController.prototype.init = function()
 {
     this._defineBlockRenderProperties();
 
@@ -62,7 +62,7 @@ BoardController.prototype.init = function()
  *
  * @private
  */
-BoardController.prototype._defineBlockRenderProperties = function()
+WordController.prototype._defineBlockRenderProperties = function()
 {
     var boardW = this.$element[0].querySelector('.board').clientWidth;
     this.blockSize = Math.round(boardW / this.numColumns);
@@ -77,7 +77,7 @@ BoardController.prototype._defineBlockRenderProperties = function()
  * @param newBlocks new block to insert to the columns
  * @param points points to add
  */
-BoardController.prototype._onUpdate = function(newBlocks, points)
+WordController.prototype._onUpdate = function(newBlocks, points)
 {
     angular.$log.info('_onUpdate___');
 
@@ -105,7 +105,7 @@ BoardController.prototype._onUpdate = function(newBlocks, points)
  *
  * @param blockinfos
  */
-BoardController.prototype._addBlocks = function(newBlocks)
+WordController.prototype._addBlocks = function(newBlocks)
 {
     //clear the submitted blocks
     if (this._submittedBlocks.length) {
@@ -125,7 +125,7 @@ BoardController.prototype._addBlocks = function(newBlocks)
     }
 };
 
-BoardController.prototype._onSelectionValidated = function(selectedBlocks)
+WordController.prototype._onSelectionValidated = function(selectedBlocks)
 {
     //format selection
     var data = [];
@@ -141,6 +141,6 @@ BoardController.prototype._onSelectionValidated = function(selectedBlocks)
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-BoardController.$inject = ['$scope', '$element', 'socketService', 'selectionService', 'blockAllocatorService'];
-angular.module('game').controller('BoardController', BoardController);
+WordController.$inject = ['$scope', '$element', 'socketService', 'selectionService', 'blockAllocatorService'];
+angular.module('game').controller('WordController', WordController);
 
