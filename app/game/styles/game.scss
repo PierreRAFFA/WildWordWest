@@ -1,72 +1,182 @@
-.board{
-  position:absolute;
-  top: 38%;
-  width: 84%;
-  height: 62%;
-  left:12%;
+/////////////////////////////////////////////////////
+//////////////////////////////////////////  LEVEL
+.wildLevel {
+  position: relative;
+  float: left;
+  margin-top: -33px;
+  width: 38%;
+  margin-left: 50px;
+  z-index: 1;
 
+  .container{
 
-  wild-block-normal, wild-block-bomb, wild-block-bonus {
-
-    //transform: scale(0,0);
-    //-webkit-transform: scale(0,0);
-
-    .block {
+    .text{
       position:absolute;
+      top: 18%;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      font: 1rem FuturaStd-Bold;
+      color: #333;
+      text-transform: uppercase;
+    }
+  }
 
+}
+/////////////////////////////////////////////////////
+//////////////////////////////////////////  BOARD
+.wildBoard{
 
+  position: relative;
+  float: left;
+  margin-top: -15px;
+  width:100%;
 
-      .container{
-        position: absolute;
-        top: 0px;
-        z-index:0;
-        width: 100%;
-        height: 100%;
+  .grid {
 
-        &.selected {
-          z-index:1;
+    position:absolute;
+    top: 9.4%;
+    width: 84%;
+    left: 12.2%;
+
+    wild-block-normal, wild-block-bomb, wild-block-bonus {
+
+      .block {
+        position:absolute;
+
+        .container{
+          position: absolute;
+          top: 0px;
+          z-index:0;
+          width: 100%;
+          height: 100%;
+
+          &.selected {
+            z-index:1;
+
+            .blockImg{
+              background-position: 33.6% 0px !important;
+            }
+          }
 
           .blockImg{
-            background-position: 33.6% 0px !important;
-          }
+            width: 100%;
+            height: 100%;
+            background: url('../../game/assets/images/blocks@2x.png');
+            background-position: 0px 0px;
+            background-size: 400% 100%;
 
+            &.n {
+              background-position: 0 0;
+            }
+            &.x {
+              background-position: 99.7% 0;
+            }
+            &.b {
+              background-position: 66.5% 0;
+            }
+          }
         }
 
-        svg{
+        .letter {
+          z-index:2;
+          pointer-events: none;
+          position: absolute;
+          top: 10px;
           width: 100%;
-          height: 100%;
-        }
-
-        .blockImg{
-          width: 100%;
-          height: 100%;
-          background: url('../../game/assets/images/blocks@2x.png');
-
-          background-position: 0px 0px;
-          background-size: 400% 100%;
-
-          &.n {
-            background-position: 0 0;
-          }
-          &.x {
-            background-position: 99.7% 0;
-          }
-          &.b {
-            background-position: 66.5% 0;
-          }
+          text-align: center;
+          color: #FFF;
+          font: 2rem FuturaStd-Bold;
+          text-transform: capitalize;
         }
       }
+    }
+  }
+}
+/////////////////////////////////////////////////////
+//////////////////////////////////////////  WORD
+.wildWord {
+  position: absolute;
+  top: 12.8%;
+  left: 25.7%;
 
-      .letter {
-        z-index:2;
-        pointer-events: none;
-        position: absolute;
-        top: 10px;
+  .word {
+    font: 1rem FuturaStd-Bold;
+    text-transform: uppercase;
+    color: #333;
+  }
+}
+/////////////////////////////////////////////////////
+//////////////////////////////////////////  BEST WORD
+.wildBestWord {
+  position: absolute;
+  top: 20.9%;
+  left: 25.7%;
+
+  .word {
+    font: 1rem FuturaStd-Bold;
+    text-transform: uppercase;
+  }
+
+  .points {
+    font: 0.9rem FuturaStd-Bold;
+    color: #333;
+  }
+}
+/////////////////////////////////////////////////////
+//////////////////////////////////////////  COUNTDOWN
+.wildCountdown {
+  position: absolute;
+  top: 20.9%;
+  right: 5%;
+  width: 25%;
+
+  .container {
+    position:relative;
+    float: left;
+    width: 100%;
+    height: 100%;
+
+    .dynamites {
+      position: relative;
+      float: right;
+      margin-top: -59%;
+      margin-right: 71%;
+      width: 25vw;
+      max-width: 112%;
+    }
+
+    .wildDetonator {
+      position: relative;
+      z-index: 1;
+      float: right;
+      width: 23vw;
+      height: 100%;
+      max-width: 100%;
+
+      .image{
         width: 100%;
-        text-align: center;
-        color: #FFF;
-        font: 2rem FuturaStd-Bold;
-        text-transform: capitalize;
+        height: 100%;
+      }
+      .image_red {
+        width: 100%;
+        top: 0;
+        position: absolute;
+        opacity: 0;
+      }
+    }
+
+    .leverContainer {
+      position: absolute;
+      top: 0%;
+      top: -140%;
+      width: 70%;
+      left: 15%;
+      overflow: hidden;
+      height: 210%;
+
+      .wildLever {
+        position: absolute;
       }
     }
   }

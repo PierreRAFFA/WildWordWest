@@ -71,7 +71,6 @@ gulp.task('bower-fonts', function () {
  * @return {String}     properly formatted string
  */
 var injectFormat = function (obj) {
-  console.log(obj);
   // indentation of 2
   obj = JSON.stringify(obj, null, 4);
   // replace all doublequotes with singlequotes
@@ -82,7 +81,6 @@ var injectFormat = function (obj) {
   obj = obj.replace(/^( ){4}/, '');
   // insert padding for all remaining lines
   obj = obj.replace(/\n( ){4}/g, '\n        ');
-  console.log(obj);
   return obj;
 };
 

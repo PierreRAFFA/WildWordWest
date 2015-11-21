@@ -1,15 +1,15 @@
 'use strict';
 
-angular.module('game').directive('wildWord', [
+angular.module('game').directive('wildLevel', [
     function () {
         return {
-            templateUrl: 'game/directives/word/word.html',
+            templateUrl: 'game/directives/level/level.html',
             restrict: 'E',
             replace: false,
             scope: {},
             bindToController: {
             },
-            controller: 'WordController',
+            controller: 'LevelController',
             controllerAs: 'vm'
         };
     }

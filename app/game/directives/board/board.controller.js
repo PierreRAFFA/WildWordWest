@@ -64,7 +64,7 @@ BoardController.prototype.init = function()
  */
 BoardController.prototype._defineBlockRenderProperties = function()
 {
-    var boardW = this.$element[0].querySelector('.board').clientWidth;
+    var boardW = this.$element[0].querySelector('.grid').clientWidth;
     this.blockSize = Math.round(boardW / this.numColumns);
 }
 ////////////////////////////////////////////////////////////////////////
@@ -77,11 +77,11 @@ BoardController.prototype._defineBlockRenderProperties = function()
  * @param newBlocks new block to insert to the columns
  * @param points points to add
  */
-BoardController.prototype._onUpdate = function(newBlocks, points)
+BoardController.prototype._onUpdate = function(update)
 {
     angular.$log.info('_onUpdate___');
 
-    var isWordValid = points !== 0 && newBlocks && newBlocks.length > 0;
+    var isWordValid = update.points !== 0 && update.blocks && update.blocks.length > 0;
 
     if (isWordValid )
     {
@@ -91,7 +91,7 @@ BoardController.prototype._onUpdate = function(newBlocks, points)
 
         //this.displayPointsOnTheGrid(points);
 
-        this._addBlocks(newBlocks);
+        this._addBlocks(update.blocks);
     } else {
         //here means that the word is invalid
         //this.notifyInvalidWord();
@@ -121,7 +121,7 @@ BoardController.prototype._addBlocks = function(newBlocks)
         var blockElement = this.blockAllocatorService.allocate(blockInfo);
 
         //add the block to the board
-        angular.element(this.$element[0].querySelector('.board')).append(blockElement);
+        angular.element(this.$element[0].querySelector('.grid')).append(blockElement);
     }
 };
 

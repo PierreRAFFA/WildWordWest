@@ -87,7 +87,7 @@ Socket.prototype.listen = function()
             console.log('on:new');
             //create the board
             var board = game.createBoard(lLocale,lNumColumns,lNumRows);
-            board.once('initialized' , function()
+            board.once('initialized' , function(update)
             {
                 //store infos in session socket
                 socket.board    = board;
@@ -96,7 +96,7 @@ Socket.prototype.listen = function()
                 socket.board.visualize();
 
                 //returns the result
-                callback && callback.call(null, socket.board.getNonSynchronizedBlocks(), 1200);
+                callback && callback.call(null, update);
             })
             //
             //board.on("levelUp" , function(decrementPoints,currentPoints)
@@ -118,13 +118,13 @@ Socket.prototype.listen = function()
         {
             socket.board.analyzeWord(data);
 
-            socket.board.once("wordAnalyzed" , function(points)
+            socket.board.once("boardUpdated" , function(update)
             {
-                console.log("points after emit"+points);
+                console.log("points after emit"+update.points);
                 socket.board.visualize();
 
                 //getNonSynchronizedBlocks return new blocks. If the word is not valid, this array is empty and nothing happens in the game
-                callback && callback.call(null, socket.board.getNonSynchronizedBlocks(), points);
+                callback && callback.call(null, update);
                 //socket.emit('updateBoard',socket.board.getNonSynchronizedBlocks(),points );
             })
 

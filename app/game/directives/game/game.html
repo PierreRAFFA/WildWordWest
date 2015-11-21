@@ -1,8 +1,15 @@
 <div id="game" class="game">
-    <img class="boardGame" src="main/assets/images/boardGame@2x.png" width="100%" alt="game"/>
-    <img class="boardGrid" src="main/assets/images/boardGrid@2x.png" width="100%" alt="grid"/>
 
-    <!--<wild-word word="vm.getWord()"></wild-word>-->
+    <img class="boardGame" src="main/assets/images/boardGame@2x.png" width="100%" alt="game"/>
+
+    <wild-level></wild-level>
+
     <wild-board num-rows="{{vm.numRows}}" num-columns="{{vm.numColumns}}" locale="{{vm.locale}}"></wild-board>
+
+    <wild-countdown></wild-countdown>
+
+    <wild-word></wild-word>
+    <wild-best-word></wild-best-word>
+
 
 </div>

@@ -93,7 +93,6 @@ BlockAllocatorService.prototype.allocate = function(blockInfo)
         blockElement.css('left', left + 'px');
         blockElement.css('top', top + 'px');
         blockElement.css('position', 'absolute');
-
     } else {
         angular.$log.warn('Some blocks have to be added but no column can accept them.');
     }

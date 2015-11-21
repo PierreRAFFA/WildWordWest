@@ -107,6 +107,7 @@ SelectionService.prototype.clear = function()
     this._word = '';
     this.emit('selectionChanged');
 }
+
 /**
  * Specifies whether or not a block is a part of the current selection
  *
@@ -126,6 +127,16 @@ SelectionService.prototype.isBlockSelected = function(uid)
 SelectionService.prototype.getSelectedBlocks = function()
 {
     return this._selectedBlocks;
+}
+
+/**
+ * In the interest of performance, returns the word created by the selection.
+ *
+ * @returns {Array}
+ */
+SelectionService.prototype.getWord = function()
+{
+    return this._word;
 }
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING

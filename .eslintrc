@@ -44,8 +44,11 @@
   "globals": {
     "io": true,
     "TweenLite": true,
+    "TweenMax": true,
     "Bounce": true,
     "Elastic": true,
+    "Cubic": true,
+    "Linear": true,
     "BlockNormalController": true
   }
 }

@@ -4,7 +4,6 @@ var EventEmitter = require('events').EventEmitter;
 var Block       = require('./block.js');
 var Level       = require('./level.js');
 var BlockType   = require('./blockType.js');
-var dal         = require('./dal');
 var Countdown   = require('./countdown');
 
 var lettersController = require('../controllers/letters.server.controller');
@@ -28,9 +27,9 @@ function Board(locale,numColumns,numRows)
     /**
      * game options
      */
-    this.mNumColumns    = numColumns;
-    this.mNumRows       = numRows;
-    this.mLocale        = locale;
+    this.numColumns    = numColumns;
+    this.numRows       = numRows;
+    this.locale        = locale;
 
     /**
      * Array of letters with frequency. used when creating block
@@ -41,64 +40,71 @@ function Board(locale,numColumns,numRows)
      * Defines the grid blocks. Array of Columns
      * @type {}
      */
-    this.mGrid              = {};
+    this.grid              = {};
 
     /**
      * Defines all new blocks created. This blocks have to be synchronized with the client
      * @type {Array}
      */
-    this.mNonSynchronizedBlocks = [];
+    this.nonSynchronizedBlocks = [];
 
     /**
      * Percent of Normal, Bonus, Bomb Blocks
      * @type {number}
      */
-    this.mNormalPercent      = 85;
-    this.mBonusPercent       = 10;
-    this.mBombPercent        = 5;
-
-    /**
-     * Data Access Layout ( access to mongoDB )
-     * @type {exports}
-     */
-    this.mDal = dal;
+    this.normalPercent      = 85;
+    this.bonusPercent       = 10;
+    this.bombPercent        = 5;
 
     /**
      * Time in milliseconds considered as game score
      * @type {number}
      */
-    this.mScore = 0;
+    this.score = 0;
 
     /**
      * Array of Level ( Level has index and decrementPoints )
      * @type {Array}
      */
-    this.mLevels = [];
+    this.levels = [];
 
     /**
      * Level Index
      * @type {number}
      */
-    this.mCurrentLevelIndex = 0;
+    this.currentLevel = 0;
 
     /**
      * Countdown Object
      * @type {Countdown}
      */
-    this.mCountdown = null;
+    this.countDown = null;
 
     /**
      * Total points used to define the level change. Start at 1200 points
      * @type {number}
      */
-    this.mTotalPoints = 1200;
+    this.totalPoints = 1200;
+
+    /**
+     * Specifies the best word found by the gamer, regarding the number of points winned with.
+     * @type {string}
+     */
+    this.bestWord = '';
+
+    /**
+     * Specifies the number of points winned with the best word.
+     * @type {number}
+     */
+    this.bestWordPoints = 0;
 
     /**
      * Allows to block the board when the game is over to prevent the client to continue to send words
      * @type {boolean}
      */
-    this.mBlocked = false;
+    this.isGameOver = false;
 
+    //load the letter informations
     this.loadLetterFrequency(locale);
 }
 
@@ -131,12 +137,12 @@ Board.prototype.loadLetterFrequency = function(locale)
 /////////////////////////////////////////////////////////////// INITIALIZE
 Board.prototype.initialize = function()
 {
-    this.mGrid.columns = [];
-    for(var iC = 0 ; iC < this.mNumColumns ; iC++)
+    this.grid.columns = [];
+    for(var iC = 0 ; iC < this.numColumns ; iC++)
     {
         var lColumn = [];
-        this.mGrid.columns.push(lColumn);
-        for(var iR = 0 ; iR < this.mNumRows ; iR++)
+        this.grid.columns.push(lColumn);
+        for(var iR = 0 ; iR < this.numRows ; iR++)
         {
             var block = this.addBlockToColumn(iC);
             block.__row = iR;
@@ -145,7 +151,12 @@ Board.prototype.initialize = function()
 
     this.createLevels();
 
-    this.emit('initialized');
+    this.emit('initialized', {
+        blocks: this._getNonSynchronizedBlocks(),
+        points: 1200,
+        level: this.currentLevel,
+        speed: this.levels[this.currentLevel].getDecrementPoints()
+    });
 
     this.launchCountdown();
 }
@@ -156,32 +167,30 @@ Board.prototype.initialize = function()
  */
 Board.prototype.createLevels = function()
 {
-    //this.mLevels.push(new Level(0,0.05));
-    //this.mLevels.push(new Level(1,0.075));
-    //this.mLevels.push(new Level(2,0.0975));
-    //this.mLevels.push(new Level(3,0.12675));
+    //this.levels.push(new Level(0,0.05));
+    //this.levels.push(new Level(1,0.075));
+    //this.levels.push(new Level(2,0.0975));
+    //this.levels.push(new Level(3,0.12675));
 
-    //this.mLevels.push(new Level(0,0.025));
-    //this.mLevels.push(new Level(1,0.05));
-    //this.mLevels.push(new Level(2,0.075));
-    //this.mLevels.push(new Level(3,0.0975));
+    //this.levels.push(new Level(0,0.025));
+    //this.levels.push(new Level(1,0.05));
+    //this.levels.push(new Level(2,0.075));
+    //this.levels.push(new Level(3,0.0975));
 
-    this.mLevels.push(new Level(0,0.025));
-    this.mLevels.push(new Level(1,0.04));
-    this.mLevels.push(new Level(2,0.055));
-    this.mLevels.push(new Level(3,0.07));
+    this.levels.push(new Level(0,0.025));
+    this.levels.push(new Level(1,0.04));
+    this.levels.push(new Level(2,0.055));
+    this.levels.push(new Level(3,0.07));
 
 }
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// BLOCKS MANAGEMENT
 Board.prototype.addBlockToColumn = function(column)
 {
-
     var block = this.createBlock();
-    this.mGrid.columns[column].push(block);
+    this.grid.columns[column].push(block);
 
-    this.mNonSynchronizedBlocks.push(block);
-    //console.log(this.mNonSynchronizedBlocks.length);
+    this.nonSynchronizedBlocks.push(block);
     return block;
 }
 Board.prototype.createBlock = function(letter,type)
@@ -193,12 +202,19 @@ Board.prototype.createBlock = function(letter,type)
 
     return new Block(letter,lType);
 }
-Board.prototype.getNonSynchronizedBlocks = function()
+/**
+ * Returns the block recently created and not yet synchronized with the client-side.
+ * Note that this methods initializes the array of new blocks.
+ * 
+ * @returns {Array}
+ * @private
+ */
+Board.prototype._getNonSynchronizedBlocks = function()
 {
-    var blocks = this.mNonSynchronizedBlocks;
-    console.log(this.mNonSynchronizedBlocks.length);
-    this.mNonSynchronizedBlocks = [];
-    console.log(this.mNonSynchronizedBlocks.length);
+    var blocks = this.nonSynchronizedBlocks;
+    console.log(this.nonSynchronizedBlocks.length);
+    this.nonSynchronizedBlocks = [];
+    console.log(this.nonSynchronizedBlocks.length);
 
     return blocks;
 }
@@ -213,13 +229,13 @@ Board.prototype.defineBlockType = function ()
 {
     var blockType = "";
     var float = Math.random() * 100;
-    if ( float >= 100 - this.mBombPercent)
+    if ( float >= 100 - this.bombPercent)
     {
         blockType = BlockType.BOMB;
-    }else if ( float >= 100 - (this.mBonusPercent + this.mBombPercent))
+    }else if ( float >= 100 - (this.bonusPercent + this.bombPercent))
     {
         blockType = BlockType.BONUS;
-    }else if ( float >= 100 - (this.mNormalPercent + this.mBonusPercent + this.mBombPercent))
+    }else if ( float >= 100 - (this.normalPercent + this.bonusPercent + this.bombPercent))
     {
         blockType = BlockType.BASIC;
     }
@@ -269,7 +285,7 @@ Board.prototype.renewBlocks = function(blockPositions)
         var lColumn = blockPosition[0];
         var lRow    = blockPosition[1];
 
-        var block = self.mGrid.columns[lColumn][lRow];
+        var block = self.grid.columns[lColumn][lRow];
         console.log(block.getLetter() + " " + block.getType());
 
         if ( block.getType() == BlockType.BOMB)
@@ -307,7 +323,7 @@ Board.prototype.renewBlocks = function(blockPositions)
         var lColumn = lPosition[0];
         var lRow    = lPosition[1];
 
-        this.mGrid.columns[lColumn].splice(lRow,1);
+        this.grid.columns[lColumn].splice(lRow,1);
 
         this.addBlockToColumn(lColumn);
     }
@@ -321,7 +337,7 @@ Board.prototype.getClosestBlockPositions = function(column, row)
     console.log("column:"+column);
     console.log("row:"+row);
 
-    var lBLockPositions = [];
+    var lBlockPositions = [];
 
     //define the distance of the bomb impact
     var lImpactDistance = 1;
@@ -331,16 +347,16 @@ Board.prototype.getClosestBlockPositions = function(column, row)
         for(var iR = row-lImpactDistance; iR <= row+lImpactDistance ; iR++)
         {
             //detect limit of the grid and ignore the block whose position is the same than the parameters
-            if ( iC >= 0 && iC < self.mNumColumns
-                && iR >= 0 && iR < self.mNumRows
+            if ( iC >= 0 && iC < self.numColumns
+                && iR >= 0 && iR < self.numRows
                 && (iC == column && iR == row) == false )
             {
-                lBLockPositions.push([iC, iR]);
+                lBlockPositions.push([iC, iR]);
             }
         }
     }
 
-    return lBLockPositions;
+    return lBlockPositions;
 }
 Board.prototype.getUniquePositions = function(positions)
 {
@@ -367,22 +383,22 @@ Board.prototype.launchCountdown = function()
 {
     var self = this;
 
-    var lCurrentLevel = this.mLevels[this.mCurrentLevelIndex];
+    var currentLevel = this.levels[this.currentLevel];
 
-    this.mCountdown = new Countdown(1200);
-    this.mCountdown.setDecrementPoints(lCurrentLevel.getDecrementPoints())
-    this.mCountdown.start();
-    this.mCountdown.once("complete" , function(countdownTime)
+    this.countDown = new Countdown(1200);
+    this.countDown.setDecrementPoints(currentLevel.getDecrementPoints())
+    this.countDown.start();
+    this.countDown.once("complete" , function(countdownTime)
     {
         console.log("countdownTime:"+countdownTime);
 
-        self.mScore = countdownTime;
+        self.score = countdownTime;
 
         //emit gameover
         self.emit("gameOver" , countdownTime);
 
         //block the board
-        self.mBlocked = true;
+        self.isGameOver = true;
     })
 }
 ////////////////////////////////////////////////////////////////////////
@@ -396,58 +412,50 @@ Board.prototype.analyzeWord = function(selectedBlocks)
 {
     var self = this;
 
-    if( self.mBlocked == false )
+    if( self.isGameOver == false )
     {
-
         if (this.isInARow(selectedBlocks)) {
-            var lWord = this.getWordFromSelectedBlocks(selectedBlocks);
+            var selectedWord = this.getWordFromSelectedBlocks(selectedBlocks);
 
 
             var self = this;
-            wordsController.promiseWordByName(lWord, this.mLocale).exec(function(err, word)
+            wordsController.promiseWordByName(selectedWord, this.locale).exec(function(err, word)
             {
-                var lPoints = 0;
+                var points = 0;
 
                 if ( true )
                 {
-                    lPoints = self.getPointsFromSelectedBlocks(selectedBlocks);
-                    self.mTotalPoints += lPoints;
+                    points = self.getPointsFromSelectedBlocks(selectedBlocks);
+
+                    if ( points > self.bestWordPoints)
+                    {
+                        self.bestWordPoints = points;
+                        self.bestWord = selectedWord;
+                    }
+                    self.totalPoints += points;
                     self.renewBlocks(selectedBlocks);
                 }else{
 
                 }
 
-                //emit to the client side
-                self.emit("wordAnalyzed", lPoints);
-
                 //add points to the countdown
-                self.mCountdown.addPoints(lPoints);
+                self.countDown.addPoints(points);
 
                 //check if we need to change the level
                 self.checkLevelUp();
-            });
 
-            //this.mDal.selectWord(lWord, this.mLocale);
-            //this.mDal.once("wordLoadComplete", function (isValid) {
-            //    var lPoints = 0;
-            //    if (isValid) {
-            //        //compute points
-            //        lPoints = self.getPointsFromSelectedBlocks(selectedBlocks);
-            //        self.mTotalPoints += lPoints;
-            //        self.renewBlocks(selectedBlocks);
-            //    } else {
-            //
-            //    }
-            //
-            //    //emit to the client side
-            //    self.emit("wordAnalyzed", lPoints);
-            //
-            //    //add points to the countdown
-            //    self.mCountdown.addPoints(lPoints);
-            //
-            //    //check if we need to change the level
-            //    self.checkLevelUp();
-            //})
+                //emit to the client side
+                self.emit("boardUpdated", {
+                    points: points,
+                    blocks: self._getNonSynchronizedBlocks(),
+                    level: self.currentLevel,
+                    speed: self.levels[self.currentLevel].getDecrementPoints(),
+                    bestWord: self.bestWord,
+                    bestWordPoints: self.bestWordPoints
+                });
+
+
+            });
         }
     }else{
         console.log("Hey the board is blocked. No more words will be accepted !!");
@@ -460,8 +468,8 @@ Board.prototype.isInARow = function(selectedBlocks)
 
 Board.prototype.checkLevelUp = function()
 {
-    var lCurrentLevel = this.mLevels[this.mCurrentLevelIndex];
-    if ( this.mTotalPoints > 1200 && this.mTotalPoints > 1200 + (lCurrentLevel.getIndex()+1) * 2400)
+    var currentLevel = this.levels[this.currentLevel];
+    if ( this.totalPoints > 1200 && this.totalPoints > 1200 + (currentLevel.getIndex()+1) * 2400)
     {
         this.levelUp();
     }
@@ -469,15 +477,15 @@ Board.prototype.checkLevelUp = function()
 };
 Board.prototype.levelUp = function()
 {
-    if ( this.mCurrentLevelIndex < this.mLevels.length - 1 )
+    if ( this.currentLevel < this.levels.length - 1 )
     {
         console.log("LLLLLEEEEEEEEEVVVVVVVEEEEEEELLLLLLLLL UUUUUUUUPPPPPPPPPPP !!!!!!!!!!!!!");
 
-        this.mCurrentLevelIndex++;
+        this.currentLevel++;
 
-        this.emit("levelUp" , this.mLevels[this.mCurrentLevelIndex].getDecrementPoints() , this.mCountdown.getPoints());
+        this.emit("levelUp" , this.levels[this.currentLevel].getDecrementPoints() , this.countDown.getPoints());
 
-        this.mCountdown.setDecrementPoints(this.mLevels[this.mCurrentLevelIndex].getDecrementPoints());
+        this.countDown.setDecrementPoints(this.levels[this.currentLevel].getDecrementPoints());
     }
 }
 ////////////////////////////////////////////////////////////////////////
@@ -490,22 +498,22 @@ Board.prototype.levelUp = function()
  */
 Board.prototype.getPointsFromSelectedBlocks = function(selectedBlocks)
 {
-    var lPoints = 0;
+    var points = 0;
     for(var iP = 0 ; iP < selectedBlocks.length ; iP++)
     {
         var lPosition = selectedBlocks[iP];
         var lColumn = lPosition[0];
         var lRow    = lPosition[1];
 
-        var block = this.mGrid.columns[lColumn][lRow];
+        var block = this.grid.columns[lColumn][lRow];
 
-        lPoints += this.getPointFromBlock(block);
-        //console.log("lPoints total:"+lPoints);
+        points += this.getPointFromBlock(block);
+        //console.log("points total:"+points);
     }
 
-    lPoints *= selectedBlocks.length;
-    lPoints = Math.round(lPoints);
-    return lPoints;
+    points *= selectedBlocks.length;
+    points = Math.round(points);
+    return points;
 }
 /**
  * Returns points depending on the letter and its frequency in the language
@@ -518,13 +526,13 @@ Board.prototype.getPointFromBlock = function(block)
     var letter = block.getLetter();
     var letterFrequency = this.letterFrequency[letter];
 
-    var lPoints = Math.sqrt(50/letterFrequency) * 4;
+    var points = Math.sqrt(50/letterFrequency) * 4;
 
     if ( block.getType() === BlockType.BONUS)
     {
-        lPoints *= 2;
+        points *= 2;
     }
-    return lPoints;
+    return points;
 }
 /**
  * Returns the word formed by the selected blocks
@@ -540,7 +548,7 @@ Board.prototype.getWordFromSelectedBlocks = function(selectedBlocks)
         var lColumn = lPosition[0];
         var lRow    = lPosition[1];
 
-        var block = this.mGrid.columns[lColumn][lRow];
+        var block = this.grid.columns[lColumn][lRow];
 
         lWord += block.getLetter();
     }
@@ -551,25 +559,25 @@ Board.prototype.getWordFromSelectedBlocks = function(selectedBlocks)
 /////////////////////////////////////////////////////////////// GETTER
 Board.prototype.getScore = function()
 {
-    return this.mScore;
+    return this.score;
 }
 Board.prototype.getLocale = function()
 {
-    return this.mLocale;
+    return this.locale;
 }
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// UTILS ( LOG )
 Board.prototype.visualize = function()
 {
-    var lNumRows = this.mGrid.columns[0].length;
+    var lNumRows = this.grid.columns[0].length;
 
     console.log("=============");
     for(var iR = lNumRows-1 ; iR >= 0  ; iR--)
     {
         var lRow = "";
-        for(var iC = 0 ; iC < this.mGrid.columns.length ; iC++)
+        for(var iC = 0 ; iC < this.grid.columns.length ; iC++)
         {
-            var lColumn = this.mGrid.columns[iC];
+            var lColumn = this.grid.columns[iC];
             lRow += lColumn[iR].getLetter().toUpperCase() + " ";
         }
         console.log(lRow);
