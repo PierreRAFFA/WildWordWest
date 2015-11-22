@@ -55,7 +55,7 @@
             z-index:1;
 
             .blockImg{
-              background-position: 33.6% 0px !important;
+              background-position: 25% 0px !important;
             }
           }
 
@@ -64,16 +64,22 @@
             height: 100%;
             background: url('../../game/assets/images/blocks@2x.png');
             background-position: 0px 0px;
-            background-size: 400% 100%;
+            background-size: 500% 100%;
 
             &.n {
               background-position: 0 0;
             }
             &.x {
-              background-position: 99.7% 0;
+              background-position: 75% 0;
             }
             &.b {
-              background-position: 66.5% 0;
+              background-position: 50% 0;
+            }
+            &.fire {
+              background-position: 100% 0 !important;
+              position: absolute;
+              top: 0;
+              opacity: 0;
             }
           }
         }
@@ -161,6 +167,7 @@
       .image_red {
         width: 100%;
         top: 0;
+        right:0;
         position: absolute;
         opacity: 0;
       }

@@ -16,13 +16,15 @@ angular.module('game').directive('wildDetonator', [
             controllerAs: 'vm',
             link: function(scope, element, attrs, DetonatorController) {
 
-                var vm = DetonatorController;
-                scope.$watch('vm.value' , function(value) {
-                    console.log(value);
+                //var vm = DetonatorController;
+                scope.$watch('vm.value', function(value)
+                {
                     if (value <= 600)
+                    {
                         DetonatorController.startAnimate();
-                    else
+                    } else {
                         DetonatorController.stopAnimate();
+                    }
                 });
             }
         };

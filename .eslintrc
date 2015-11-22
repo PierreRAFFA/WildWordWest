@@ -48,6 +48,7 @@
     "Bounce": true,
     "Elastic": true,
     "Cubic": true,
+    "Power2": true,
     "Linear": true,
     "BlockNormalController": true
   }

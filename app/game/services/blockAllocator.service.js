@@ -202,11 +202,13 @@ BlockAllocatorService.prototype.deallocate = function(blockInfos)
 {
     //extend the submitted blocks with closest blocks of bomb
     var explodedBlocks = [];
+    var bombBlocks = [];
     for (var iB = 0 ; iB < blockInfos.length ; iB++)
     {
         var block = blockInfos[iB];
         if ( block.type === this.BlockType.bomb)
         {
+            bombBlocks.push(block);
             explodedBlocks = explodedBlocks.concat(this.getClosestBlocks(block));
         }
     }

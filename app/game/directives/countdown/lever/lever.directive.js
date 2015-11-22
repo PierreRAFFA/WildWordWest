@@ -8,14 +8,13 @@ angular.module('game').directive('wildLever', [
             replace: false,
             scope: {},
             bindToController: {
-                value: "="
+                value: '='
             },
             controller: 'LeverController',
             controllerAs: 'vm',
             link: function(scope, element, attrs, LeverController) {
 
-                var vm = LeverController;
-                scope.$watch('vm.value' , function() {
+                scope.$watch('vm.value', function() {
                     LeverController.updateLever();
                 });
             }

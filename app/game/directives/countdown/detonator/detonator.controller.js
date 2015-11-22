@@ -31,7 +31,7 @@ DetonatorController.prototype.startAnimate = function()
 {
     if ( this.running === false && this.value > 0)
     {
-        this.$detonatorRed.css('opacity' , 0);
+        this.$detonatorRed.css('opacity', 0);
         TweenMax.to(this.$detonatorRed, 0.3, {opacity: 1, ease: Cubic.easeOut, repeat: -1, yoyo: true});
         this.running = true;
     }
@@ -41,7 +41,7 @@ DetonatorController.prototype.stopAnimate = function()
     if ( this.running )
     {
         TweenMax.killTweensOf(this.$detonatorRed, {opacity: 0});
-        this.$detonatorRed.css('opacity' , 0);
+        this.$detonatorRed.css('opacity', 0);
         this.running = false;
     }
 }
