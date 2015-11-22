@@ -1,30 +1,60 @@
 'use strict';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function BlastController(selectionService)
+function BlastController($scope, $element)
 {
     /**
-     * Word to display
-     * @type {string}
+     * $element
      */
-    this.word = '';
+    this.$element = $element;
 
     /**
-     * Selection service
+     * scope
      */
-    this.selectionService = selectionService;
+    this.$scope = $scope;
 
-    //selection events
-    this.selectionService.on('selectionChanged', this._onSelectionChanged.bind(this));
+    /**
+     * Binded size of the blast
+     */
+    this.size;
+
+    this.$blast = angular.element(this.$element[0].querySelector('.blast'));
+
+    var self = this;
+    $scope.$watch('vm.active', function(value) {
+
+        console.log(value);
+        if (value === true)
+        {
+            self.play();
+        }
+    });
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  ON SELECTION CHANGED
-BlastController.prototype._onSelectionChanged = function()
+BlastController.prototype.play = function()
 {
-    this.word = this.selectionService.getWord();
+    console.log('play');
+
+    //the backgroundPosition is computed depending on the size of the blast
+    //the blast image size is 12288 x 192px
+    var initialBackgroundPosition = this.size / 192 * -12288;
+    initialBackgroundPosition += 'px';
+
+    this.$blast.css('display', 'block');
+    TweenMax.to(this.$blast, 1, {
+        backgroundPosition: initialBackgroundPosition,
+        ease: SteppedEase.config(64),
+        onComplete: this._onAnimationComplete.bind(this)
+    });
+}
+BlastController.prototype._onAnimationComplete = function()
+{
+    console.log('_onAnimationComplete');
+    this.$blast.css('display', 'none');
+    this.$scope.$emit('blastComplete');
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-BlastController.$inject = ['selectionService'];
+BlastController.$inject = ['$scope', '$element'];
 angular.module('game').controller('BlastController', BlastController);
-

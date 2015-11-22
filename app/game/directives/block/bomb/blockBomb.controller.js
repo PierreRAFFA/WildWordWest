@@ -2,18 +2,30 @@
 
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// CONSTRUCTOR
-function BlockBombController($element, selectionService, gameService)
+function BlockBombController($scope, $element, selectionService, gameService)
 {
     BlockNormalController.call(this, $element, selectionService, gameService);
+    /**
+     *
+     */
     this.letter;
+
+    /**
+     *
+     */
     this.type;
+
+    this.removed = false;
+
+    this.$scope = $scope;
 
     this.animateColor();
 }
 BlockBombController.prototype = Object.create(BlockNormalController.prototype);
 BlockBombController.prototype.constructor = BlockBombController;
 
-
+////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////// COLOR ANIMATION
 BlockBombController.prototype.animateColor = function()
 {
     var $fireBlock = angular.element(this.$element[0].querySelector('.fire'));
@@ -21,5 +33,24 @@ BlockBombController.prototype.animateColor = function()
 }
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
-BlockBombController.$inject = ['$element', 'selectionService', 'gameService'];
+BlockBombController.prototype.remove = function()
+{
+    this.removed = true;
+
+    var $container = angular.element(this.$element[0].querySelector('.container'));
+    $container.css('display', 'none');
+
+    var $letter = angular.element(this.$element[0].querySelector('.letter'));
+    $letter.css('display', 'none');
+
+    var self = this;
+    this.$scope.$on('blastComplete', function() {
+        console.log('blastComplete');
+        BlockNormalController.prototype.remove.call(self);
+    });
+
+}
+////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+BlockBombController.$inject = ['$scope', '$element', 'selectionService', 'gameService'];
 angular.module('game').controller('BlockBombController', BlockBombController);

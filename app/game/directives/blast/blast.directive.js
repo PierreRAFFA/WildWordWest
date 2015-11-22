@@ -8,6 +8,8 @@ angular.module('game').directive('wildBlast', [
             replace: false,
             scope: {},
             bindToController: {
+                size: '@',
+                active: '=',
             },
             controller: 'BlastController',
             controllerAs: 'vm'
