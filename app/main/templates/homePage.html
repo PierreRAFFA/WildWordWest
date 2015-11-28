@@ -1,69 +1,81 @@
 <ion-view view-title="HomePage" class="homePage">
     <ion-content scroll="false">
 
-        <!--SPLASH-->
-        <div id="splash" class="splash">
+        <div class="ionContentContainer">
+            <!--SPLASH-->
+            <div id="splash" class="splash wildPane">
 
-            <!-- TITLE -->
-            <div class="homeTitle">
-                <img src="main/assets/images/homeTitle.png" width="100%" alt="title"/>
+                <!-- TITLE -->
+                <div class="homeTitle">
+                    <img src="main/assets/images/homeTopPanel@2x.png" width="100%" alt="title"/>
 
-                <div class="facebookLike">
-                    <div class="fb-like" data-href="https://www.facebook.com/pages/StarwordsCompany/815552935203330" data-layout="box_count" data-action="like" data-show-faces="true" data-share="true"></div>
+                    <div class="facebookLike">
+                        <div class="fb-like" data-href="https://www.facebook.com/pages/StarwordsCompany/815552935203330" data-layout="box_count" data-action="like" data-show-faces="true" data-share="true"></div>
+                    </div>
+
                 </div>
 
-            </div>
-
-            <!--&lt;!&ndash;USERNAME&ndash;&gt;-->
-            <!--<% if (account) { %>-->
-            <!--<div class="homeUsername">-->
+                <!--&lt;!&ndash;USERNAME&ndash;&gt;-->
+                <!--<% if (account) { %>-->
+                <!--<div class="homeUsername">-->
                 <!--<div class="usernameSupport">-->
-                    <!--<img src="/main/assets/images/usernameSupport.png" alt="usernameSupport"/>-->
+                <!--<img src="/main/assets/images/usernameSupport.png" alt="usernameSupport"/>-->
 
-                    <!--<div class="usernameValue"><%= account.username %></div>-->
+                <!--<div class="usernameValue"><%= account.username %></div>-->
 
-                    <!--<div id="homeLogout" class="logout">-->
-                        <!--<img src="/main/assets/images/logout.png" alt="logout"/>-->
-                    <!--</div>-->
+                <!--<div id="homeLogout" class="logout">-->
+                <!--<img src="/main/assets/images/logout.png" alt="logout"/>-->
                 <!--</div>-->
-            <!--</div>-->
-            <!--<% } %>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<% } %>-->
 
-            <!-- RANKING -->
-            <div id="homeRanking" class="homeRanking" >
-                <img src="main/assets/images/homeRanking.png" width="100%" alt="ranking"/>
+                <!-- RANKING -->
+                <div id="homeRanking" class="homeRanking" >
+                    <img src="main/assets/images/homeBottomPanel@2x.png" width="100%" alt="ranking"/>
 
-                <!--FLAGS-->
-                <div id="flags" class="flags">
-                    <div id="gbFlag" class="gbFlag" data-locale="en_GB">
-                        <img src="main/assets/images/en-gb.png" alt="flag"/>
+                    <div class="title languageTitle">
+                        <img src="main/assets/images/titleBackgroundLong@2x.png"/>
+                        <div class="text">CHOOSE YOUR LANGUAGE</div>
                     </div>
-                    <div id="frFlag" class="frFlag" data-locale="fr_FR">
-                        <img src="main/assets/images/fr-fr.png" alt="flag"/>
+
+                    <!--FLAGS-->
+                    <div id="flags" class="flags">
+                        <div id="gbFlag" class="gbFlag" data-locale="en_GB">
+                            <img src="main/assets/images/en-gb.png" alt="flag"/>
+                        </div>
+                        <div id="frFlag" class="frFlag" data-locale="fr_FR">
+                            <img src="main/assets/images/fr-fr.png" alt="flag"/>
+                        </div>
                     </div>
-                </div>
 
-                <div id="ranking" class="ranking">
-                    <div class="score" data-ng-repeat="($index,score) in pc.scores">
-                        <div class="scoreIndex">{{$index}}</div>
-                        <div class="rankingScoreValue">{{score.value | time}}</div>
-                        <div class="scoreUsername">Pierre</div>
+                    <div class="title rankingTitle">
+                        <img src="main/assets/images/titleBackgroundLong@2x.png"/>
+                        <div class="text">RANKING</div>
                     </div>
+
+                    <div id="ranking" class="ranking">
+                        <div class="score" data-ng-repeat="($index,score) in pc.scores">
+                            <div class="scoreIndex">{{$index+1}}</div>
+                            <div class="rankingScoreValue">{{score.value | time}}</div>
+                            <div class="scoreUsername">Pierre</div>
+                        </div>
+                    </div>
+
+
+                    <!-- PLAY BUTTON -->
+                    <div class="homePlay">
+                        <a ui-sref="game">
+                            <span class="text">Play Now</span>
+                        </a>
+                    </div>
+
+                    <!-- INSTRUCTIONS BUTTON -->
+                    <div class="homeInstructions">
+                        <span class="text">Instructions</span>
+                    </div>
+
                 </div>
-
-
-                <!-- PLAY BUTTON -->
-                <div class="homePlay">
-                    <a ui-sref="game">
-                        <span class="text">Play Now</span>
-                    </a>
-                </div>
-
-                <!-- INSTRUCTIONS BUTTON -->
-                <div class="homeInstructions">
-                    <span class="text">Instructions</span>
-                </div>
-
             </div>
         </div>
 

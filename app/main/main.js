@@ -1,7 +1,6 @@
 'use strict';
 angular.module('main', [
     'ionic',
-    'ngCordova',
     'ui.router',
     'ngResource'
     // TODO: load other modules selected during generation
@@ -13,19 +12,19 @@ angular.module('main', [
     /**
      * This state contains the loading page and the balad (3s)
      */
-    $stateProvider
-        .state('loadingPage', {
-            url: '/',
-            templateUrl: 'main/templates/loadingPage.html',
-            controller: 'LoadingPageController as pc'
-        });
+    //$stateProvider
+    //    .state('loadingPage', {
+    //        url: '/',
+    //        templateUrl: 'main/templates/loadingPage.html',
+    //        controller: 'LoadingPageController as pc'
+    //    });
 
     /**
      * This state contains the home with the rankings per language, the play button
      */
     $stateProvider
         .state('home', {
-            url: '/home',
+            url: '/',
             templateUrl: 'main/templates/homePage.html',
             controller: 'HomePageController as pc'
         });

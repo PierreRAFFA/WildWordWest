@@ -1,8 +1,10 @@
 'use strict';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function HomePageController(Scores)
+function HomePageController($window, $cordovaDevice, Scores)
 {
+    this.$window = $window;
+    this.$cordovaDevice = $cordovaDevice;
     this.Scores = Scores;
 
     this.scores = [];
@@ -13,9 +15,27 @@ function HomePageController(Scores)
 ///////////////////////////////////////////////////////////   INIT
 HomePageController.prototype._init = function()
 {
+    this._identifyUser();
     this._displayRanking();
 }
+HomePageController.prototype._identifyUser = function()
+{
+    if ( window.hasOwnProperty('cordova'))
+    {
+        var self = this;
 
+        if ( window.ionic.Platform.isReady )
+        {
+            alert(self.$cordovaDevice.getUUID());
+        } else {
+            this.$window.ionic.Platform.ready( function()
+            {
+                alert(self.$cordovaDevice.getUUID());
+            });
+        }
+
+    }
+}
 HomePageController.prototype._displayRanking = function()
 {
     console.log('_displayRanking');
@@ -29,5 +49,5 @@ HomePageController.prototype._displayRanking = function()
 
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING
-HomePageController.$inject = ['Scores'];
+HomePageController.$inject = ['$window', '$cordovaDevice', 'Scores'];
 angular.module('main').controller('HomePageController', HomePageController);

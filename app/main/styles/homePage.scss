@@ -1,17 +1,6 @@
 .homePage.pane {
-  background-color: #4C4D63;
 
-  .splash{
-    width: 100vw;
-    height: 171vw;
-    max-height: 100vh;
-    max-width: 58vh;
-    margin-left: auto;
-    margin-right: auto;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  .splash.wildPane{
 
     .homeTitle{
       position:relative;
@@ -35,6 +24,37 @@
       width: 100%;
       bottom:0;
 
+      .title {
+        position: absolute;
+        left: 8%;
+        width: 34vh;
+
+        .text {
+          position: absolute;
+          width: 100%;
+          text-align: left;
+          color: #FFF;
+          font: 2.3vh RioGrande-Bold;
+          top: 0;
+          line-height: 1.2em;
+          left: 12%;
+        }
+
+        img {
+          width: 100%;
+        }
+
+        &.languageTitle {
+          bottom: 50.6vh;
+        }
+
+        &.rankingTitle {
+          bottom: 41.3vh;
+        }
+      }
+
+
+
       img {
         bottom: 0;
         display: block;
@@ -42,7 +62,7 @@
 
       .flags{
         position: absolute;
-        top: 21%;
+        bottom: 45.4vh;
         left: 9%;
         height:7%;
 
@@ -62,10 +82,10 @@
 
       .ranking{
         position: absolute;
-        top: 30%;
+        top: 24vh;
         left: 11%;
         width: 65%;
-        height: 46%;
+        height: 27vh;
         overflow: auto;
 
         .rankingContents{
@@ -80,22 +100,30 @@
         }
         .scoreIndex{
           position: relative;
-          font: 0.7em FuturaStd-Book;
+          font: 2.2vh FuturaStd-Book;
           float: left;
           width: 21%;
-          line-height: 1.7em;
+          line-height: 3vh;
         }
         .rankingScoreValue{
           position:relative;
-          font: 1em FuturaStd-Bold;
+          font: 2.2vh FuturaStd-Bold;
           float:left;
           width:29%;
+          line-height: 3vh;
+        }
+        .scoreUsername {
+          position:relative;
+          font: 2.2vh FuturaStd-Book;
+          float:left;
+          line-height: 3vh;
         }
       }
 
       .homePlay{
         position: absolute;
-        top: 78.5%;
+        bottom: 6vh;
+        left: 6%;
         width: 90%;
         text-align: center;
 
@@ -106,16 +134,16 @@
         a {
           text-decoration: none;
           .text {
-            font: 1.8em RioGrande-Bold;
+            font: 5vh RioGrande-Bold;
           }
         }
       }
 
       .homeInstructions{
         position: absolute;
-        top: 88%;
+        bottom: 2.8vh;
         left: 0%;
-        width: 91%;
+        width: 100%;
         text-align: center;
 
         img {
@@ -123,7 +151,7 @@
         }
 
         .text{
-          font: 1em RioGrande-Bold;
+          font: 2.9vh RioGrande-Bold;
           color: #4B4C4C;
         }
       }
