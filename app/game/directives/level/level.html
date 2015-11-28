@@ -1,7 +1,16 @@
 <div class="wildLevel">
 
     <div class="container">
-        <img class="background" src="main/assets/images/boardLevel.png" width="100%" alt="level"/>
+        <img class="background" src="main/assets/images/gameLevel@2x.png" width="100%" alt="level"/>
+
+        <div class="bulletContent">
+            <div class="bulletPercent" style="width:{{vm.levelPercent}}%;">
+                <img class="" src="main/assets/images/bulletContent@2x.png"/>
+            </div>
+
+        </div>
+
+        <img class="bullet" src="main/assets/images/bullet@2x.png"/>
 
         <div class="text">{{vm.level | toLevelName }}</div>
     </div>

@@ -1,15 +1,15 @@
 .gamePage.pane {
-  background-color: #4C4D63;
+  //background-color: #4C4D63;
 
   .game {
     width: 100vw;
     height: 171vw;
-    max-height: 100vh;
-    max-width: 58vh;
+    max-height: calc(100vh - 19px);
+    max-width: 53vh;
     margin-left: auto;
     margin-right: auto;
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     right: 0;
   }

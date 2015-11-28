@@ -9,6 +9,8 @@ function LevelController($element, socketService)
      */
     this.level = 0;
 
+    this.levelPercent = 0;
+
     /**
      * socket service
      */
@@ -33,7 +35,11 @@ LevelController.prototype._onUpdate = function(update)
             this.level = update.level;
             TweenLite.from(this.$element, 2, {'font-size': 0, ease: Elastic.easeOut});
         }
+    }
 
+    if (update.hasOwnProperty('level'))
+    {
+        this.levelPercent = update.levelPercent;
     }
 }
 ///////////////////////////////////////////////////////////////////////////

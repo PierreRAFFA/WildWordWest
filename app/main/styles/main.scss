@@ -48,14 +48,81 @@ $ionicons-font-path: "../assets../../main/assets/fonts" !default;
 }
 
 body{
-
   padding: 0;
   margin: 0;
+  margin-top: 20px;
+  height: 100vh;
+
+  background: #0068ad;
+  background: -moz-linear-gradient(top,  #0068ad 38%, #79aeb4 100%);
+  background: -webkit-linear-gradient(top,  #0068ad 38%,#79aeb4 100%);
+  background: linear-gradient(to bottom,  #0068ad 38%,#79aeb4 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0068ad', endColorstr='#79aeb4',GradientType=0 );
+
+
+  .backgroundTopLeft{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40vh;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  .backgroundTopRight{
+    position: absolute;
+    top: 9%;
+    right: -14%;
+    width: 46vh;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .backgroundBottomLeft{
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+    width: 40vh;
+
+    img {
+      width: 100%;
+      height: auto;
+      vertical-align: bottom;
+    }
+  }
+
+  .backgroundBottomRight{
+    position: absolute;
+    bottom: 0%;
+    right: 0%;
+    width: 40vh;
+
+    img {
+      width: 100%;
+      height: auto;
+      vertical-align: bottom;
+    }
+  }
 }
 
 [nav-view-transition="ios"][nav-view-direction="forward"],
 [nav-view-transition="ios"][nav-view-direction="back"]  {
-  background: #4C4D63;
+  //background: #4C4D63;
+}
+
+.pane, .view {
+  background: transparent;
+}
+
+ion-view {
+  .ionContentContainer {
+    height: calc(100% - 20px) !important;
+  }
 }
 
 .text{

@@ -75,6 +75,12 @@ function Board(locale,numColumns,numRows)
     this.currentLevel = 0;
 
     /**
+     * Current level percent to access to the next level
+     * @type {number}
+     */
+    this.levelPercent = 0;
+
+    /**
      * Countdown Object
      * @type {Countdown}
      */
@@ -155,6 +161,7 @@ Board.prototype.initialize = function()
         blocks: this._getNonSynchronizedBlocks(),
         points: 1200,
         level: this.currentLevel,
+        levelPercent: this.levelPercent,
         speed: this.levels[this.currentLevel].getDecrementPoints()
     });
 
@@ -177,10 +184,10 @@ Board.prototype.createLevels = function()
     //this.levels.push(new Level(2,0.075));
     //this.levels.push(new Level(3,0.0975));
 
-    this.levels.push(new Level(0,0.025));
-    this.levels.push(new Level(1,0.04));
-    this.levels.push(new Level(2,0.055));
-    this.levels.push(new Level(3,0.07));
+    this.levels.push(new Level(0, 0.025, 1200));
+    this.levels.push(new Level(1, 0.040, 3600));
+    this.levels.push(new Level(2, 0.055, 6000));
+    this.levels.push(new Level(3, 0.070, 8400));
 
 }
 ////////////////////////////////////////////////////////////////////////
@@ -444,11 +451,14 @@ Board.prototype.analyzeWord = function(selectedBlocks)
                 //check if we need to change the level
                 self.checkLevelUp();
 
+                self.computeLevelPercent();
+
                 //emit to the client side
                 self.emit("boardUpdated", {
                     points: points,
                     blocks: self._getNonSynchronizedBlocks(),
                     level: self.currentLevel,
+                    levelPercent: self.levelPercent,
                     speed: self.levels[self.currentLevel].getDecrementPoints(),
                     bestWord: self.bestWord,
                     bestWordPoints: self.bestWordPoints
@@ -468,12 +478,13 @@ Board.prototype.isInARow = function(selectedBlocks)
 
 Board.prototype.checkLevelUp = function()
 {
-    var currentLevel = this.levels[this.currentLevel];
-    if ( this.totalPoints > 1200 && this.totalPoints > 1200 + (currentLevel.getIndex()+1) * 2400)
+    if ( this.currentLevel < this.levels.length - 1)
     {
-        this.levelUp();
+        var nextLevel = this.levels[this.currentLevel + 1];
+        if (this.totalPoints >= nextLevel.getMinPoints()) {
+            this.levelUp();
+        }
     }
-
 };
 Board.prototype.levelUp = function()
 {
@@ -486,6 +497,23 @@ Board.prototype.levelUp = function()
         this.emit("levelUp" , this.levels[this.currentLevel].getDecrementPoints() , this.countDown.getPoints());
 
         this.countDown.setDecrementPoints(this.levels[this.currentLevel].getDecrementPoints());
+    }
+}
+
+Board.prototype.computeLevelPercent = function()
+{
+    if ( this.currentLevel < this.levels.length - 1)
+    {
+        //Compute level percent
+        var currentLevel = this.levels[this.currentLevel];
+        var nextLevel = this.levels[this.currentLevel + 1];
+
+        this.levelPercent = this.totalPoints - currentLevel.getMinPoints();
+        var a = 100 / (nextLevel.getMinPoints() - currentLevel.getMinPoints());
+        var b = - ( currentLevel.getMinPoints() * 100) / (nextLevel.getMinPoints() - currentLevel.getMinPoints());
+        this.levelPercent = a * this.totalPoints + b;
+    }else{
+        this.levelPercent = 100;
     }
 }
 ////////////////////////////////////////////////////////////////////////

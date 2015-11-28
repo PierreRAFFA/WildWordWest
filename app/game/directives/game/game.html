@@ -1,15 +1,21 @@
 <div id="game" class="game">
 
-    <img class="boardGame" src="main/assets/images/boardGame@2x.png" width="100%" alt="game"/>
+    <img class="boardGame" src="main/assets/images/gameTopPanel@2x.png" width="100%" alt="game"/>
 
-    <wild-level></wild-level>
+    <div class="boardGameInfo">
+        <wild-timer></wild-timer>
+        <wild-word></wild-word>
+        <wild-best-word></wild-best-word>
+    </div>
+
 
     <wild-board num-rows="{{vm.numRows}}" num-columns="{{vm.numColumns}}" locale="{{vm.locale}}"></wild-board>
 
     <wild-countdown></wild-countdown>
 
-    <wild-word></wild-word>
-    <wild-best-word></wild-best-word>
+    <wild-level></wild-level>
+
+
 
 
 </div>
