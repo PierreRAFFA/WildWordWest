@@ -35,7 +35,7 @@
           text-align: left;
           color: #FFF;
           font: 2.3vh RioGrande-Bold;
-          top: 0;
+          top: 0.05vh;
           line-height: 1.2em;
           left: 12%;
         }
@@ -66,16 +66,21 @@
         left: 9%;
         height:7%;
 
-        .gbFlag, .frFlag{
+        .flag{
           position: relative;
           float:left;
           height:100%;
           margin-right: 5px;
+          opacity: 0.3;
 
           img{
             max-width: 100%;
             max-height: 100%;
             width: initial;
+          }
+
+          &.selected {
+            opacity: 1;
           }
         }
       }

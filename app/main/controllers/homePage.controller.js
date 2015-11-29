@@ -1,13 +1,16 @@
 'use strict';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function HomePageController($window, $cordovaDevice, Scores)
+function HomePageController($window, accountService, $cordovaDevice, Accounts, Locales)
 {
     this.$window = $window;
+    this.accountService = accountService;
     this.$cordovaDevice = $cordovaDevice;
-    this.Scores = Scores;
+    this.Accounts = Accounts;
+    this.Locales = Locales;
 
     this.scores = [];
+    this.account = null;
 
     this._init();
 }
@@ -16,38 +19,53 @@ function HomePageController($window, $cordovaDevice, Scores)
 HomePageController.prototype._init = function()
 {
     this._identifyUser();
-    this._displayRanking();
 }
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////  IDENTIFY USER
 HomePageController.prototype._identifyUser = function()
 {
-    if ( window.hasOwnProperty('cordova'))
+    if ( this.$window.hasOwnProperty('cordova'))
     {
         var self = this;
 
-        if ( window.ionic.Platform.isReady )
+        if (this.$window.ionic.Platform.isReady)
         {
-            alert(self.$cordovaDevice.getUUID());
+            self._getUserInfo(self.$cordovaDevice.getUUID());
         } else {
             this.$window.ionic.Platform.ready( function()
             {
-                alert(self.$cordovaDevice.getUUID());
+                self._getUserInfo(self.$cordovaDevice.getUUID());
             });
         }
-
+    } else {
+        this._getUserInfo('s' + Math.floor(Math.random() * 100));
     }
 }
-HomePageController.prototype._displayRanking = function()
+/**
+ * Get user info
+ * @param uuid
+ * @private
+ */
+HomePageController.prototype._getUserInfo = function(uuid)
 {
-    console.log('_displayRanking');
     var self = this;
-    var scores = this.Scores.getScore().query({locale: 'fr_FR', from: 0}, function() {
+    this.Accounts.get().get({uuid: uuid}, function(account)
+    {
+        self.accountService.uuid = uuid;
 
-        self.scores = scores;
+        if (account.uuid)
+        {
+            self.accountService.name = account.name;
+            self.accountService.scores = account.scores;
+            self.accountService.selectedLocale = account.selectedLocale;
+        }
 
+    }, function(error)
+    {
+        angular.$log.warn(error);
     });
 }
-
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING
-HomePageController.$inject = ['$window', '$cordovaDevice', 'Scores'];
+HomePageController.$inject = ['$window', 'accountService', '$cordovaDevice', 'Accounts', 'Locales'];
 angular.module('main').controller('HomePageController', HomePageController);

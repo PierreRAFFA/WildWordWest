@@ -1,0 +1,7 @@
+<div class="ranking">
+    <div class="score" data-ng-repeat="($index,score) in vm.scores">
+        <div class="scoreIndex">{{$index+1}}</div>
+        <div class="rankingScoreValue">{{score.highestTime | time}}</div>
+        <div class="scoreUsername">{{score.name}}</div>
+    </div>
+</div>

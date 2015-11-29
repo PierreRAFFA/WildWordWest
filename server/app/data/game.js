@@ -1,83 +1,92 @@
 var Board   = require('./board.js');
-//var dal     = require('./dal');
 
-module.exports = {};
-//module.exports.Account          = require("./models/account");
-//module.exports.FacebookAccount  = require("./lib/server/models/facebook-account");
-module.exports.Score            = require("../models/score.server.model");
-//module.exports.Dal              = dal;
-//module.exports.facebookSettings = require("./lib/server/facebook/settings");
+var accounts = require('../../app/controllers/accounts.server.controller');
+
+/**
+ * Module exports.
+ */
+
+module.exports = Game;
 ////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////
-module.exports.createBoard = function(locale,numColumns,numRows)
+/////////////////////////////////////////////////////////////// CONSTRUCTOR
+function Game(uuid, locale, numColumns, numRows)
 {
-    return new Board(locale,numColumns,numRows);
+    /**
+     * UUID send by the application ( AppStore, GooglePlay )
+     */
+    this._uuid = uuid;
+
+    /**
+     * Locale chosen by the player at start
+     */
+    this._locale = locale;
+
+    /**
+     * Game Board Model
+     */
+    this._board = new Board(locale,numColumns,numRows);
+    this._board.on('gameOver' , this._onGameOver.bind(this));
 }
 
-////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////
-module.exports.getScores = function(locale, from, res)
+Game.prototype.getBoard = function()
 {
-    console.log("module.exports.getScores");
-    dal.once("scoresLoadComplete" , onScoresLoadComplete.bind(res));
-    dal.getScores(locale, from);
+    return this._board;
 }
-
-function onScoresLoadComplete(scores)
+/**
+ * Auto-save the score if the account already exists.
+ * Otherwise, wait for client-side to get the user name/email (createAccountAndSaveScore)
+ *
+ * @private
+ */
+Game.prototype._onGameOver = function()
 {
-    console.log("onScoresLoadComplete");
-    console.log(scores);
-    this.json({
-        success: true,
-        data: scores
-    })
+    console.log('_onGameOver');
+    this._saveScore();
 }
-
 ////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////  JOIN
-//module.exports.join = function(params, res)
-//{
-//    console.log("join");
-//
-//    dal.once("joinComplete" , onJoinComplete.bind(res));
-//    dal.join(params);
-//}
-//
-//function onJoinComplete(success) {
-//    console.log("onJoinComplete");
-//    console.log("success:" + success);
-//    if (success == false){
-//        this.status(500);
-//    }else{
-//        module.exports.saveScore()
-//    }
-//
-//
-//    this.json({
-//        success: success
-//    })
-//}
+/////////////////////////////////////////////////////////////// CREATE ACCOUNT
+/**
+ * Create an account, then save the score.
+ *
+ * @param name
+ * @param email
+ */
+Game.prototype.createAccountAndSaveScore = function(name, email)
+{
+    console.log('createAccountAndSaveScore');
+    var self = this;
+
+    var params = {
+        uuid: this._uuid,
+        name: name,
+        email: email,
+        selectedLocale: this._locale
+    };
+
+    accounts.create(params, function(success) {
+
+        console.log(success);
+
+        if (success)
+        {
+            self._saveScore();
+        }else{
+            //@TODO
+        }
+    });
+
+}
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// SAVE SCORE
-module.exports.saveScore = function(scoreValue, locale, req, res)
+Game.prototype._saveScore = function()
 {
-    console.log("saveScore");
+    var params = {
+        uuid: this._uuid,
+        locale: this._locale,
+        time: this._board.getScore()
+    };
+    accounts.saveScore(params, function(success)
+    {
 
-    var lAccount = req.user;
-    dal.once("scoreSaved" , onScoreSaved.bind(res));
-    dal.saveScore(scoreValue, locale, lAccount);
-}
-
-function onScoreSaved(success)
-{
-    console.log("onScoreSaved");
-    console.log("success:"+success);
-    if ( success == false)
-        this.status(500);
-
-    //this.status(200).send("ok");
-
-    this.json({
-        success: success
-    })
+    });
 }

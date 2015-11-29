@@ -25,6 +25,7 @@ angular.module('main', [
     $stateProvider
         .state('home', {
             url: '/',
+            cache: false,
             templateUrl: 'main/templates/homePage.html',
             controller: 'HomePageController as pc'
         });
@@ -35,6 +36,7 @@ angular.module('main', [
     $stateProvider
         .state('game', {
             url: '/game',
+            cache: false,
             templateUrl: 'main/templates/gamePage.html',
             controller: 'GamePageController as pc'
         });

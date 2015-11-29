@@ -36,36 +36,23 @@
 
                     <div class="title languageTitle">
                         <img src="main/assets/images/titleBackgroundLong@2x.png"/>
-                        <div class="text">CHOOSE YOUR LANGUAGE</div>
+                        <div class="text">SELECT YOUR LANGUAGE</div>
                     </div>
 
                     <!--FLAGS-->
-                    <div id="flags" class="flags">
-                        <div id="gbFlag" class="gbFlag" data-locale="en_GB">
-                            <img src="main/assets/images/en-gb.png" alt="flag"/>
-                        </div>
-                        <div id="frFlag" class="frFlag" data-locale="fr_FR">
-                            <img src="main/assets/images/fr-fr.png" alt="flag"/>
-                        </div>
-                    </div>
+                    <locale-selection locales="pc.Locales" selected-locale="pc.accountService.selectedLocale"></locale-selection>
+
 
                     <div class="title rankingTitle">
                         <img src="main/assets/images/titleBackgroundLong@2x.png"/>
                         <div class="text">RANKING</div>
                     </div>
 
-                    <div id="ranking" class="ranking">
-                        <div class="score" data-ng-repeat="($index,score) in pc.scores">
-                            <div class="scoreIndex">{{$index+1}}</div>
-                            <div class="rankingScoreValue">{{score.value | time}}</div>
-                            <div class="scoreUsername">Pierre</div>
-                        </div>
-                    </div>
-
+                    <ranking locale="pc.accountService.selectedLocale"></ranking>
 
                     <!-- PLAY BUTTON -->
                     <div class="homePlay">
-                        <a ui-sref="game">
+                        <a ui-sref="game" ui-sref-opts="{reload:true}">
                             <span class="text">Play Now</span>
                         </a>
                     </div>

@@ -135,13 +135,12 @@ Board.prototype.loadLetterFrequency = function(locale)
             self.letterFrequency[lLetter["letter"]] = lLetter["frequency"];
         }
 
-        console.log(letters);
-        self.initialize();
+        self._initialize();
     });
 };
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// INITIALIZE
-Board.prototype.initialize = function()
+Board.prototype._initialize = function()
 {
     this.grid.columns = [];
     for(var iC = 0 ; iC < this.numColumns ; iC++)
@@ -155,7 +154,7 @@ Board.prototype.initialize = function()
         }
     }
 
-    this.createLevels();
+    this._createLevels();
 
     this.emit('initialized', {
         blocks: this._getNonSynchronizedBlocks(),
@@ -172,7 +171,7 @@ Board.prototype.initialize = function()
 /**
  * Defines all levels of the game
  */
-Board.prototype.createLevels = function()
+Board.prototype._createLevels = function()
 {
     //this.levels.push(new Level(0,0.05));
     //this.levels.push(new Level(1,0.075));
@@ -184,7 +183,12 @@ Board.prototype.createLevels = function()
     //this.levels.push(new Level(2,0.075));
     //this.levels.push(new Level(3,0.0975));
 
-    this.levels.push(new Level(0, 0.025, 1200));
+    //this.levels.push(new Level(0, 0.025, 1200));
+    //this.levels.push(new Level(1, 0.040, 3600));
+    //this.levels.push(new Level(2, 0.055, 6000));
+    //this.levels.push(new Level(3, 0.070, 8400));
+
+    this.levels.push(new Level(0, 1, 1200));
     this.levels.push(new Level(1, 0.040, 3600));
     this.levels.push(new Level(2, 0.055, 6000));
     this.levels.push(new Level(3, 0.070, 8400));
@@ -202,8 +206,6 @@ Board.prototype.addBlockToColumn = function(column)
 }
 Board.prototype.createBlock = function(letter,type)
 {
-    console.log('createBlock');
-
     var letter = letter || this.defineBlockLetter();
     var lType   = type   || this.defineBlockType();
 
@@ -550,7 +552,6 @@ Board.prototype.getPointsFromSelectedBlocks = function(selectedBlocks)
  */
 Board.prototype.getPointFromBlock = function(block)
 {
-    console.log()
     var letter = block.getLetter();
     var letterFrequency = this.letterFrequency[letter];
 

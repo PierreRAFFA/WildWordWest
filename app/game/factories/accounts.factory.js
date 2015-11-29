@@ -1,13 +1,23 @@
 'use strict';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function Scores($resource, Config)
+function Accounts($resource, Config)
 {
     var methods = {};
 
-    methods.getScore = function()
+    methods.get = function()
     {
-        return $resource( Config.ENV.server_url + '/scores/:locale/:from', {
+        return $resource( Config.ENV.server_url + '/accounts/:uuid', {
+        }, {
+            update: {
+                method: 'GET'
+            }
+        });
+    };
+
+    methods.getHighestTime = function()
+    {
+        return $resource( Config.ENV.server_url + '/accounts/:locale/highest/time', {
         }, {
             update: {
                 method: 'GET'
@@ -18,8 +28,6 @@ function Scores($resource, Config)
     return methods;
 }
 ///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////   INIT MAP
-///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING
-Scores.$inject = ['$resource', 'Config'];
-angular.module('main').factory('Scores', Scores);
+Accounts.$inject = ['$resource', 'Config'];
+angular.module('game').factory('Accounts', Accounts);

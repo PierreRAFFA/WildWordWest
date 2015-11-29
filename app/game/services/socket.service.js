@@ -19,6 +19,8 @@ function SocketService(eventEmitter, socket) {
 
     //triggered when the server adds new blocks for the game
     this._socket.on('updateGame', this._updateGame.bind(this));
+
+    this._socket.on('gameOver', this._onGameOver.bind(this));
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  ON EVENTS
@@ -32,27 +34,29 @@ function SocketService(eventEmitter, socket) {
  * @param numRows
  * @param locale ex: en_GB, en_US, fr_FR
  */
-SocketService.prototype.newGame = function (numColumns, numRows, locale) {
+SocketService.prototype.newGame = function (numColumns, numRows, locale, uuid) {
     if (numColumns && numColumns > 0) {
         if (numRows && numRows > 0) {
             if (locale) {
-                var data = {
-                    numColumns: numColumns,
-                    numRows: numRows,
-                    locale: locale
-                };
-                this._socket.emit('new', data, this._updateGame.bind(this));
-
-            }
-            else {
+                if (uuid)
+                {
+                    var data = {
+                        numColumns: numColumns,
+                        numRows: numRows,
+                        locale: 'en_GB',
+                        uuid: uuid
+                    };
+                    this._socket.emit('new', data, this._updateGame.bind(this));
+                } else {
+                    angular.$log.warn('Can not create the game. The uuid has to be defined');
+                }
+            } else {
                 angular.$log.warn('Can not create the game. The locale has to be defined');
             }
-        }
-        else {
+        } else {
             angular.$log.warn('Can not create the game. The number of rows has to be defined');
         }
-    }
-    else {
+    } else {
         angular.$log.warn('Can not create the game. The number of columns has to be defined');
     }
 
@@ -107,6 +111,17 @@ SocketService.prototype._onWordSubmitted = function (update) {
 SocketService.prototype.emit = function (event, data) {
 
     this._socket.emit(event, data);
+}
+
+SocketService.prototype._onGameOver = function(time)
+{
+    console.log(time);
+
+    var params = {
+        name: 'PierreR2',
+        email: 'pierre@me.com'
+    }
+    this._socket.emit('createAccount', params);
 }
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING

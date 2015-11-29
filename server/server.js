@@ -7,7 +7,6 @@ var init = require('./config/init')(),
 	config = require('./config/config'),
 	mongoose = require('mongoose'),
 	chalk = require('chalk');
-var socket = require("./config/socket");
 
 /**
  * Main application entry file.
@@ -31,7 +30,7 @@ server.listen(config.port);
 //var io = require('socket.io')(server);
 
 //create the socket and link to the server
-socket.setServer(server);
+require("./config/socket").setServer(server);
 
 // Bootstrap passport config
 require('./config/passport')();

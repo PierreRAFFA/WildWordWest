@@ -17,13 +17,18 @@ function GameController(gameService) {
     this.locale;
 
     /**
+     * Binded UUID
+     */
+    this.uuid;
+
+    /**
      * GameService
      */
     this.gameService = gameService;
 }
 
 GameController.prototype.newGame = function() {
-    this.gameService.newGame(this.numColumns, this.numRows, this.locale);
+    this.gameService.newGame(this.numColumns, this.numRows, this.locale, this.uuid);
 }
 
 GameController.$inject = ['gameService'];

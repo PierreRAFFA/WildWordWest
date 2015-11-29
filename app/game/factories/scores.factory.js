@@ -1,28 +1,25 @@
 'use strict';
-
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function GamePageController(gameService, accountService)
+function Scores($resource, Config)
 {
-    this.gameService = gameService;
+    var methods = {};
 
-    this.accountService = accountService;
+    methods.getScore = function()
+    {
+        return $resource( Config.ENV.server_url + '/scores/:locale/:from', {
+        }, {
+            update: {
+                method: 'GET'
+            }
+        });
+    };
 
-    this.activate();
+    return methods;
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////   INIT MAP
-GamePageController.prototype.activate = function()
-{
-    //HARDCODE
-    if (! this.accountService.uuid)
-    {
-        this.accountService.uuid = 'PierreTest2';
-    }
-
-}
-
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING
-GamePageController.$inject = ['gameService', 'accountService'];
-angular.module('main').controller('GamePageController', GamePageController);
+Scores.$inject = ['$resource', 'Config'];
+angular.module('game').factory('Scores', Scores);

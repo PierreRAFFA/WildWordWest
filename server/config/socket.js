@@ -1,7 +1,7 @@
 var socketio = require('socket.io');
 var cookie            = require('express/node_modules/cookie');
 var cookieParser = require('cookie-parser');
-var game = require('../app/data/game');
+var Game = require('../app/data/game');
 
 /**
  * Module exports.
@@ -62,13 +62,12 @@ Socket.prototype.listen = function()
     var self = this;
     this.io.on('connection', function (socket)
     {
-
         //self.session = socket.handshake.session;
         //console.log(socket.request.sessionId);
         self.addUserSocket(socket);
 
         console.log("A new player visits the game");
-
+        ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
         socket.on('init', function (data)
         {
@@ -77,61 +76,104 @@ Socket.prototype.listen = function()
             socket.data = data;
         });
 
+        //var callback = null;
+        //var game = new Game('hardcoded', 'fr_FR', 7, 9);
+        //
+        //game.getBoard().once('initialized' , function(update)
+        //{
+        //    //store infos in session socket
+        //    socket.game    = game;
+        //
+        //    //returns the newBlocks
+        //    socket.game.getBoard().visualize();
+        //
+        //    //returns the result
+        //    callback && callback.call(null, update);
+        //});
+        //
+        //game.getBoard().once("gameOver" , function(gameTime)
+        //{
+        //    console.log("gameover");
+        //    socket.emit('gameOver', gameTime);
+        //
+        //    game.createAccountAndSaveScore('PierreR', 'pierre.raffa@me.com');
+        //});
+
+        ////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////
         socket.on('new', function (data, callback)
         {
-
-            var lNumColumns = data.numColumns;
-            var lNumRows    = data.numRows;
-            var lLocale     = data.locale;
-
-            console.log('on:new');
-            //create the board
-            var board = game.createBoard(lLocale,lNumColumns,lNumRows);
-            board.once('initialized' , function(update)
+            if (data.hasOwnProperty('uuid') &&
+                data.hasOwnProperty('numColumns') &&
+                data.hasOwnProperty('numRows') &&
+                data.hasOwnProperty('locale'))
             {
-                //store infos in session socket
-                socket.board    = board;
+                console.log('on:new');
+                //create a new game
+                var game = new Game(data.uuid, data.locale, data.numColumns, data.numRows);
 
-                //returns the newBlocks
-                socket.board.visualize();
+                game.getBoard().once('initialized' , function(update)
+                {
+                    //store infos in session socket
+                    socket.game    = game;
 
-                //returns the result
-                callback && callback.call(null, update);
-            })
-            //
-            //board.on("levelUp" , function(decrementPoints,currentPoints)
-            //{
-            //    console.log("levelUp");
-            //    socket.emit('levelUp',decrementPoints,currentPoints);
-            //})
-            //
-            //board.once("gameOver" , function(gameTime)
-            //{
-            //    console.log("gameover");
-            //    socket.emit('gameOver',gameTime);
-            //})
+                    //returns the newBlocks
+                    socket.game.getBoard().visualize();
 
+                    //returns the result
+                    callback && callback.call(null, update);
+                });
+
+                game.getBoard().once("gameOver" , function(gameTime)
+                {
+                    console.log("gameover");
+                    socket.emit('gameOver', gameTime);
+
+                    //game.createAccountAndSaveScore('PierreR' + Math.floor(Math.random()*100), 'pierre.raffa@me.com');
+                    //game.createAccountAndSaveScore('PierreR68', 'pierre.raffa@me.com');
+                });
+            }else{
+                console.log('Can not create a new game. One or more parameters are invalid');
+            }
         });
 
         ////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////
         socket.on('submitWord', function (data, callback)
         {
-            socket.board.analyzeWord(data);
+            socket.game.getBoard().analyzeWord(data);
 
-            socket.board.once("boardUpdated" , function(update)
+            socket.game.getBoard().once("boardUpdated" , function(update)
             {
                 console.log("points after emit"+update.points);
-                socket.board.visualize();
+                socket.game.getBoard().visualize();
 
                 //getNonSynchronizedBlocks return new blocks. If the word is not valid, this array is empty and nothing happens in the game
                 callback && callback.call(null, update);
-                //socket.emit('updateBoard',socket.board.getNonSynchronizedBlocks(),points );
             })
 
         });
-
+        ////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        /**
+         * This event is ONLY called for the first save of a player.
+         */
+        socket.on('createAccount', function (data, callback)
+        {
+            if (data.hasOwnProperty('name') &&
+                data.hasOwnProperty('email'))
+            {
+                socket.game.createAccountAndSaveScore(data.name, data.email);
+            }else{
+                console.log('Can not save the score. One or more parameters are invalid');
+            }
+        });
+        ////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////
         socket.on('disconnect', function () {
             console.log("============= USER DISCONNECTED =============");
+
+            socket.game = null;
             self.removeUserSocket(socket);
         });
 

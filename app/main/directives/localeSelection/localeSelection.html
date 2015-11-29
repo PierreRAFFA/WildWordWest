@@ -1,0 +1,6 @@
+<div class="flags">
+    <div class="flag" ng-class="{'selected': vm.selectedLocale == locale.code}"
+         data-ng-repeat="locale in vm.locales" data-ng-click="vm.selectLocale('{{locale.code}}')">
+        <img src="{{locale.flagUrl}}" alt="flag"/>
+    </div>
+</div>

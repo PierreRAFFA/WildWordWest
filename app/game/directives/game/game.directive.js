@@ -10,7 +10,8 @@ angular.module('game').directive('wildGame', [
             bindToController: {
                 'numColumns': '@',
                 'numRows': '@',
-                'locale': '@'
+                'locale': '@',
+                'uuid': '@'
             },
             controller: 'GameController',
             controllerAs: 'vm',
