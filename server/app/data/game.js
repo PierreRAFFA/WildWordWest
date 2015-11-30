@@ -83,7 +83,8 @@ Game.prototype._saveScore = function()
     var params = {
         uuid: this._uuid,
         locale: this._locale,
-        time: this._board.getScore()
+        time: this._board.getScore(),
+        points: this._board.getTotalPointsWon()
     };
     accounts.saveScore(params, function(success)
     {

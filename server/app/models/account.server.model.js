@@ -10,13 +10,13 @@ var mongoose = require('mongoose'),
  * Score Schema
  * @type {mongoose.Schema}
  */
-var Score2Schema = new Schema({
+var ScoreSchema = new Schema({
     highestTime:        { type: Number, default: 0},
     highestWord:        { type: String, default: '' },
     highestWordPoints:  { type: Number, default: 0},
     totalPoints:        { type: Number, default: 0}
 });
-mongoose.model('Score2', Score2Schema);
+mongoose.model('Score', ScoreSchema);
 /**
  * Account Schema
  * @type {mongoose.Schema}
@@ -25,14 +25,15 @@ var AccountSchema = new Schema({
     uuid: String,
     name: String,
     email: String,
-    numGames: Number,
+    numGamesPlayed: { type: Number, default: 0},
     selectedLocale: String,
     scores: {
-        en_GB: Score2Schema,
-        fr_FR: Score2Schema,
+        en_GB: ScoreSchema,
+        fr_FR: ScoreSchema,
     },
+    balance: { type: Number, default: 0},
     premium: Boolean,
-    numGamesRemaining: Number
+    numGamesRemainingPerDay: { type: Number, default: 5},
 });
 
 

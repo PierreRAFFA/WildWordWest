@@ -43,7 +43,7 @@ SocketService.prototype.newGame = function (numColumns, numRows, locale, uuid) {
                     var data = {
                         numColumns: numColumns,
                         numRows: numRows,
-                        locale: 'en_GB',
+                        locale: locale,
                         uuid: uuid
                     };
                     this._socket.emit('new', data, this._updateGame.bind(this));

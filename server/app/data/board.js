@@ -90,7 +90,7 @@ function Board(locale,numColumns,numRows)
      * Total points used to define the level change. Start at 1200 points
      * @type {number}
      */
-    this.totalPoints = 1200;
+    this._totalPoints = 1200;
 
     /**
      * Specifies the best word found by the gamer, regarding the number of points winned with.
@@ -188,7 +188,7 @@ Board.prototype._createLevels = function()
     //this.levels.push(new Level(2, 0.055, 6000));
     //this.levels.push(new Level(3, 0.070, 8400));
 
-    this.levels.push(new Level(0, 1, 1200));
+    this.levels.push(new Level(0, 0.1, 1200));
     this.levels.push(new Level(1, 0.040, 3600));
     this.levels.push(new Level(2, 0.055, 6000));
     this.levels.push(new Level(3, 0.070, 8400));
@@ -441,7 +441,7 @@ Board.prototype.analyzeWord = function(selectedBlocks)
                         self.bestWordPoints = points;
                         self.bestWord = selectedWord;
                     }
-                    self.totalPoints += points;
+                    self._totalPoints += points;
                     self.renewBlocks(selectedBlocks);
                 }else{
 
@@ -483,7 +483,7 @@ Board.prototype.checkLevelUp = function()
     if ( this.currentLevel < this.levels.length - 1)
     {
         var nextLevel = this.levels[this.currentLevel + 1];
-        if (this.totalPoints >= nextLevel.getMinPoints()) {
+        if (this._totalPoints >= nextLevel.getMinPoints()) {
             this.levelUp();
         }
     }
@@ -510,10 +510,10 @@ Board.prototype.computeLevelPercent = function()
         var currentLevel = this.levels[this.currentLevel];
         var nextLevel = this.levels[this.currentLevel + 1];
 
-        this.levelPercent = this.totalPoints - currentLevel.getMinPoints();
+        this.levelPercent = this._totalPoints - currentLevel.getMinPoints();
         var a = 100 / (nextLevel.getMinPoints() - currentLevel.getMinPoints());
         var b = - ( currentLevel.getMinPoints() * 100) / (nextLevel.getMinPoints() - currentLevel.getMinPoints());
-        this.levelPercent = a * this.totalPoints + b;
+        this.levelPercent = a * this._totalPoints + b;
     }else{
         this.levelPercent = 100;
     }
@@ -589,6 +589,18 @@ Board.prototype.getWordFromSelectedBlocks = function(selectedBlocks)
 Board.prototype.getScore = function()
 {
     return this.score;
+}
+Board.prototype.getTotalPoints = function()
+{
+    return this._totalPoints;
+}
+/**
+ * Returns the real number of points winned by selecting words in the board.
+ * @returns {number}
+ */
+Board.prototype.getTotalPointsWon = function()
+{
+    return this._totalPoints - 1200;
 }
 Board.prototype.getLocale = function()
 {

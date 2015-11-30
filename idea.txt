@@ -2,6 +2,8 @@
 - pack de bombes ( explosion d'un bloc unique )
 - pack de nitro ( explosion de blocs autour )
 - pack multiplicateur de points sur plusieurs durées de temps ( 5, 10, 20 sec )
-
+ou
+- pack de monnaies( nom à définir )
 
 - mot compte double
+- total des points convertis en monnaie virtuelle pour acheter des packs

@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
     errorHandler = require('./errors.server.controller'),
     Account = mongoose.model('Account'),
-    Score2 = mongoose.model('Score2'),
+    Score = mongoose.model('Score'),
     _ = require('lodash');
 
 
@@ -125,8 +125,9 @@ exports.create = function (params, callback)
 }
 
 /**
+ * Saves the score, update some account fields and calls the callback with an update as Object
  *
- * @param params { uuid, locale, time }
+ * @param params { uuid, locale, time, points }
  * @param callback
  */
 exports.saveScore = function(params, callback)
@@ -139,6 +140,11 @@ exports.saveScore = function(params, callback)
             console.log(account.scores);
             console.log(account.name);
 
+            //create the result for the callback
+            var result = {};
+            result.highestTimeImproved = false;
+
+            //update highestTime if necessary
             if (account.scores[params.locale])
             {
                 //check if the time is better, then apply the new time
@@ -146,11 +152,12 @@ exports.saveScore = function(params, callback)
                 if ( localeScore.highestTime < params.time)
                 {
                     localeScore.highestTime = params.time;
+                    result.highestTimeImproved = true;
                 }
             }else{
 
                 //to preserve default values of Score
-                var newScore = new Score2();
+                var newScore = new Score();
                 newScore.highestTime = params.time;
 
                 account.scores[params.locale] = {
@@ -161,18 +168,43 @@ exports.saveScore = function(params, callback)
                 }
             }
 
+            //update totalPoints
+            account.scores[params.locale].totalPoints += params.points;
+
+            //update balance
+            var numCoinsWon = Math.round(params.points / 1000);
+            account.balance += numCoinsWon;
+            result.numCoinsWon = numCoinsWon;
+
+            //update numGamesPlayed
+            account.numGamesPlayed++;
+
+            //update selectedLocale
+            account.selectedLocale = params.locale;
+
+            //update numGamesRemaining
+            account.numGamesRemainingPerDay--;
+
+
             console.log('AFTER');
             console.log(account);
 
             //save
-            account.save(function(err) {
-                if (err) {
+            account.save(function(err)
+            {
+                if (err)
+                {
                     console.log('not saved');
-                    callback(null, false, errorHandler.getErrorMessage(err));
+                    result.success = false;
+                    result.error = errorHandler.getErrorMessage(err);
                 } else {
                     console.log('saved');
-                    callback(null, true);
+                    result.success = true;
                 }
+
+                console.log('result');
+                console.log(result);
+                callback(null, result);
             });
         }
     });

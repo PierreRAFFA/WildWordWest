@@ -15,10 +15,10 @@ function GamePageController(gameService, accountService)
 GamePageController.prototype.activate = function()
 {
     //HARDCODE
-    if (! this.accountService.uuid)
-    {
+    //if (! this.accountService.uuid)
+    //{
         this.accountService.uuid = 'PierreTest2';
-    }
+    //}
 
 }
 
