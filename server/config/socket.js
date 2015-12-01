@@ -75,30 +75,6 @@ Socket.prototype.listen = function()
             console.log(data);
             socket.data = data;
         });
-
-        //var callback = null;
-        //var game = new Game('hardcoded', 'fr_FR', 7, 9);
-        //
-        //game.getBoard().once('initialized' , function(update)
-        //{
-        //    //store infos in session socket
-        //    socket.game    = game;
-        //
-        //    //returns the newBlocks
-        //    socket.game.getBoard().visualize();
-        //
-        //    //returns the result
-        //    callback && callback.call(null, update);
-        //});
-        //
-        //game.getBoard().once("gameOver" , function(gameTime)
-        //{
-        //    console.log("gameover");
-        //    socket.emit('gameOver', gameTime);
-        //
-        //    game.createAccountAndSaveScore('PierreR', 'pierre.raffa@me.com');
-        //});
-
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
         socket.on('new', function (data, callback)
@@ -124,28 +100,32 @@ Socket.prototype.listen = function()
                     callback && callback.call(null, update);
                 });
 
-                game.getBoard().once("gameOver" , function(gameTime)
+                game.getBoard().once('gameOver' , function(gameTime)
                 {
-                    console.log("gameover");
+                    console.log('gameover');
                     socket.emit('gameOver', gameTime);
 
                     //game.createAccountAndSaveScore('PierreR' + Math.floor(Math.random()*100), 'pierre.raffa@me.com');
                     //game.createAccountAndSaveScore('PierreR68', 'pierre.raffa@me.com');
                 });
+
+                game.once('scoreSaved', function(result)
+                {
+                    socket.emit('scoreSaved', result);
+                });
             }else{
                 console.log('Can not create a new game. One or more parameters are invalid');
             }
         });
-
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
         socket.on('submitWord', function (data, callback)
         {
             socket.game.getBoard().analyzeWord(data);
 
-            socket.game.getBoard().once("boardUpdated" , function(update)
+            socket.game.getBoard().once('boardUpdated' , function(update)
             {
-                console.log("points after emit"+update.points);
+                console.log('points after emit'+update.points);
                 socket.game.getBoard().visualize();
 
                 //getNonSynchronizedBlocks return new blocks. If the word is not valid, this array is empty and nothing happens in the game

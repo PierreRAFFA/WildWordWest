@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
  */
 var ScoreSchema = new Schema({
     highestTime:        { type: Number, default: 0},
-    highestWord:        { type: String, default: '' },
+    highestWord:        { type: String, default: ''},
     highestWordPoints:  { type: Number, default: 0},
     totalPoints:        { type: Number, default: 0}
 });
@@ -32,6 +32,8 @@ var AccountSchema = new Schema({
         fr_FR: ScoreSchema,
     },
     balance: { type: Number, default: 0},
+    activationCode: String,
+    token: String,
     premium: Boolean,
     numGamesRemainingPerDay: { type: Number, default: 5},
 });

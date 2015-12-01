@@ -202,9 +202,8 @@ exports.saveScore = function(params, callback)
                     result.success = true;
                 }
 
-                console.log('result');
                 console.log(result);
-                callback(null, result);
+                callback.call(null, result);
             });
         }
     });

@@ -17,7 +17,7 @@ GamePageController.prototype.activate = function()
     //HARDCODE
     //if (! this.accountService.uuid)
     //{
-        this.accountService.uuid = 'PierreTest2';
+    this.accountService.uuid = 'PierreTest2';
     //}
 
 }

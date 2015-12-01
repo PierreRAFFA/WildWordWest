@@ -1,5 +1,5 @@
 var Board   = require('./board.js');
-
+var EventEmitter = require('events').EventEmitter;
 var accounts = require('../../app/controllers/accounts.server.controller');
 
 /**
@@ -24,14 +24,23 @@ function Game(uuid, locale, numColumns, numRows)
     /**
      * Game Board Model
      */
-    this._board = new Board(locale,numColumns,numRows);
+    this._board = new Board(locale, numColumns, numRows);
+
+    this._init();
+}
+// inherit events.EventEmitter
+Game.prototype = Object.create(EventEmitter.prototype);
+Game.prototype.constructor = Game;
+////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////// INIT
+Game.prototype._init = function()
+{
     this._board.on('gameOver' , this._onGameOver.bind(this));
+    //var eventName = ['initialized', 'boardUpdated']
 }
 
-Game.prototype.getBoard = function()
-{
-    return this._board;
-}
+////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 /**
  * Auto-save the score if the account already exists.
  * Otherwise, wait for client-side to get the user name/email (createAccountAndSaveScore)
@@ -70,24 +79,31 @@ Game.prototype.createAccountAndSaveScore = function(name, email)
         if (success)
         {
             self._saveScore();
-        }else{
+        } else {
             //@TODO
         }
     });
-
 }
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// SAVE SCORE
 Game.prototype._saveScore = function()
 {
+    var self = this;
+
     var params = {
         uuid: this._uuid,
         locale: this._locale,
         time: this._board.getScore(),
         points: this._board.getTotalPointsWon()
     };
-    accounts.saveScore(params, function(success)
+    accounts.saveScore(params, function(result)
     {
-
+        self.emit('scoreSaved', result);
     });
+}
+////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////// GETTER
+Game.prototype.getBoard = function()
+{
+    return this._board;
 }

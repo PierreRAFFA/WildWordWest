@@ -108,6 +108,23 @@ body{
       vertical-align: bottom;
     }
   }
+
+  .wildLogin {
+    position: absolute;
+    top: 0vh;
+    width: 59%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+
+    .name {
+      position: absolute;
+      top: 1.4vh;
+      left: 2vw;
+      font: 2.9vh RioGrande-Bold;
+    }
+  }
 }
 
 [nav-view-transition="ios"][nav-view-direction="forward"],
@@ -152,3 +169,4 @@ ion-view {
   left: 0;
   right: 0;
 }
+

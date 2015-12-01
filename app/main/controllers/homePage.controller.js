@@ -38,7 +38,7 @@ HomePageController.prototype._identifyUser = function()
             });
         }
     } else {
-        this._getUserInfo('s' + Math.floor(Math.random() * 100));
+        this._getUserInfo('PierreTest2');
     }
 }
 /**
