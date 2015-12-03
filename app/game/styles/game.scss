@@ -179,7 +179,7 @@
 }
 /////////////////////////////////////////////////////
 //////////////////////////////////////////  BEST WORD
-.wildBestWord {
+.wildHighestWord {
   position: absolute;
   top: 18.7%;
   left: 27.7%;
@@ -218,13 +218,13 @@
 //////////////////////////////////////////  TIMER
 .wildTimer {
   position: absolute;
-  top: 5.3%;
+  top: 5.6%;
   left: 1.7%;
   width: 100%;
   text-align: center;
 
   .time {
-    font: 6.3vh RioGrande-Bold;
+    font: 5.8vh RioGrande-Bold;
     color: #F2AA0A;
   }
 }

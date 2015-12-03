@@ -133,6 +133,7 @@ exports.create = function (params, callback)
 exports.saveScore = function(params, callback)
 {
     console.log('saveScore');
+    console.log(params);
     Account.findByUUID(params.uuid).exec(function(err, account)
     {
         if (account)
@@ -144,21 +145,11 @@ exports.saveScore = function(params, callback)
             var result = {};
             result.highestTimeImproved = false;
 
-            //update highestTime if necessary
-            if (account.scores[params.locale])
+            //create locale scores if not exists
+            if (! account.scores[params.locale])
             {
-                //check if the time is better, then apply the new time
-                var localeScore = account.scores[params.locale];
-                if ( localeScore.highestTime < params.time)
-                {
-                    localeScore.highestTime = params.time;
-                    result.highestTimeImproved = true;
-                }
-            }else{
-
                 //to preserve default values of Score
                 var newScore = new Score();
-                newScore.highestTime = params.time;
 
                 account.scores[params.locale] = {
                     highestTime: newScore.highestTime,
@@ -166,6 +157,30 @@ exports.saveScore = function(params, callback)
                     highestWordPoints: newScore.highestWordPoints,
                     totalPoints: newScore.totalPoints,
                 }
+            }
+
+            //get localscore
+            var localeScore = account.scores[params.locale];
+
+            //update highestTime if necessary
+            if ( localeScore.highestTime < params.time)
+            {
+                if (localeScore.highestTime > 0)
+                {
+                    result.highestTimeImproved = true;
+                }
+                localeScore.highestTime = params.time;
+            }
+
+            //update bestWordPoints/bestWord
+            if ( localeScore.highestWordPoints < params.highestWordPoints)
+            {
+                if (localeScore.highestWordPoints > 0)
+                {
+                    result.highestWordPointsImproved = true;
+                }
+                localeScore.highestWordPoints = params.highestWordPoints;
+                localeScore.highestWord = params.highestWord;
             }
 
             //update totalPoints
@@ -184,6 +199,7 @@ exports.saveScore = function(params, callback)
 
             //update numGamesRemaining
             account.numGamesRemainingPerDay--;
+
 
 
             console.log('AFTER');

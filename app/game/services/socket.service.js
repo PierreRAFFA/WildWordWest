@@ -97,8 +97,8 @@ SocketService.prototype._onWordSubmitted = function (update) {
 
     if (update.hasOwnProperty('blocks') &&
         update.hasOwnProperty('points') &&
-        update.hasOwnProperty('bestWord') &&
-        update.hasOwnProperty('bestWordPoints'))
+        update.hasOwnProperty('highestWord') &&
+        update.hasOwnProperty('highestWordPoints'))
     {
         console.log(update);
         this.emit('updateGame', update);

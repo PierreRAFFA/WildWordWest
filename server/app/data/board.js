@@ -96,13 +96,13 @@ function Board(locale,numColumns,numRows)
      * Specifies the best word found by the gamer, regarding the number of points winned with.
      * @type {string}
      */
-    this.bestWord = '';
+    this.highestWord = '';
 
     /**
      * Specifies the number of points winned with the best word.
      * @type {number}
      */
-    this.bestWordPoints = 0;
+    this.highestWordPoints = 0;
 
     /**
      * Allows to block the board when the game is over to prevent the client to continue to send words
@@ -436,10 +436,10 @@ Board.prototype.analyzeWord = function(selectedBlocks)
                 {
                     points = self.getPointsFromSelectedBlocks(selectedBlocks);
 
-                    if ( points > self.bestWordPoints)
+                    if ( points > self.highestWordPoints)
                     {
-                        self.bestWordPoints = points;
-                        self.bestWord = selectedWord;
+                        self.highestWordPoints = points;
+                        self.highestWord = selectedWord;
                     }
                     self._totalPoints += points;
                     self.renewBlocks(selectedBlocks);
@@ -462,8 +462,8 @@ Board.prototype.analyzeWord = function(selectedBlocks)
                     level: self.currentLevel,
                     levelPercent: self.levelPercent,
                     speed: self.levels[self.currentLevel].getDecrementPoints(),
-                    bestWord: self.bestWord,
-                    bestWordPoints: self.bestWordPoints
+                    highestWord: self.highestWord,
+                    highestWordPoints: self.highestWordPoints
                 });
 
 
@@ -605,6 +605,14 @@ Board.prototype.getTotalPointsWon = function()
 Board.prototype.getLocale = function()
 {
     return this.locale;
+}
+Board.prototype.getHighestWordPoints = function()
+{
+    return this.highestWordPoints;
+}
+Board.prototype.getHighestWord = function()
+{
+    return this.highestWord;
 }
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// UTILS ( LOG )

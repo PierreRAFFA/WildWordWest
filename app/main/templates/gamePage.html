@@ -3,7 +3,10 @@
 
         <div class="ionContentContainer">
             <div id="splash" class="game wildPane">
-                <wild-game num-rows="9" num-columns="7" locale="fr_FR" uuid="{{pc.accountService.uuid}}"></wild-game>
+
+                <wild-login ng-if="pc.accountService.name" name="{{pc.accountService.name}}"></wild-login>
+
+                <wild-game num-rows="9" num-columns="7" locale="{{pc.accountService.selectedLocale}}" uuid="{{pc.accountService.uuid}}"></wild-game>
             </div>
         </div>
 

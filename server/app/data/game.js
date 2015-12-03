@@ -94,7 +94,9 @@ Game.prototype._saveScore = function()
         uuid: this._uuid,
         locale: this._locale,
         time: this._board.getScore(),
-        points: this._board.getTotalPointsWon()
+        points: this._board.getTotalPointsWon(),
+        highestWord: this._board.getHighestWord(),
+        highestWordPoints: this._board.getHighestWordPoints()
     };
     accounts.saveScore(params, function(result)
     {

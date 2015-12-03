@@ -1,19 +1,19 @@
 'use strict';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function BestWordController(socketService)
+function HighestWordController(socketService)
 {
     /**
      * The best word found by the gamer
      * @type {string}
      */
-    this.bestWord = '';
+    this.word = '';
 
     /**
      * Specifies the best points winned for a word.
      * @type {number}
      */
-    this.bestWordPoints = 0;
+    this.points = 0;
 
     /**
      * socket service
@@ -25,19 +25,19 @@ function BestWordController(socketService)
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  ON SELECTION CHANGED
-BestWordController.prototype._onSelectionValidated = function()
+HighestWordController.prototype._onSelectionValidated = function()
 {
     //var word = this.selectionService.getWord();
 }
-BestWordController.prototype._onUpdate = function(update)
+HighestWordController.prototype._onUpdate = function(update)
 {
-    if (update.hasOwnProperty('bestWord') && update.hasOwnProperty('bestWordPoints')) {
-        this.bestWord = update.bestWord;
-        this.bestWordPoints = update.bestWordPoints;
+    if (update.hasOwnProperty('highestWord') && update.hasOwnProperty('highestWordPoints')) {
+        this.word = update.highestWord;
+        this.points = update.highestWordPoints;
     }
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-BestWordController.$inject = ['socketService'];
-angular.module('game').controller('BestWordController', BestWordController);
+HighestWordController.$inject = ['socketService'];
+angular.module('game').controller('HighestWordController', HighestWordController);
 

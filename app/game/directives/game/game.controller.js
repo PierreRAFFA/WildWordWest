@@ -1,5 +1,15 @@
 'use strict';
-function GameController(gameService) {
+function GameController(gameService, accountService) {
+
+    /**
+     * GameService
+     */
+    this.gameService = gameService;
+
+    /**
+     * Account Service
+     */
+    this.accountService = accountService;
 
     /**
      * Binded number of columns
@@ -20,16 +30,11 @@ function GameController(gameService) {
      * Binded UUID
      */
     this.uuid;
-
-    /**
-     * GameService
-     */
-    this.gameService = gameService;
 }
 
 GameController.prototype.newGame = function() {
     this.gameService.newGame(this.numColumns, this.numRows, this.locale, this.uuid);
 }
 
-GameController.$inject = ['gameService'];
+GameController.$inject = ['gameService', 'accountService'];
 angular.module('game').controller('GameController', GameController);

@@ -5,7 +5,10 @@
     <div class="boardGameInfo">
         <wild-timer></wild-timer>
         <wild-word></wild-word>
-        <wild-best-word></wild-best-word>
+        <wild-highest-word
+                word="{{vm.accountService.scores[vm.accountService.selectedLocale].highestWord}}"
+                points="{{vm.accountService.scores[vm.accountService.selectedLocale].highestWordPoints}}">
+        </wild-highest-word>
     </div>
 
 
@@ -14,7 +17,7 @@
     <wild-countdown></wild-countdown>
 
     <wild-level></wild-level>
-
+h
 
 
 
