@@ -1,9 +1,14 @@
+WEAPONS
+- bombes ( explosion d'un bloc unique )
+- nitro ( explosion de blocs autour )
+- multiplicateur de points sur plusieurs durées de temps ( 5, 10, 20 sec )
+- freeze ( behavior depending on the level )
+- recycle
 
-- pack de bombes ( explosion d'un bloc unique )
-- pack de nitro ( explosion de blocs autour )
-- pack multiplicateur de points sur plusieurs durées de temps ( 5, 10, 20 sec )
-ou
-- pack de monnaies( nom à définir )
 
+IDEAS
+- pack de pepitos
+- statistics
 - mot compte double
 - total des points convertis en monnaie virtuelle pour acheter des packs
+- levels which can unblock some weapons

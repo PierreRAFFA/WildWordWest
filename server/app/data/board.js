@@ -188,7 +188,7 @@ Board.prototype._createLevels = function()
     //this.levels.push(new Level(2, 0.055, 6000));
     //this.levels.push(new Level(3, 0.070, 8400));
 
-    this.levels.push(new Level(0, 0.3, 1200));
+    this.levels.push(new Level(0, 0.1, 1200));
     this.levels.push(new Level(1, 0.040, 3600));
     this.levels.push(new Level(2, 0.055, 6000));
     this.levels.push(new Level(3, 0.070, 8400));

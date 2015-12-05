@@ -4,7 +4,11 @@
         <div class="ionContentContainer">
             <div id="splash" class="game wildPane">
 
-                <wild-login ng-if="pc.accountService.name" name="{{pc.accountService.name}}"></wild-login>
+                <wild-account
+                        name="{{pc.accountService.name}}"
+                        level="{{pc.accountService.level}}"
+                        balance="{{pc.accountService.balance}}">
+                </wild-account>
 
                 <wild-game num-rows="9" num-columns="7" locale="{{pc.accountService.selectedLocale}}" uuid="{{pc.accountService.uuid}}"></wild-game>
             </div>

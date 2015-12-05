@@ -23,7 +23,7 @@ gulp.task('inject-all', ['styles', 'wiredep', 'bower-fonts', 'environment', 'soc
         {relative: true}))
     .pipe(
       $.inject( // inject compiled css
-        gulp.src('.tmp/*/styles/*.css', {read: false}),
+        gulp.src(['.tmp/*/styles/*.css','.tmp/*/directives/*/*.css'] , {read: false}),
         {
           ignorePath: '../.tmp',
           relative: true,
@@ -35,7 +35,7 @@ gulp.task('inject-all', ['styles', 'wiredep', 'bower-fonts', 'environment', 'soc
 gulp.task('styles', ['clean'], function () {
 
   // compile css starting from each module's scss
-  return gulp.src('app/*/styles/!(_)*.scss')
+  return gulp.src(['app/*/styles/!(_)*.scss', 'app/*/directives/*/!(_)*.scss'])
     .pipe($.plumber())
     .pipe($.sourcemaps.init())
     .pipe($.sass.sync().on('error', $.sass.logError))

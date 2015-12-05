@@ -1,16 +1,15 @@
 'use strict';
 
-angular.module('game').directive('wildLogin', [
+angular.module('main').directive('navigation', [
     function () {
         return {
-            templateUrl: 'game/directives/login/login.html',
+            templateUrl: 'main/directives/navigation/navigation.html',
             restrict: 'E',
             replace: false,
             scope: {},
             bindToController: {
-                name: '@'
             },
-            controller: 'LoginController',
+            controller: 'NavigationController',
             controllerAs: 'vm'
         };
     }

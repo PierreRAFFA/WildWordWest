@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// CONSTRUCTOR
-function BlockNormalController($element, selectionService, gameService) {
+function BlockNormalController($element, $window, selectionService, gameService, socketService) {
     /**
      * Letter applied to the block
      * Binded
@@ -33,6 +33,11 @@ function BlockNormalController($element, selectionService, gameService) {
     this.$element = $element;
 
     /**
+     * the window
+     */
+    this.$window = $window;
+
+    /**
      * Used when the user click on a block
      */
     this.selectionService = selectionService;
@@ -41,6 +46,11 @@ function BlockNormalController($element, selectionService, gameService) {
      * Used when the user click on a block
      */
     this.gameService = gameService;
+
+    /**
+     * Used for the gameOver
+     */
+    this.socketService = socketService;
 
     /**
      * Selection State
@@ -55,6 +65,8 @@ function BlockNormalController($element, selectionService, gameService) {
     {
         self.selected = self.selectionService.isBlockSelected(self.uid);
     })
+
+    this.socketService.on('gameOver', this._onGameOver.bind(this));
 
     this.appear();
 }
@@ -105,7 +117,7 @@ BlockNormalController.prototype.getRowIndex = function ()
     return Math.round(((this.gameService.numRows - 1) * blockWidth - blockTop) / blockWidth);
 };
 ////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////  REMOVE
+///////////////////////////////////////////////////////////////  APPEAR/REMOVE
 BlockNormalController.prototype.appear = function ()
 {
     TweenLite.from(this.$element, Math.random() * 2, {scaleX: 0, scaleY: 0, ease: Elastic.easeOut});
@@ -114,8 +126,22 @@ BlockNormalController.prototype.remove = function ()
 {
     this.$element.remove();
 }
+
+BlockNormalController.prototype._onGameOver = function ()
+{
+    var self = this;
+
+    var rotation = Math.random() * 90 - 45;
+    var time = 0.5 + Math.random() * 0.5;
+    var top = (this.$window.innerHeight * 1.5) + 'px';
+
+    TweenLite.to(this.$element, time, { top: top, rotation: rotation, ease: Power2.easeIn , onComplete: function()
+    {
+        self.remove();
+    }});
+}
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
-BlockNormalController.$inject = ['$element', 'selectionService', 'gameService'];
+BlockNormalController.$inject = ['$element', '$window', 'selectionService', 'gameService', 'socketService'];
 angular.module('game').controller('BlockNormalController', BlockNormalController);
 

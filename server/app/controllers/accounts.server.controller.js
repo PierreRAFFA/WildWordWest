@@ -25,7 +25,10 @@ exports.read = function (req, res) {
             uuid: req.account.id,
             name: req.account.name,
             scores: req.account.scores,
-            selectedLocale: req.account.selectedLocale
+            level: req.account.level,
+            balance: req.account.balance,
+            selectedLocale: req.account.selectedLocale,
+            weapons: req.account.weapons
         });
     }else{
         res.json({});

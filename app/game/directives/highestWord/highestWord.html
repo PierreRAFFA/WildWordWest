@@ -3,6 +3,8 @@
         <img src="main/assets/images/titleBackground@2x.png"/>
         <div class="text">HIGHEST WORD</div>
     </div>
-    <div class="word">{{vm.word}}</div>
-    <div ng-if="vm.points" class="points">({{vm.points}}pts)</div>
+    <div class="word">
+        {{vm.word}}<span ng-if="vm.points" class="points">({{vm.points}}pts)</span>
+    </div>
+
 </div>

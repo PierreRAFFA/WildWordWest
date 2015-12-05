@@ -2,18 +2,21 @@
 //////////////////////////////////////////  LEVEL
 .wildLevel {
   position: absolute;
-  width: 38%;
-  bottom: 65.9%;
-  left: 6%;
+  width: 83%;
+  top: 20.2vh;
+  left: 27%;
 
   .container{
 
+    width: 45%;
+    position: relative;
+
     .bulletContent {
       position: absolute;
-      top: 11.5%;
-      left: 26.8%;
-      //width: 55.5%;
-      height: 3.8vh;
+      top: 4.5%;
+      left: 18.9%;
+      height: 70%;
+      width: 76%;
 
       .bulletPercent{
         width: 100%;
@@ -26,20 +29,16 @@
       }
     }
     .bullet {
-      position: absolute;
-      top: 7%;
-      left: 10%;
-      width: 75%;
+      position: relative;
+      width: 100%;
     }
     .text{
       position: absolute;
-      top: 22%;
-      width: 100%;
-      text-align: center;
+      top: 1.2vh;
       font: 2vh FuturaStd-Bold;
       color: #FFF;
       text-transform: uppercase;
-      left: 3%;
+      left: 32%;
     }
     
   }
@@ -50,7 +49,7 @@
 .wildBoard{
 
   position: absolute;
-  bottom: -2%;
+  bottom: -2.9vh;
   width: 100%;
 
   img {
@@ -149,7 +148,7 @@
 //////////////////////////////////////////  WORD
 .wildWord {
   position: absolute;
-  top: 11.7%;
+  top: 9.4vh;
   left: 27.7%;
   width: 48%;
 
@@ -166,13 +165,13 @@
       width: 100%;
       text-align: center;
       color: #FFF;
-      font: 2.3vh RioGrande-Bold;
+      font: 2vh RioGrande-Bold;
       top: 0;
       line-height: 1.2em;
     }
   }
   .word {
-    font: 1rem FuturaStd-Bold;
+    font: 2.4vh FuturaStd-Bold;
     text-transform: uppercase;
     color: #333;
   }
@@ -181,7 +180,7 @@
 //////////////////////////////////////////  BEST WORD
 .wildHighestWord {
   position: absolute;
-  top: 18.7%;
+  top: 14.9vh;
   left: 27.7%;
   width: 48%;
 
@@ -198,19 +197,19 @@
       width: 100%;
       text-align: center;
       color: #FFF;
-      font: 2.3vh RioGrande-Bold;
+      font: 2vh RioGrande-Bold;
       top: 0;
       line-height: 1.2em;
     }
   }
 
   .word {
-    font: 2.2vh FuturaStd-Bold;
+    font: 1.7vh FuturaStd-Bold;
     text-transform: uppercase;
   }
 
   .points {
-    font: 2vh FuturaStd-Bold;
+    font: 1.7vh FuturaStd-Bold;
     color: #333;
   }
 }
@@ -218,7 +217,7 @@
 //////////////////////////////////////////  TIMER
 .wildTimer {
   position: absolute;
-  top: 5.6%;
+  top: 3.6vh;
   left: 1.7%;
   width: 100%;
   text-align: center;
@@ -233,8 +232,8 @@
 //////////////////////////////////////////  COUNTDOWN
 .wildCountdown {
   position: absolute;
-  bottom: 65.3%;
-  right: 0.5%;
+  top: 15vh;
+  left: -2.6%;
   width: 25%;
 
   .container {
@@ -245,11 +244,10 @@
 
     .dynamites {
       position: relative;
-      float: right;
-      margin-top: -59%;
-      margin-right: 71%;
-      width: 25vw;
-      max-width: 112%;
+      float: left;
+      margin-top: -10vh;
+      width: 71vw;
+      left: 8vw;
     }
 
     .wildDetonator {
@@ -289,3 +287,12 @@
   }
 }
 
+
+.boardWeapons {
+  position: absolute;
+  top: 25.5vh;
+  left: 1vh;
+  width: 100%;
+  height: 7vh;
+  z-index: 2;
+}

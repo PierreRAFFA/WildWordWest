@@ -25,6 +25,16 @@ function AccountService()
      * @type {string}
      */
     this.selectedLocale = 'en_GB';
+
+    /**
+     * Account Level
+     */
+    this.level;
+
+    /**
+     * Account Balance ( pepitos )
+     */
+    this.balance;
 }
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING

@@ -26,8 +26,11 @@ angular.module('game').filter('toHumanTimeMs', function()
         }
 
         //add 0 to the milliseconds
-        while(milliseconds < 100)
+        while (milliseconds < 100)
+        {
             milliseconds *= 10;
+        }
+
 
         humanTime = minutes + '\'' + seconds + '<span class="ms"/>\'\'' + milliseconds + '</span>';
 

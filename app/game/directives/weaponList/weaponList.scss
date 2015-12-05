@@ -1,0 +1,54 @@
+.wildWeapons {
+  width: 100%;
+  height: 100%;
+
+  .panel {
+    width: 100%;
+    height: 100%;
+
+    img {
+      width: auto;
+      height: 100%;
+    }
+  }
+  .weaponList {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: -0.4vh;
+    padding-left: 4%;
+
+    .weaponContainer {
+      position: relative;
+      float: left;
+      height: 100%;
+      margin-right: 4%;
+
+      .wildWeapon {
+        height: 100%;
+
+        img {
+          height: 100%;
+        }
+
+        .quantity{
+          position: absolute;
+          height: 52%;
+          top: 0;
+          right: -4px;
+
+          .quantityValue {
+            width: 100%;
+            text-align: center;
+            font: 2vh FuturaStd-Bold;
+            color: #FFFFFF;
+            position: absolute;
+            top: 3px;
+          }
+        }
+
+      }
+    }
+
+  }
+}

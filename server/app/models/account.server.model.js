@@ -14,7 +14,11 @@ var ScoreSchema = new Schema({
     highestTime:        { type: Number, default: 0},
     highestWord:        { type: String, default: ''},
     highestWordPoints:  { type: Number, default: 0},
-    totalPoints:        { type: Number, default: 0}
+    totalNumLetters:    { type: Number, default: 0},
+    totalNumWords:      { type: Number, default: 0},
+    totalNumGames:      { type: Number, default: 0},
+    totalTime:          { type: Number, default: 0},
+    totalPoints:        { type: Number, default: 0},
 });
 mongoose.model('Score', ScoreSchema);
 /**
@@ -25,11 +29,19 @@ var AccountSchema = new Schema({
     uuid: String,
     name: String,
     email: String,
-    numGamesPlayed: { type: Number, default: 0},
     selectedLocale: String,
+    level: { type: Number, default: 1},
+    totalPoints: { type: Number, default: 0},
     scores: {
         en_GB: ScoreSchema,
         fr_FR: ScoreSchema,
+    },
+    weapons: {
+        numBombs: { type: Number, default: 10},
+        numNitros: { type: Number, default: 5},
+        numFreezes: { type: Number, default: 3},
+        numBonusMultipliers: { type: Number, default: 2},
+        numRecycles: { type: Number, default: 0},
     },
     balance: { type: Number, default: 0},
     activationCode: String,

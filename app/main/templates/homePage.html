@@ -15,22 +15,15 @@
 
                 </div>
 
-                <wild-login ng-if="pc.accountService.name" name="{{pc.accountService.name}}"></wild-login>
+                <wild-account
+                            name="{{pc.accountService.name}}"
+                            level="{{pc.accountService.level}}"
+                            balance="{{pc.accountService.balance}}">
+                </wild-account>
 
-                <!--&lt;!&ndash;USERNAME&ndash;&gt;-->
-                <!--<% if (account) { %>-->
-                <!--<div class="homeUsername">-->
-                <!--<div class="usernameSupport">-->
-                <!--<img src="/main/assets/images/usernameSupport.png" alt="usernameSupport"/>-->
-
-                <!--<div class="usernameValue"><%= account.username %></div>-->
-
-                <!--<div id="homeLogout" class="logout">-->
-                <!--<img src="/main/assets/images/logout.png" alt="logout"/>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--<% } %>-->
+                <div class="homeNavigation">
+                    <navigation></navigation>
+                </div>
 
                 <!-- RANKING -->
                 <div id="homeRanking" class="homeRanking" >
@@ -65,6 +58,19 @@
                     </div>
 
                 </div>
+
+
+                <div class="homeWeapons">
+                    <wild-weapon-list
+                            num-bombs="{{pc.accountService.weapons.numBombs}}"
+                            num-nitros="{{pc.accountService.weapons.numNitros}}"
+                            num-freezes="{{pc.accountService.weapons.numFreezes}}"
+                            num-bonus-multipliers="{{pc.accountService.weapons.numBonusMultipliers}}"
+                            num-recycles="{{pc.accountService.weapons.numRecycles}}">
+                    </wild-weapon-list>
+                </div>
+
+
             </div>
         </div>
 

@@ -55,9 +55,7 @@ HomePageController.prototype._getUserInfo = function(uuid)
 
         if (account.uuid)
         {
-            self.accountService.name = account.name;
-            self.accountService.scores = account.scores;
-            self.accountService.selectedLocale = account.selectedLocale;
+            angular.extend(self.accountService, account);
         }
 
     }, function(error)

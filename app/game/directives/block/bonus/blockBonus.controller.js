@@ -2,8 +2,8 @@
 
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// CONSTRUCTOR
-function BlockBonusController($element, selectionService, gameService) {
-    BlockNormalController.call(this, $element, selectionService, gameService);
+function BlockBonusController($element, $window, selectionService, gameService, socketService) {
+    BlockNormalController.call(this, $element, $window, selectionService, gameService, socketService);
     this.letter;
     this.type;
 }
@@ -13,5 +13,5 @@ BlockBonusController.prototype.constructor = BlockBonusController;
 
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
-BlockBonusController.$inject = ['$element', 'selectionService', 'gameService'];
+BlockBonusController.$inject = ['$element', '$window', 'selectionService', 'gameService', 'socketService'];
 angular.module('game').controller('BlockBonusController', BlockBonusController);

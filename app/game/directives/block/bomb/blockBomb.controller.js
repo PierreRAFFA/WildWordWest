@@ -2,9 +2,9 @@
 
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// CONSTRUCTOR
-function BlockBombController($scope, $element, selectionService, gameService)
+function BlockBombController($scope, $element, $window, selectionService, gameService, socketService)
 {
-    BlockNormalController.call(this, $element, selectionService, gameService);
+    BlockNormalController.call(this, $element, $window, selectionService, gameService, socketService);
     /**
      *
      */
@@ -52,5 +52,5 @@ BlockBombController.prototype.remove = function()
 }
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
-BlockBombController.$inject = ['$scope', '$element', 'selectionService', 'gameService'];
+BlockBombController.$inject = ['$scope', '$element', '$window', 'selectionService', 'gameService', 'socketService'];
 angular.module('game').controller('BlockBombController', BlockBombController);

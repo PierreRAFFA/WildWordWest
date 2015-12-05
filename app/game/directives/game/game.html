@@ -12,13 +12,21 @@
     </div>
 
 
+
     <wild-board num-rows="{{vm.numRows}}" num-columns="{{vm.numColumns}}" locale="{{vm.locale}}"></wild-board>
 
     <wild-countdown></wild-countdown>
 
     <wild-level></wild-level>
-h
 
-
+    <div class="boardWeapons">
+        <wild-weapon-list
+                num-bombs="{{vm.accountService.weapons.numBombs}}"
+                num-nitros="{{vm.accountService.weapons.numNitros}}"
+                num-freezes="{{vm.accountService.weapons.numFreezes}}"
+                num-bonus-multipliers="{{vm.accountService.weapons.numBonusMultipliers}}"
+                num-recycles="{{vm.accountService.weapons.numRecycles}}">
+        </wild-weapon-list>
+    </div>
 
 </div>
