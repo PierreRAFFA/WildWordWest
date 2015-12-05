@@ -38,7 +38,8 @@ HomePageController.prototype._identifyUser = function()
             });
         }
     } else {
-        this._getUserInfo('PierreTest2');
+        //this._getUserInfo('PierreTest2');
+        this._getUserInfo('unknown');
     }
 }
 /**

@@ -19,20 +19,25 @@ var mongoose = require('mongoose'),
  */
 exports.read = function (req, res) {
 
+    var account = null;
+    console.log(req.params);
     if (req.account)
     {
-        res.json({
-            uuid: req.account.id,
-            name: req.account.name,
-            scores: req.account.scores,
-            level: req.account.level,
-            balance: req.account.balance,
-            selectedLocale: req.account.selectedLocale,
-            weapons: req.account.weapons
-        });
+        account = req.account;
     }else{
-        res.json({});
+        account = new Account(req.params);
+        account.name = 'New Player';
     }
+
+    res.json({
+        uuid: account.uuid,
+        name: account.name,
+        scores: account.scores,
+        level: account.level,
+        balance: account.balance,
+        selectedLocale: account.selectedLocale,
+        weapons: account.weapons
+    });
 }
 
 exports.getHighestTime = function (req, res) {
