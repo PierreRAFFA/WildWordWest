@@ -5,7 +5,7 @@ function Accounts($resource, Config)
 {
     var methods = {};
 
-    methods.get = function()
+    methods.getByUUID = function()
     {
         return $resource( Config.ENV.server_url + '/accounts/:uuid', {
         }, {

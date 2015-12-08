@@ -12,20 +12,14 @@ function GameService(socketService)
     this.socketService = socketService;
 
     /**
-     * Date when the game has been launched
-     *
-     * @type {null}
-     * @private
-     */
-    this._startDate = null;
-
-    /**
      * the number of columns
      */
     this.numColumns;
+
+    /**
+     * the number of rows
+     */
     this.numRows;
-    this.locale;
-    this.uuid;
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  NEW GAME
@@ -37,14 +31,12 @@ function GameService(socketService)
  * @param numRows
  * @param locale
  */
-GameService.prototype.newGame = function(numColumns, numRows, locale, uuid)
+GameService.prototype.newGame = function(numColumns, numRows, locale, uuid, name)
 {
     this.numColumns = numColumns;
     this.numRows = numRows;
-    this.locale = locale;
-    this.uuid = uuid;
 
-    this.socketService.newGame(this.numColumns, this.numRows, this.locale, this.uuid);
+    this.socketService.newGame(this.numColumns, this.numRows, locale, uuid, name);
 }
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING

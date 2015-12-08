@@ -79,14 +79,17 @@ Socket.prototype.listen = function()
         ////////////////////////////////////////////////////////////////////////
         socket.on('new', function (data, callback)
         {
+            console.log(data);
             if (data.hasOwnProperty('uuid') &&
+                data.hasOwnProperty('name') &&
                 data.hasOwnProperty('numColumns') &&
                 data.hasOwnProperty('numRows') &&
                 data.hasOwnProperty('locale'))
             {
                 console.log('on:new');
+
                 //create a new game
-                var game = new Game(data.uuid, data.locale, data.numColumns, data.numRows);
+                var game = new Game(data.numColumns, data.numRows, data.locale, data.uuid, data.name );
 
                 game.getBoard().once('initialized' , function(update)
                 {

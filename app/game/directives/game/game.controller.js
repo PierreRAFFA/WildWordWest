@@ -20,20 +20,15 @@ function GameController(gameService, accountService) {
      * Binded number of rows
      */
     this.numRows;
-
-    /**
-     * Binded locale
-     */
-    this.locale;
-
-    /**
-     * Binded UUID
-     */
-    this.uuid;
 }
 
 GameController.prototype.newGame = function() {
-    this.gameService.newGame(this.numColumns, this.numRows, this.locale, this.uuid);
+    this.gameService.newGame(
+        this.numColumns,
+        this.numRows,
+        this.accountService.selectedLocale,
+        this.accountService.uuid,
+        this.accountService.name);
 }
 
 GameController.$inject = ['gameService', 'accountService'];

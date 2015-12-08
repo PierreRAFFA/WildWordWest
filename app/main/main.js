@@ -23,8 +23,18 @@ angular.module('main', [
      * This state contains the home with the rankings per language, the play button
      */
     $stateProvider
-        .state('home', {
+        .state('authentication', {
             url: '/',
+            cache: false,
+            templateUrl: 'main/templates/authenticationPage.html',
+            controller: 'AuthenticationPageController as pc'
+        });
+
+    /**
+     * This state contains the home with the rankings per language, the play button
+     */
+    $stateProvider
+        .state('home', {
             cache: false,
             templateUrl: 'main/templates/homePage.html',
             controller: 'HomePageController as pc'
@@ -40,39 +50,4 @@ angular.module('main', [
             templateUrl: 'main/templates/gamePage.html',
             controller: 'GamePageController as pc'
         });
-
-    //$stateProvider
-    //    // this state is placed in the <ion-nav-view> in the index.html
-    //    .state('main', {
-    //        url: '/main',
-    //        abstract: true,
-    //        templateUrl: 'main/templates/tabs.html'
-    //    })
-    //    .state('main.list', {
-    //        url: '/list',
-    //        views: {
-    //            'tab-list': {
-    //                templateUrl: 'main/templates/list.html',
-    //                // controller: 'SomeCtrl as ctrl'
-    //            }
-    //        }
-    //    })
-    //    .state('main.listDetail', {
-    //        url: '/list/detail',
-    //        views: {
-    //            'tab-list': {
-    //                templateUrl: 'main/templates/list-detail.html',
-    //                // controller: 'SomeCtrl as ctrl'
-    //            }
-    //        }
-    //    })
-    //    .state('main.debug', {
-    //        url: '/debug',
-    //        views: {
-    //            'tab-debug': {
-    //                templateUrl: 'main/templates/debug.html',
-    //                controller: 'DebugCtrl as ctrl'
-    //            }
-    //        }
-    //    });
 });

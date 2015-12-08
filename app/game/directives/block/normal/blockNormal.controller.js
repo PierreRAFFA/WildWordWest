@@ -112,8 +112,8 @@ BlockNormalController.prototype.getColumnIndex = function ()
 };
 BlockNormalController.prototype.getRowIndex = function ()
 {
-    var blockWidth = this.$element.children()[0].clientWidth
-    var blockTop = parseFloat(this.$element.css('top'))
+    var blockWidth = this.$element.children()[0].clientWidth;
+    var blockTop = parseFloat(this.$element.css('top'));
     return Math.round(((this.gameService.numRows - 1) * blockWidth - blockTop) / blockWidth);
 };
 ////////////////////////////////////////////////////////////////////////
@@ -135,9 +135,9 @@ BlockNormalController.prototype._onGameOver = function ()
     var time = 0.5 + Math.random() * 0.5;
     var top = (this.$window.innerHeight * 1.5) + 'px';
 
-    TweenLite.to(this.$element, time, { top: top, rotation: rotation, ease: Power2.easeIn , onComplete: function()
+    TweenLite.to(this.$element, time, { top: top, rotation: rotation, ease: Power2.easeIn, onComplete: function()
     {
-        self.remove();
+        BlockNormalController.prototype.remove.call(self);
     }});
 }
 ////////////////////////////////////////////////////////////////////////

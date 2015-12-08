@@ -14,14 +14,8 @@ function GamePageController(gameService, accountService)
 ///////////////////////////////////////////////////////////   INIT MAP
 GamePageController.prototype.activate = function()
 {
-    //HARDCODE
-    //if (! this.accountService.uuid)
-    //{
-    this.accountService.uuid = 'PierreTest2';
-    //}
 
 }
-
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING
 GamePageController.$inject = ['gameService', 'accountService'];

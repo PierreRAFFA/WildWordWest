@@ -9,10 +9,10 @@ var accounts = require('../../app/controllers/accounts.server.controller');
 module.exports = Game;
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// CONSTRUCTOR
-function Game(uuid, locale, numColumns, numRows)
+function Game(numColumns, numRows, locale, uuid, name)
 {
     /**
-     * UUID send by the application ( AppStore, GooglePlay )
+     * UUID send by the application ( Apple GameCenter, GooglePlay )
      */
     this._uuid = uuid;
 
@@ -24,19 +24,39 @@ function Game(uuid, locale, numColumns, numRows)
     /**
      * Game Board Model
      */
-    this._board = new Board(locale, numColumns, numRows);
+    this._board;
 
-    this._init();
+    this._updateAccount(uuid, name);
+
+    this._createBoard(locale, numColumns, numRows);
 }
 // inherit events.EventEmitter
 Game.prototype = Object.create(EventEmitter.prototype);
 Game.prototype.constructor = Game;
 ////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////// INIT
-Game.prototype._init = function()
+/////////////////////////////////////////////////////////////// IDENTIFY USER
+/**
+ * Check if the user exists, otherwise we add him
+ * @param uuid
+ * @private
+ */
+Game.prototype._updateAccount = function(uuid, name)
 {
+    console.log('_updateAccount');
+
+    accounts.createOrUpdate({uuid: uuid, name: name} , function(success) {
+
+        console.log('success');
+        console.log(success);
+    });
+}
+////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////// CREATE BOARD
+Game.prototype._createBoard = function(locale, numColumns, numRows)
+{
+    this._board = new Board(locale, numColumns, numRows);
     this._board.on('gameOver' , this._onGameOver.bind(this));
-    //var eventName = ['initialized', 'boardUpdated']
+
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -86,6 +106,13 @@ Game.prototype.createAccountAndSaveScore = function(name, email)
 }
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// SAVE SCORE
+/**
+ * Saves the score of the user.
+ * May create a new account if the uuid is unknown.
+ * The new account is inactive until it is activated by the confirmation email
+ *
+ * @private
+ */
 Game.prototype._saveScore = function()
 {
     var self = this;
@@ -98,6 +125,33 @@ Game.prototype._saveScore = function()
         highestWord: this._board.getHighestWord(),
         highestWordPoints: this._board.getHighestWordPoints()
     };
+
+    //create the account if needed
+    accounts.findByUUID(this._uuid , function(account)
+    {
+        if (account)
+        {
+            self._doSaveScore(params);
+        }else{
+            accounts.create(params, function(success) {
+
+                console.log(success);
+
+                if (success)
+                {
+                    self._doSaveScore(params);
+                } else {
+                    //@TODO
+                }
+            });
+        }
+    });
+
+}
+
+Game.prototype._doSaveScore = function(params)
+{
+    var self = this;
     accounts.saveScore(params, function(result)
     {
         self.emit('scoreSaved', result);

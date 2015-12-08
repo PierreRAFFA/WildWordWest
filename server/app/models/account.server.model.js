@@ -7,6 +7,18 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 /**
+ * Device Schema
+ * @type {mongoose.Schema}
+ */
+var DeviceSchema = new Schema({
+    uuid: { type: String, default: '', require: true},
+    model: { type: String, default: '', require: true},
+    platform: { type: String, default: '', require: true},
+    version: { type: String, default: '', require: true}
+});
+mongoose.model('Device', DeviceSchema);
+
+/**
  * Score Schema
  * @type {mongoose.Schema}
  */
@@ -32,10 +44,12 @@ var AccountSchema = new Schema({
     selectedLocale: String,
     level: { type: Number, default: 1},
     totalPoints: { type: Number, default: 0},
+    devices: [DeviceSchema],
     scores: {
         en_GB: ScoreSchema,
         fr_FR: ScoreSchema,
     },
+    achievements: { type: Number, default: 0}, //@TODO
     weapons: {
         numBombs: { type: Number, default: 10},
         numNitros: { type: Number, default: 5},
@@ -45,6 +59,8 @@ var AccountSchema = new Schema({
     },
     balance: { type: Number, default: 0},
     activationCode: String,
+    active : { type: Boolean, default: false},
+
     token: String,
     premium: Boolean,
     numGamesRemainingPerDay: { type: Number, default: 5},

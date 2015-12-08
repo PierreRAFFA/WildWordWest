@@ -12,7 +12,7 @@
     "strict": [2, "global"],
 
     // formatting, spaces, operators
-    "indent": [2, 4, {"SwitchCase": 1}],
+    "indent": [0, 4, {"SwitchCase": 1}],
     "quotes": [2, "single"],
     "space-after-keywords": [2, "always"],
     "space-before-blocks": [2, "always"],
@@ -43,6 +43,8 @@
   },
   "globals": {
     "io": true,
+    "gamecenter": true,
+    "debugger": true,
     "TweenLite": true,
     "SteppedEase": true,
     "TweenMax": true,

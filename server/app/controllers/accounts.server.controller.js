@@ -26,11 +26,12 @@ exports.read = function (req, res) {
         account = req.account;
     }else{
         account = new Account(req.params);
-        account.name = 'New Player';
+        account.name = null;
     }
 
     res.json({
         uuid: account.uuid,
+        active: account.active,
         name: account.name,
         scores: account.scores,
         level: account.level,
@@ -48,6 +49,7 @@ exports.getHighestTime = function (req, res) {
 
         var clauses = {};
         clauses[localeScoresField] = { $exists: true };
+        clauses.active = true;
         console.log(clauses);
 
         var select = '-_id name ' + localeScoresField + '.highestTime';
@@ -130,7 +132,54 @@ exports.create = function (params, callback)
             });
         }
     });
-}
+};
+
+exports.findByUUID = function(uuid, callback)
+{
+    Account.findByUUID(uuid).exec(function(err, account)
+    {
+        callback.call(null, account );
+    });
+};
+
+/**
+ * Creates an account with uuid and name or updated the account with potentially a new name
+ * This name can be changed
+ * @param uuid
+ * @param name
+ */
+exports.createOrUpdate = function(params, callback)
+{
+    if ( params.hasOwnProperty('uuid'))
+    {
+        Account.findByUUID(params.uuid).exec(function(err, account)
+        {
+            //account does not exist
+            if (!account)
+            {
+                exports.create(params, callback);
+            }else{
+
+                if ( params.hasOwnProperty('name'))
+                {
+                    account.name = params.name;
+
+                    account.save(function(err)
+                    {
+                        if (err)
+                        {
+                            callback.call(null, false);
+                        } else {
+                            callback.call(null, true);
+                        }
+                    });
+                }
+            }
+        });
+    }else{
+        callback.call(null, false);
+    }
+};
 
 /**
  * Saves the score, update some account fields and calls the callback with an update as Object

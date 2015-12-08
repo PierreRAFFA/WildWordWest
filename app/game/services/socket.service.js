@@ -33,8 +33,10 @@ function SocketService(eventEmitter, socket) {
  * @param numColumns
  * @param numRows
  * @param locale ex: en_GB, en_US, fr_FR
+ * @param uuid
+ * @param name username. May be updated
  */
-SocketService.prototype.newGame = function (numColumns, numRows, locale, uuid) {
+SocketService.prototype.newGame = function (numColumns, numRows, locale, uuid, name) {
     if (numColumns && numColumns > 0) {
         if (numRows && numRows > 0) {
             if (locale) {
@@ -44,7 +46,8 @@ SocketService.prototype.newGame = function (numColumns, numRows, locale, uuid) {
                         numColumns: numColumns,
                         numRows: numRows,
                         locale: locale,
-                        uuid: uuid
+                        uuid: uuid,
+                        name: name
                     };
                     this._socket.emit('new', data, this._updateGame.bind(this));
                 } else {
@@ -112,13 +115,13 @@ SocketService.prototype._onGameOver = function(time)
 {
     console.log(time);
 
-    var params = {
-        name: 'PierreR2',
-        email: 'pierre@me.com'
-    }
+    //var params = {
+    //    name: 'PierreR2',
+    //    email: 'pierre@me.com'
+    //}
 
     //Create an account if not exist
-    this._socket.emit('createAccount', params);
+    //this._socket.emit('createAccount', params);
 
     this.emit('gameOver', time);
 }
