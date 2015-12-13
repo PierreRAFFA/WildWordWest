@@ -5,9 +5,9 @@ function Accounts($resource, Config)
 {
     var methods = {};
 
-    methods.getByUUID = function()
+    methods.getByGameCenterId = function()
     {
-        return $resource( Config.ENV.server_url + '/accounts/:uuid', {
+        return $resource( Config.ENV.server_url + '/accounts/:platform/:gameCenterId', {
         }, {
             update: {
                 method: 'GET'

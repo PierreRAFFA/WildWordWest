@@ -25,7 +25,8 @@ number of share 1,2,5,10,20,50,100,200,300 (game center probably)
 
 //TODO
 countdown at the beginning 3,2,1 => server has to launch the countdown after 4sec
-Detect new player
 Detect player with active = false and force them to activate their account.
 Multiple UUID allowed for a same user.
 Check The google playcenter
+Design the newAccount page
+Implement the newAccount page

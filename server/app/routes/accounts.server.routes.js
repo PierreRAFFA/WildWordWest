@@ -10,9 +10,9 @@ module.exports = function (app)
     app.route('/accounts/:locale/highest/time')
         .get(accounts.getHighestTime);
 
-    app.route('/accounts/:uuid')
+    app.route('/accounts/:platform/:gameCenterId')
         .get(accounts.read);
 
     // Finish by binding the account middleware
-    app.param('uuid', accounts.accountByUUID);
+    //app.param(['platform','gameCenterId'], accounts.accountByGameCenterId);
 };

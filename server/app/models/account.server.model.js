@@ -10,19 +10,18 @@ var mongoose = require('mongoose'),
  * Device Schema
  * @type {mongoose.Schema}
  */
-var DeviceSchema = new Schema({
-    uuid: { type: String, default: '', require: true},
-    model: { type: String, default: '', require: true},
-    platform: { type: String, default: '', require: true},
+var PlatformSchema = new Schema({
+    gameCenterId: { type: String, default: '', require: true},
+    name: { type: String, default: '', require: true},
     version: { type: String, default: '', require: true}
 });
-mongoose.model('Device', DeviceSchema);
+mongoose.model('Platform', PlatformSchema);
 
 /**
  * Score Schema
  * @type {mongoose.Schema}
  */
-var ScoreSchema = new Schema({
+var StatisticsSchema = new Schema({
     highestTime:        { type: Number, default: 0},
     highestWord:        { type: String, default: ''},
     highestWordPoints:  { type: Number, default: 0},
@@ -32,22 +31,24 @@ var ScoreSchema = new Schema({
     totalTime:          { type: Number, default: 0},
     totalPoints:        { type: Number, default: 0},
 });
-mongoose.model('Score', ScoreSchema);
+mongoose.model('Statistics', StatisticsSchema);
 /**
  * Account Schema
  * @type {mongoose.Schema}
  */
 var AccountSchema = new Schema({
-    uuid: String,
-    name: String,
+    platforms: {
+        ios: PlatformSchema,
+        android: PlatformSchema
+    },
     email: String,
     selectedLocale: String,
     level: { type: Number, default: 1},
     totalPoints: { type: Number, default: 0},
-    devices: [DeviceSchema],
-    scores: {
-        en_GB: ScoreSchema,
-        fr_FR: ScoreSchema,
+
+    statistics: {
+        en_GB: StatisticsSchema,
+        fr_FR: StatisticsSchema,
     },
     achievements: { type: Number, default: 0}, //@TODO
     weapons: {
@@ -60,7 +61,6 @@ var AccountSchema = new Schema({
     balance: { type: Number, default: 0},
     activationCode: String,
     active : { type: Boolean, default: false},
-
     token: String,
     premium: Boolean,
     numGamesRemainingPerDay: { type: Number, default: 5},
@@ -68,9 +68,11 @@ var AccountSchema = new Schema({
 
 
 
-AccountSchema.statics.findByUUID = function(uuid, callback)
+AccountSchema.statics.findByGameCenterId = function(platform, gameCenterId, callback)
 {
-    return this.findOne({uuid:uuid} , callback);
+    var clauses = {};
+    clauses['platforms.' + platform + '.gameCenterId'] = gameCenterId;
+    return this.findOne(clauses , callback);
 }
 mongoose.model('Account', AccountSchema);
 

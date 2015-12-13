@@ -80,7 +80,8 @@ Socket.prototype.listen = function()
         socket.on('new', function (data, callback)
         {
             console.log(data);
-            if (data.hasOwnProperty('uuid') &&
+            if (data.hasOwnProperty('gameCenterId') &&
+                data.hasOwnProperty('platform') &&
                 data.hasOwnProperty('name') &&
                 data.hasOwnProperty('numColumns') &&
                 data.hasOwnProperty('numRows') &&
@@ -89,7 +90,7 @@ Socket.prototype.listen = function()
                 console.log('on:new');
 
                 //create a new game
-                var game = new Game(data.numColumns, data.numRows, data.locale, data.uuid, data.name );
+                var game = new Game(data.numColumns, data.numRows, data.locale, data.platform, data.gameCenterId, data.name );
 
                 game.getBoard().once('initialized' , function(update)
                 {
@@ -141,16 +142,16 @@ Socket.prototype.listen = function()
         /**
          * This event is ONLY called for the first save of a player.
          */
-        socket.on('createAccount', function (data, callback)
-        {
-            if (data.hasOwnProperty('name') &&
-                data.hasOwnProperty('email'))
-            {
-                socket.game.createAccountAndSaveScore(data.name, data.email);
-            }else{
-                console.log('Can not save the score. One or more parameters are invalid');
-            }
-        });
+        //socket.on('createAccount', function (data, callback)
+        //{
+        //    if (data.hasOwnProperty('name') &&
+        //        data.hasOwnProperty('email'))
+        //    {
+        //        socket.game.createAccountAndSaveScore(data.name, data.email);
+        //    }else{
+        //        console.log('Can not save the score. One or more parameters are invalid');
+        //    }
+        //});
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
         socket.on('disconnect', function () {

@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
     errorHandler = require('./errors.server.controller'),
     Account = mongoose.model('Account'),
-    Score = mongoose.model('Score'),
+    Statistics = mongoose.model('Statistics'),
     _ = require('lodash');
 
 
@@ -21,42 +21,48 @@ exports.read = function (req, res) {
 
     var account = null;
     console.log(req.params);
-    if (req.account)
-    {
-        account = req.account;
-    }else{
-        account = new Account(req.params);
-        account.name = null;
-    }
 
-    res.json({
-        uuid: account.uuid,
-        active: account.active,
-        name: account.name,
-        scores: account.scores,
-        level: account.level,
-        balance: account.balance,
-        selectedLocale: account.selectedLocale,
-        weapons: account.weapons
+    exports.findByGameCenterId(req.params.platform, req.params.gameCenterId, function(account)
+    {
+        if (!account)
+        {
+            account = new Account(req.params);
+            //account.platforms = {};
+            //account.platforms[req.params.platform] = {
+            //
+            //}
+        }
+
+        res.json({
+            platform: account.platforms[req.params.platform],
+            statistics: account.statistics,
+            level: account.level,
+            balance: account.balance,
+            selectedLocale: account.selectedLocale,
+            weapons: account.weapons,
+            active: account.active
+        });
     });
+
+
 }
 
 exports.getHighestTime = function (req, res) {
 
     if (req.params.hasOwnProperty('locale'))
     {
-        var localeScoresField = 'scores.' + req.params.locale;
+        var localeStatisticsField = 'statistics.' + req.params.locale;
 
         var clauses = {};
-        clauses[localeScoresField] = { $exists: true };
-        clauses.active = true;
+        clauses[localeStatisticsField] = { $exists: true };
+        //clauses.active = true;
         console.log(clauses);
 
-        var select = '-_id name ' + localeScoresField + '.highestTime';
+        var select = '-_id name ' + localeStatisticsField + '.highestTime';
         console.log(select);
 
         var sort = {};
-        sort[localeScoresField + '.highestTime'] = -1;
+        sort[localeStatisticsField + '.highestTime'] = -1;
         console.log(sort);
 
         Account
@@ -76,7 +82,7 @@ exports.getHighestTime = function (req, res) {
                 {
                     json.push({
                         name: account.name,
-                        highestTime:  account.scores[req.params.locale].highestTime
+                        highestTime:  account.statistics[req.params.locale].highestTime
                     });
                 });
 
@@ -93,8 +99,9 @@ exports.getHighestTime = function (req, res) {
 /**
  * Article middleware
  */
-exports.accountByUUID = function(req, res, next, uuid) {
-    Account.findByUUID(uuid).exec(function(err, account) {
+exports.accountByGameCenterId = function(req, res, next, value) {
+    console.log('value:'+value);
+    Account.findByGameCenterId(platform, gameCenterId).exec(function(err, account) {
         if (err) return next(err);
         //if (!account) return next(new Error('Failed to load account ' + uuid));
         req.account = account;
@@ -115,11 +122,16 @@ exports.create = function (params, callback)
 
     //check if an account with the same uuid was already created
     //@TODO check the name as well.
-    Account.findByUUID(params.uuid).exec(function(err, account)
+    Account.findByGameCenterId(params.platform, params.gameCenterId).exec(function(err, account)
     {
         if (!account)
         {
             var newAccount = new Account(params);
+            newAccount.platforms[params.platform] = {
+                gameCenterId: params.gameCenterId,
+                name: params.name
+            };
+
             newAccount.save(function(err) {
 
                 console.log('err');
@@ -134,25 +146,25 @@ exports.create = function (params, callback)
     });
 };
 
-exports.findByUUID = function(uuid, callback)
+exports.findByGameCenterId = function(platform, gameCenterId, callback)
 {
-    Account.findByUUID(uuid).exec(function(err, account)
+    Account.findByGameCenterId(platform, gameCenterId).exec(function(err, account)
     {
-        callback.call(null, account );
+        callback.call(null, account);
     });
 };
 
 /**
- * Creates an account with uuid and name or updated the account with potentially a new name
+ * Creates an account with gameCenterId, platform and name or updated the account with potentially a new name
  * This name can be changed
- * @param uuid
- * @param name
+ * @param params
+ * @param callback
  */
 exports.createOrUpdate = function(params, callback)
 {
-    if ( params.hasOwnProperty('uuid'))
+    if ( params.hasOwnProperty('platform') && params.hasOwnProperty('gameCenterId'))
     {
-        Account.findByUUID(params.uuid).exec(function(err, account)
+        Account.findByGameCenterId(params.platform, params.gameCenterId).exec(function(err, account)
         {
             //account does not exist
             if (!account)
@@ -162,8 +174,8 @@ exports.createOrUpdate = function(params, callback)
 
                 if ( params.hasOwnProperty('name'))
                 {
-                    account.name = params.name;
-
+                    //update the name for the specific platform
+                    account.platforms[params.platform].name = params.name;
                     account.save(function(err)
                     {
                         if (err)
@@ -182,74 +194,71 @@ exports.createOrUpdate = function(params, callback)
 };
 
 /**
- * Saves the score, update some account fields and calls the callback with an update as Object
+ * Saves the statistics, update some account fields and calls the callback with an update as Object
  *
  * @param params { uuid, locale, time, points }
  * @param callback
  */
-exports.saveScore = function(params, callback)
+exports.saveStatistics = function(params, callback)
 {
-    console.log('saveScore');
+    console.log('saveStatistics');
     console.log(params);
-    Account.findByUUID(params.uuid).exec(function(err, account)
+    Account.findByGameCenterId(params.platform, params.gameCenterId).exec(function(err, account)
     {
         if (account)
         {
-            console.log(account.scores);
-            console.log(account.name);
-
             //create the result for the callback
             var result = {};
             result.highestTimeImproved = false;
 
-            //create locale scores if not exists
-            if (! account.scores[params.locale])
+            //create locale statistics if not exists
+            if (! account.statistics[params.locale])
             {
-                //to preserve default values of Score
-                var newScore = new Score();
+                //to preserve default values of Statistics
+                var newStatistics = new Statistics();
 
-                account.scores[params.locale] = {
-                    highestTime: newScore.highestTime,
-                    highestWord: newScore.highestWord,
-                    highestWordPoints: newScore.highestWordPoints,
-                    totalPoints: newScore.totalPoints,
+                account.statistics[params.locale] = {
+                    highestTime: newStatistics.highestTime,
+                    highestWord: newStatistics.highestWord,
+                    highestWordPoints: newStatistics.highestWordPoints,
+                    totalPoints: newStatistics.totalPoints,
                 }
             }
 
-            //get localscore
-            var localeScore = account.scores[params.locale];
+            //get localStatistics
+            var localeStatistics = account.statistics[params.locale];
 
             //update highestTime if necessary
-            if ( localeScore.highestTime < params.time)
+            if ( localeStatistics.highestTime < params.time)
             {
-                if (localeScore.highestTime > 0)
+                if (localeStatistics.highestTime > 0)
                 {
                     result.highestTimeImproved = true;
                 }
-                localeScore.highestTime = params.time;
+                localeStatistics.highestTime = params.time;
             }
 
             //update bestWordPoints/bestWord
-            if ( localeScore.highestWordPoints < params.highestWordPoints)
+            if ( localeStatistics.highestWordPoints < params.highestWordPoints)
             {
-                if (localeScore.highestWordPoints > 0)
+                if (localeStatistics.highestWordPoints > 0)
                 {
                     result.highestWordPointsImproved = true;
                 }
-                localeScore.highestWordPoints = params.highestWordPoints;
-                localeScore.highestWord = params.highestWord;
+                localeStatistics.highestWordPoints = params.highestWordPoints;
+                localeStatistics.highestWord = params.highestWord;
             }
 
+            //update numGamesPlayed
+            localeStatistics.totalNumGames++;
+
             //update totalPoints
-            account.scores[params.locale].totalPoints += params.points;
+            localeStatistics.totalPoints += params.points;
 
             //update balance
             var numCoinsWon = Math.round(params.points / 1000);
             account.balance += numCoinsWon;
             result.numCoinsWon = numCoinsWon;
-
-            //update numGamesPlayed
-            account.numGamesPlayed++;
 
             //update selectedLocale
             account.selectedLocale = params.locale;
@@ -257,9 +266,6 @@ exports.saveScore = function(params, callback)
             //update numGamesRemaining
             account.numGamesRemainingPerDay--;
 
-
-
-            console.log('AFTER');
             console.log(account);
 
             //save

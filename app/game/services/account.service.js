@@ -6,7 +6,13 @@ function AccountService()
     /**
      * Account Name
      */
-    this.uuid = null;
+    this.gameCenterId = null;
+
+    /**
+     * Platform Name ( ex: ios, android )
+     * @type {null}
+     */
+    this.platform = null;
 
     /**
      * Account Name
@@ -14,11 +20,11 @@ function AccountService()
     this.name = null;
 
     /**
-     *  Account Scores
+     *  Account Statistics
      *  Contains best time, word, wordPoints per locale
      * @type {{}}
      */
-    this.scores = {};
+    this.statistics = {};
 
     /**
      * Selected Locale. Default: en_GB

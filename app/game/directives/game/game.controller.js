@@ -27,7 +27,8 @@ GameController.prototype.newGame = function() {
         this.numColumns,
         this.numRows,
         this.accountService.selectedLocale,
-        this.accountService.uuid,
+        this.accountService.platform,
+        this.accountService.gameCenterId,
         this.accountService.name);
 }
 

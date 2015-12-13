@@ -31,12 +31,12 @@ function GameService(socketService)
  * @param numRows
  * @param locale
  */
-GameService.prototype.newGame = function(numColumns, numRows, locale, uuid, name)
+GameService.prototype.newGame = function(numColumns, numRows, locale, platform, gameCenterId, name)
 {
     this.numColumns = numColumns;
     this.numRows = numRows;
 
-    this.socketService.newGame(this.numColumns, this.numRows, locale, uuid, name);
+    this.socketService.newGame(this.numColumns, this.numRows, locale, platform, gameCenterId, name);
 }
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING

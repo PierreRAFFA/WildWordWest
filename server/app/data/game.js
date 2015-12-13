@@ -9,12 +9,13 @@ var accounts = require('../../app/controllers/accounts.server.controller');
 module.exports = Game;
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// CONSTRUCTOR
-function Game(numColumns, numRows, locale, uuid, name)
+function Game(numColumns, numRows, locale, platform, gameCenterId, name)
 {
     /**
      * UUID send by the application ( Apple GameCenter, GooglePlay )
      */
-    this._uuid = uuid;
+    this._gameCenterId = gameCenterId;
+    this._platform = platform;
 
     /**
      * Locale chosen by the player at start
@@ -26,7 +27,7 @@ function Game(numColumns, numRows, locale, uuid, name)
      */
     this._board;
 
-    this._updateAccount(uuid, name);
+    this._updateAccount(platform, gameCenterId, name);
 
     this._createBoard(locale, numColumns, numRows);
 }
@@ -40,11 +41,16 @@ Game.prototype.constructor = Game;
  * @param uuid
  * @private
  */
-Game.prototype._updateAccount = function(uuid, name)
+Game.prototype._updateAccount = function(platform, gameCenterId, name)
 {
     console.log('_updateAccount');
 
-    accounts.createOrUpdate({uuid: uuid, name: name} , function(success) {
+    var params = {
+        platform: platform,
+        gameCenterId: gameCenterId,
+        name: name
+    }
+    accounts.createOrUpdate(params, function(success) {
 
         console.log('success');
         console.log(success);
@@ -62,7 +68,7 @@ Game.prototype._createBoard = function(locale, numColumns, numRows)
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 /**
- * Auto-save the score if the account already exists.
+ * Auto-save the statistics if the account already exists.
  * Otherwise, wait for client-side to get the user name/email (createAccountAndSaveScore)
  *
  * @private
@@ -70,55 +76,54 @@ Game.prototype._createBoard = function(locale, numColumns, numRows)
 Game.prototype._onGameOver = function()
 {
     console.log('_onGameOver');
-    this._saveScore();
+    this._saveStatistics();
 }
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// CREATE ACCOUNT
-/**
- * Create an account, then save the score.
- *
- * @param name
- * @param email
- */
-Game.prototype.createAccountAndSaveScore = function(name, email)
-{
-    console.log('createAccountAndSaveScore');
-    var self = this;
-
-    var params = {
-        uuid: this._uuid,
-        name: name,
-        email: email,
-        selectedLocale: this._locale
-    };
-
-    accounts.create(params, function(success) {
-
-        console.log(success);
-
-        if (success)
-        {
-            self._saveScore();
-        } else {
-            //@TODO
-        }
-    });
-}
+///**
+// * Create an account, then save the statistics.
+// *
+// * @param name
+// * @param email
+// */
+//Game.prototype.createAccountAndSaveScore = function(name, email)
+//{
+//    console.log('createAccountAndSaveScore');
+//    var self = this;
+//
+//    var params = {
+//        uuid: this._gameCenterId,
+//        name: name,
+//        email: email,
+//        selectedLocale: this._locale
+//    };
+//
+//    accounts.create(params, function(success) {
+//
+//        console.log(success);
+//
+//        if (success)
+//        {
+//            self._saveStatistics();
+//        } else {
+//            //@TODO
+//        }
+//    });
+//}
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// SAVE SCORE
 /**
- * Saves the score of the user.
+ * Saves the statistics of the user.
  * May create a new account if the uuid is unknown.
  * The new account is inactive until it is activated by the confirmation email
  *
  * @private
  */
-Game.prototype._saveScore = function()
+Game.prototype._saveStatistics = function()
 {
     var self = this;
 
     var params = {
-        uuid: this._uuid,
         locale: this._locale,
         time: this._board.getScore(),
         points: this._board.getTotalPointsWon(),
@@ -127,11 +132,11 @@ Game.prototype._saveScore = function()
     };
 
     //create the account if needed
-    accounts.findByUUID(this._uuid , function(account)
+    accounts.findByGameCenterId(this._platform, this._gameCenterId , function(account)
     {
         if (account)
         {
-            self._doSaveScore(params);
+            self._doSaveStatistics(params);
         }else{
             accounts.create(params, function(success) {
 
@@ -139,7 +144,7 @@ Game.prototype._saveScore = function()
 
                 if (success)
                 {
-                    self._doSaveScore(params);
+                    self._doSaveStatistics(params);
                 } else {
                     //@TODO
                 }
@@ -149,12 +154,12 @@ Game.prototype._saveScore = function()
 
 }
 
-Game.prototype._doSaveScore = function(params)
+Game.prototype._doSaveStatistics = function(params)
 {
     var self = this;
-    accounts.saveScore(params, function(result)
+    accounts.saveStatistics(params, function(result)
     {
-        self.emit('scoreSaved', result);
+        self.emit('statisticsSaved', result);
     });
 }
 ////////////////////////////////////////////////////////////////////////

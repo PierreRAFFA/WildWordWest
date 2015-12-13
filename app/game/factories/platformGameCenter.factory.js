@@ -1,33 +1,54 @@
 'use strict';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function PlatformGameCenter($q, Accounts, GameCenter)
+function PlatformGameCenter($q, Accounts, IOSGameCenter, $cordovaDevice)
 {
     var methods = {};
+
 
     methods.authenticate = function()
     {
         var deferred = $q.defer();
-        GameCenter.authenticate().then(
-            function(user)
-            {
-                Accounts.getByUUID().get({uuid: user.playerID}).$promise.then(
 
-                    function(account)
+        var platform = $cordovaDevice.platform || 'iOS';
+        platform = platform.toLowerCase();
+
+        switch(platform) {
+
+            default:
+            case "ios":
+                IOSGameCenter.authenticate().then(
+                    function(user)
                     {
-                        account.uuid = user.playerID;
-                        account.name = user.alias;
+                        var params = {
+                            platform: platform.toLowerCase(),
+                            gameCenterId: user.playerID
+                        };
+                        Accounts.getByGameCenterId().get(params).$promise.then(
 
-                        deferred.resolve(account);
+                            function(account)
+                            {
+                                account.platform = platform;
+                                account.gameCenterId = user.playerID;
+                                account.name = user.alias;
+
+                                deferred.resolve(account);
+                            }, function(data)
+                            {
+                                deferred.reject(data);
+                            });
                     }, function(data)
                     {
-                        deferred.reject(data);
-                    });
-            }, function(data)
-            {
-                deferred.reject(data)
-            }
-        );
+                        deferred.reject(data)
+                    }
+                );
+                break;
+
+            case "Android":
+                //@TODO
+                break;
+        }
+
 
         return deferred.promise;
     };
@@ -36,5 +57,5 @@ function PlatformGameCenter($q, Accounts, GameCenter)
 }
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING
-PlatformGameCenter.$inject = ['$q', 'Accounts', 'GameCenter'];
+PlatformGameCenter.$inject = ['$q', 'Accounts', 'IOSGameCenter', '$cordovaDevice'];
 angular.module('game').factory('PlatformGameCenter', PlatformGameCenter);

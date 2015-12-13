@@ -34,6 +34,16 @@ angular.module('main', [
      * This state contains the home with the rankings per language, the play button
      */
     $stateProvider
+        .state('newAccount', {
+            cache: false,
+            templateUrl: 'main/templates/homePage.html',
+            controller: 'HomePageController as pc'
+        });
+
+    /**
+     * This state contains the home with the rankings per language, the play button
+     */
+    $stateProvider
         .state('home', {
             cache: false,
             templateUrl: 'main/templates/homePage.html',

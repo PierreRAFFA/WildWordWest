@@ -41,12 +41,12 @@ AuthenticationPageController.prototype._updateAccount = function(user)
     //check the account and go to the proper state
     this.$state.go('home');
 
-    //if (Object.keys(this.accountService.scores).length)
-    //{
-    //    this.$state.go('home');
-    //}else{
-    //    this.$state.go('newAccount');
-    //}
+    if (Object.keys(this.accountService.statistics).length)
+    {
+        this.$state.go('home');
+    }else{
+        this.$state.go('newAccount');
+    }
 }
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING
