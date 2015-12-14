@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 /**
- * Device Schema
+ * Platform Schema
  * @type {mongoose.Schema}
  */
 var PlatformSchema = new Schema({
@@ -18,7 +18,7 @@ var PlatformSchema = new Schema({
 mongoose.model('Platform', PlatformSchema);
 
 /**
- * Score Schema
+ * Statistics Schema
  * @type {mongoose.Schema}
  */
 var StatisticsSchema = new Schema({
@@ -45,15 +45,14 @@ var AccountSchema = new Schema({
     selectedLocale: String,
     level: { type: Number, default: 1},
     totalPoints: { type: Number, default: 0},
-
     statistics: {
         en_GB: StatisticsSchema,
         fr_FR: StatisticsSchema,
     },
     achievements: { type: Number, default: 0}, //@TODO
     weapons: {
-        numBombs: { type: Number, default: 10},
-        numNitros: { type: Number, default: 5},
+        numBombs: { type: Number, default: 7},
+        numNitros: { type: Number, default: 3},
         numFreezes: { type: Number, default: 3},
         numBonusMultipliers: { type: Number, default: 2},
         numRecycles: { type: Number, default: 0},

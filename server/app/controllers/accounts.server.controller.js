@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
     errorHandler = require('./errors.server.controller'),
     Account = mongoose.model('Account'),
+    Level = mongoose.model('Level'),
     Statistics = mongoose.model('Statistics'),
     _ = require('lodash');
 
@@ -27,20 +28,20 @@ exports.read = function (req, res) {
         if (!account)
         {
             account = new Account(req.params);
-            //account.platforms = {};
-            //account.platforms[req.params.platform] = {
-            //
-            //}
         }
 
-        res.json({
-            platform: account.platforms[req.params.platform],
-            statistics: account.statistics,
-            level: account.level,
-            balance: account.balance,
-            selectedLocale: account.selectedLocale,
-            weapons: account.weapons,
-            active: account.active
+        Level.getLevelPercent(account.totalPoints, function(levelPercent)
+        {
+            res.json({
+                platform: account.platforms[req.params.platform],
+                statistics: account.statistics,
+                level: account.level,
+                levelPercent: levelPercent,
+                balance: account.balance,
+                selectedLocale: account.selectedLocale,
+                weapons: account.weapons,
+                active: account.active
+            });
         });
     });
 
@@ -254,6 +255,9 @@ exports.saveStatistics = function(params, callback)
 
             //update totalPoints
             localeStatistics.totalPoints += params.points;
+
+            //update the general totalPoints
+            account.totalPoints += params.points;
 
             //update balance
             var numCoinsWon = Math.round(params.points / 1000);
