@@ -38,6 +38,11 @@ function AccountService()
     this.level;
 
     /**
+     * Percent to complete the level
+     */
+    this.levelPercent;
+
+    /**
      * Account Balance ( pepitos )
      */
     this.balance;

@@ -10,6 +10,7 @@ angular.module('game').directive('wildAccount', [
             bindToController: {
                 name: '@',
                 level: '@',
+                levelPercent: '@',
                 balance: '@'
             },
             controller: 'AccountController',

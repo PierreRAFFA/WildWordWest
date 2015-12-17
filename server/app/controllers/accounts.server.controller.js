@@ -44,8 +44,6 @@ exports.read = function (req, res) {
             });
         });
     });
-
-
 }
 
 exports.getHighestTime = function (req, res) {

@@ -1,7 +1,14 @@
 <div class="wildLogin">
 
     <div class="accountContainer">
-        <img src="main/assets/images/accountName@2x.png" width="100%" alt="login"/>
+
+        <div class="accountContent">
+            <div class="accountPercent" style="width:{{vm.levelPercent}}%;">
+                <img class="" src="main/assets/images/levelPercent.png"/>
+            </div>
+        </div>
+
+        <img class="layer2" src="main/assets/images/accountName@2x.png" width="100%" alt="login"/>
         <span class="level">{{vm.level}}</span>
         <span class="name">{{vm.name}}</span>
     </div>
