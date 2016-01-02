@@ -30,7 +30,6 @@ function PlatformGameCenter($q, Accounts, IOSGameCenter, $cordovaDevice)
                             {
                                 account.platform = platform;
                                 account.gameCenterId = user.playerID;
-                                account.name = user.alias;
 
                                 deferred.resolve(account);
                             }, function(data)

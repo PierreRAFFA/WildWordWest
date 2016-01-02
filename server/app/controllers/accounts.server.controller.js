@@ -1,5 +1,7 @@
 'use strict';
 
+var locales = ['en_GB' , 'fr_FR'];
+
 /**
  * Module dependencies.
  */
@@ -30,9 +32,22 @@ exports.read = function (req, res) {
             account = new Account(req.params);
         }
 
-        Level.getLevelPercent(account.totalPoints, function(levelPercent)
+        var totalPoints = 0;
+
+        for (var i = 0; i < locales.length; i++) {
+            var locale = locales[i];
+
+            if (account.statistics[locale])
+            {
+                console.log(account.statistics[locale]);
+                totalPoints += account.statistics[locale].totalPoints;
+            }
+        }
+
+        Level.getLevelPercent(totalPoints, function(levelPercent)
         {
             res.json({
+                name: account.name,
                 platform: account.platforms[req.params.platform],
                 statistics: account.statistics,
                 level: account.level,

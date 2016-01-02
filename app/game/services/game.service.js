@@ -2,14 +2,21 @@
 
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function GameService(socketService)
+function GameService(eventEmitter, socketService, $timeout)
 {
     console.log('GameService');
+
+    eventEmitter.inject(GameService);
 
     /**
      * Socket
      */
     this.socketService = socketService;
+
+    /**
+     * Socket
+     */
+    this.$timeout = $timeout;
 
     /**
      * the number of columns
@@ -20,11 +27,38 @@ function GameService(socketService)
      * the number of rows
      */
     this.numRows;
+
+    this.bindSocketEvents();
+}
+
+GameService.prototype.bindSocketEvents = function()
+{
+    var self = this;
+
+    this.socketService.on('start', function(update)
+    {
+        self.emit('countdown');
+
+
+        self.$timeout(function()
+        {
+            self.emit('start');
+            self.emit('updateGame', update);
+        }, 4000);
+    });
+
+    this.socketService.on('updateGame', function(update) {
+        self.emit('updateGame', update);
+    });
+
+    this.socketService.on('gameOver', function(time) {
+        self.emit('gameOver', time);
+    });
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  NEW GAME
 /**
- * Emit an event to the server to create a new game.
+ * Emits an event to the server to create a new game.
  * The servers returns automatically the new blocks and the points at start.
  *
  * @param numColumns
@@ -38,7 +72,12 @@ GameService.prototype.newGame = function(numColumns, numRows, locale, platform, 
 
     this.socketService.newGame(this.numColumns, this.numRows, locale, platform, gameCenterId, name);
 }
+
+GameService.prototype.submitWord = function (data)
+{
+    this.socketService.submitWord(data);
+}
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////// ANGULAR REGISTERING
-GameService.$inject = ['socketService'];
+GameService.$inject = ['eventEmitter', 'socketService', '$timeout'];
 angular.module('game').service('gameService', GameService);

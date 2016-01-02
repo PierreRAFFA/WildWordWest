@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// CONSTRUCTOR
-function BlockNormalController($element, $window, selectionService, gameService, socketService) {
+function BlockNormalController($element, $window, selectionService, gameService) {
     /**
      * Letter applied to the block
      * Binded
@@ -48,11 +48,6 @@ function BlockNormalController($element, $window, selectionService, gameService,
     this.gameService = gameService;
 
     /**
-     * Used for the gameOver
-     */
-    this.socketService = socketService;
-
-    /**
      * Selection State
      * @type {boolean}
      */
@@ -66,7 +61,7 @@ function BlockNormalController($element, $window, selectionService, gameService,
         self.selected = self.selectionService.isBlockSelected(self.uid);
     })
 
-    this.socketService.on('gameOver', this._onGameOver.bind(this));
+    this.gameService.on('gameOver', this._onGameOver.bind(this));
 
     this.appear();
 }
@@ -142,6 +137,6 @@ BlockNormalController.prototype._onGameOver = function ()
 }
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
-BlockNormalController.$inject = ['$element', '$window', 'selectionService', 'gameService', 'socketService'];
+BlockNormalController.$inject = ['$element', '$window', 'selectionService', 'gameService'];
 angular.module('game').controller('BlockNormalController', BlockNormalController);
 

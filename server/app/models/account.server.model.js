@@ -37,6 +37,7 @@ mongoose.model('Statistics', StatisticsSchema);
  * @type {mongoose.Schema}
  */
 var AccountSchema = new Schema({
+    name: String,
     platforms: {
         ios: PlatformSchema,
         android: PlatformSchema
@@ -44,7 +45,6 @@ var AccountSchema = new Schema({
     email: String,
     selectedLocale: String,
     level: { type: Number, default: 1},
-    totalPoints: { type: Number, default: 0},
     statistics: {
         en_GB: StatisticsSchema,
         fr_FR: StatisticsSchema,

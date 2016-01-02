@@ -77,6 +77,13 @@ Socket.prototype.listen = function()
         });
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
+        /**
+         * Event triggered client-side
+         * Once called, server can emit some events ( initialized, gameOver, scoreSaved )
+         *
+         * @data data to create a new game
+         * @callback
+         */
         socket.on('new', function (data, callback)
         {
             console.log(data);
@@ -108,9 +115,6 @@ Socket.prototype.listen = function()
                 {
                     console.log('gameover');
                     socket.emit('gameOver', gameTime);
-
-                    //game.createAccountAndSaveScore('PierreR' + Math.floor(Math.random()*100), 'pierre.raffa@me.com');
-                    //game.createAccountAndSaveScore('PierreR68', 'pierre.raffa@me.com');
                 });
 
                 game.once('scoreSaved', function(result)

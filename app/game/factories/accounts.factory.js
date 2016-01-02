@@ -7,6 +7,7 @@ function Accounts($resource, Config)
 
     methods.getByGameCenterId = function()
     {
+        console.log(Config.ENV.server_url);
         return $resource( Config.ENV.server_url + '/accounts/:platform/:gameCenterId', {
         }, {
             update: {

@@ -20,8 +20,10 @@ function SocketService(eventEmitter, socket) {
     //triggered when the server adds new blocks for the game
     this._socket.on('updateGame', this._updateGame.bind(this));
 
+    //triggers when the server sends a gameover
     this._socket.on('gameOver', this._onGameOver.bind(this));
 
+    //
     this._socket.on('scoreSaved', this._onScoreSaved.bind(this));
 }
 
@@ -51,7 +53,7 @@ SocketService.prototype.newGame = function (numColumns, numRows, locale, platfor
                         name: name,
                         platform: platform
                     };
-                    this._socket.emit('new', data, this._updateGame.bind(this));
+                    this._socket.emit('new', data, this._startGame.bind(this));
                 } else {
                     angular.$log.warn('Can not create the game. The uuid has to be defined');
                 }
@@ -66,6 +68,11 @@ SocketService.prototype.newGame = function (numColumns, numRows, locale, platfor
     }
 
 }
+
+SocketService.prototype._startGame = function(update)
+{
+    this.emit('start', update);
+}
 /**
  * Updates the board with the new blocks and the points
  * blockInfos may be empty if the word previously selected was not valid.
@@ -76,7 +83,6 @@ SocketService.prototype.newGame = function (numColumns, numRows, locale, platfor
 SocketService.prototype._updateGame = function (update) {
     if (update.hasOwnProperty('blocks') && update.hasOwnProperty('points')) {
         this.emit('updateGame', update);
-        this.emit('start');
     }
     else {
         angular.$log.warn('Can not initialize the game. The update from the server is invalid');

@@ -1,7 +1,7 @@
 'use strict';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function DetonatorController($element, socketService)
+function BoxController($element, gameService)
 {
 
     this.$element = $element;
@@ -11,23 +11,23 @@ function DetonatorController($element, socketService)
     /**
      * socket service
      */
-    this.socketService = socketService;
+    this.gameService = gameService;
 
     this.running = false;
 
     //socket events
-    this.socketService.on('updateGame', this._onUpdate.bind(this));
+    this.gameService.on('updateGame', this._onUpdate.bind(this));
 
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  SOCKET EVENTS
-DetonatorController.prototype._onUpdate = function()
+BoxController.prototype._onUpdate = function()
 {
 
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  ANIMATIONS
-DetonatorController.prototype.startAnimate = function()
+BoxController.prototype.startAnimate = function()
 {
     if ( this.running === false && this.value > 0)
     {
@@ -36,7 +36,7 @@ DetonatorController.prototype.startAnimate = function()
         this.running = true;
     }
 }
-DetonatorController.prototype.stopAnimate = function()
+BoxController.prototype.stopAnimate = function()
 {
     if ( this.running )
     {
@@ -47,6 +47,6 @@ DetonatorController.prototype.stopAnimate = function()
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-DetonatorController.$inject = ['$element', 'socketService'];
-angular.module('game').controller('DetonatorController', DetonatorController);
+BoxController.$inject = ['$element', 'gameService'];
+angular.module('game').controller('BoxController', BoxController);
 

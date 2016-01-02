@@ -1,7 +1,7 @@
 'use strict';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function LevelController($element, socketService)
+function LevelController($element, gameService)
 {
     /**
      * Current Level
@@ -14,7 +14,7 @@ function LevelController($element, socketService)
     /**
      * socket service
      */
-    this.socketService = socketService;
+    this.gameService = gameService;
 
     /**
      * Element
@@ -22,7 +22,7 @@ function LevelController($element, socketService)
     this.$element = $element;
 
     //socket events
-    this.socketService.on('updateGame', this._onUpdate.bind(this));
+    this.gameService.on('updateGame', this._onUpdate.bind(this));
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  ON SELECTION CHANGED
@@ -44,6 +44,6 @@ LevelController.prototype._onUpdate = function(update)
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-LevelController.$inject = ['$element', 'socketService'];
+LevelController.$inject = ['$element', 'gameService'];
 angular.module('game').controller('LevelController', LevelController);
 

@@ -1,7 +1,7 @@
 'use strict';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function TimerController(socketService, $interval)
+function TimerController(gameService, $interval)
 {
     /**
      * Time to display
@@ -18,7 +18,7 @@ function TimerController(socketService, $interval)
     /**
      * Socket service
      */
-    this.socketService = socketService;
+    this.gameService = gameService;
 
     /**
      * interval for the timer
@@ -31,8 +31,8 @@ function TimerController(socketService, $interval)
     this._intervalId;
 
     //selection events
-    this.socketService.on('start', this._onStart.bind(this));
-    this.socketService.on('gameOver', this._onGameOver.bind(this));
+    this.gameService.on('start', this._onStart.bind(this));
+    this.gameService.on('gameOver', this._onGameOver.bind(this));
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  ON GAME START
@@ -62,6 +62,6 @@ TimerController.prototype._onGameOver = function(time)
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-TimerController.$inject = ['socketService', '$interval'];
+TimerController.$inject = ['gameService', '$interval'];
 angular.module('game').controller('TimerController', TimerController);
 

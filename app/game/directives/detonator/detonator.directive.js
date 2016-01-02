@@ -1,17 +1,15 @@
 'use strict';
 
-angular.module('game').directive('wildCountdown', [
+angular.module('game').directive('wildDetonator', [
     function () {
         return {
-            templateUrl: 'game/directives/countdown/countdown.html',
+            templateUrl: 'game/directives/detonator/detonator.html',
             restrict: 'E',
             replace: false,
             scope: {},
             bindToController: {
-                word: '@',
-                points: '@',
             },
-            controller: 'CountdownController',
+            controller: 'DetonatorController',
             controllerAs: 'vm'
         };
     }

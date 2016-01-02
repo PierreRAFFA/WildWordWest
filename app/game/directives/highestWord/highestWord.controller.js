@@ -1,7 +1,7 @@
 'use strict';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function HighestWordController(socketService)
+function HighestWordController(gameService)
 {
     /**
      * The best word found by the gamer
@@ -18,10 +18,10 @@ function HighestWordController(socketService)
     /**
      * socket service
      */
-    this.socketService = socketService;
+    this.gameService = gameService;
 
     //socket events
-    this.socketService.on('updateGame', this._onUpdate.bind(this));
+    this.gameService.on('updateGame', this._onUpdate.bind(this));
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  ON SELECTION CHANGED
@@ -38,6 +38,6 @@ HighestWordController.prototype._onUpdate = function(update)
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-HighestWordController.$inject = ['socketService'];
+HighestWordController.$inject = ['gameService'];
 angular.module('game').controller('HighestWordController', HighestWordController);
 

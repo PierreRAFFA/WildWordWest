@@ -1,11 +1,11 @@
 'use strict';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function BoardController($scope, $element, socketService, selectionService, blockAllocatorService)
+function BoardController($scope, $element, gameService, selectionService, blockAllocatorService)
 {
     this.$scope = $scope;
     this.$element = $element;
-    this.socketService = socketService;
+    this.gameService = gameService;
     this.selectionService = selectionService;
     this.blockAllocatorService = blockAllocatorService;
 
@@ -26,27 +26,12 @@ function BoardController($scope, $element, socketService, selectionService, bloc
 
 
     //socket events
-    this.socketService.on('updateGame', this._onUpdate.bind(this));
+    this.gameService.on('updateGame', this._onUpdate.bind(this));
 
     //selection events
     this.selectionService.on('selectionValidated', this._onSelectionValidated.bind(this));
 
 }
-///**
-// * Initialises the directive as soon as the binded values are set.
-// */
-//BoardController.prototype._waitingForFirstBindings = function()
-//{
-//    var self = this;
-//    this.$scope.$watch('vm.numColumns',
-//        function ( newValue, oldValue )
-//        {
-//            oldValue;
-//            self.numColumns = newValue;
-//
-//        }
-//    );
-//}
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  INIT
 BoardController.prototype.init = function()
@@ -137,10 +122,10 @@ BoardController.prototype._onSelectionValidated = function(selectedBlocks)
     this._submittedBlocks = selectedBlocks;
 
     //emit socket event
-    this.socketService.submitWord(data);
+    this.gameService.submitWord(data);
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-BoardController.$inject = ['$scope', '$element', 'socketService', 'selectionService', 'blockAllocatorService'];
+BoardController.$inject = ['$scope', '$element', 'gameService', 'selectionService', 'blockAllocatorService'];
 angular.module('game').controller('BoardController', BoardController);
 

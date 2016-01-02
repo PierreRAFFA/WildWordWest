@@ -1,29 +1,28 @@
 'use strict';
 
-angular.module('game').directive('wildDetonator', [
+angular.module('game').directive('wildBox', [
     function () {
-        console.log('okokok');
 
         return {
-            templateUrl: 'game/directives/countdown/detonator/detonator.html',
+            templateUrl: 'game/directives/detonator/box/box.html',
             restrict: 'E',
             replace: false,
             scope: {},
             bindToController: {
                 value: '='
             },
-            controller: 'DetonatorController',
+            controller: 'BoxController',
             controllerAs: 'vm',
-            link: function(scope, element, attrs, DetonatorController) {
+            link: function(scope, element, attrs, BoxController) {
 
                 //var vm = DetonatorController;
                 scope.$watch('vm.value', function(value)
                 {
                     if (value <= 600)
                     {
-                        DetonatorController.startAnimate();
+                        BoxController.startAnimate();
                     } else {
-                        DetonatorController.stopAnimate();
+                        BoxController.stopAnimate();
                     }
                 });
             }

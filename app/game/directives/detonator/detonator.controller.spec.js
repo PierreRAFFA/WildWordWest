@@ -1,6 +1,6 @@
 'use strict';
 
-describe('module: game, directive: board', function () {
+describe('module: game, directive: countdown', function () {
 
     // load the directive's module
     beforeEach(module('game'));

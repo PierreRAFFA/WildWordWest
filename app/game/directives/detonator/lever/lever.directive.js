@@ -3,7 +3,7 @@
 angular.module('game').directive('wildLever', [
     function () {
         return {
-            templateUrl: 'game/directives/countdown/lever/lever.html',
+            templateUrl: 'game/directives/detonator/lever/lever.html',
             restrict: 'E',
             replace: false,
             scope: {},

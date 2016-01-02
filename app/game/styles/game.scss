@@ -274,14 +274,15 @@
     .leverContainer {
       position: absolute;
       top: 0%;
-      top: -140%;
+      top: -12vh;
       width: 70%;
       left: 15%;
       overflow: hidden;
-      height: 210%;
+      height: 14vh;
 
       .wildLever {
         position: absolute;
+        height: 100%;
       }
     }
   }

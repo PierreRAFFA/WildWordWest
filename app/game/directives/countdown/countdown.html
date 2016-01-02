@@ -1,13 +1,10 @@
-<div class="wildCountdown">
-
-    <div class="container">
-        <wild-detonator value="vm.points"></wild-detonator>
-        <img class="dynamites" src="main/assets/images/dynamites@2x.png" width="100%" alt="dynamites"/>
-
-        <div class="leverContainer">
-            <wild-lever value="vm.points"></wild-lever>
-        </div>
-
+<div class="wildHighestWord">
+    <div class="title">
+        <img src="main/assets/images/titleBackground@2x.png"/>
+        <div class="text">HIGHEST WORD</div>
+    </div>
+    <div class="word">
+        {{vm.word}}<span ng-if="vm.points" class="points">({{vm.points}}pts)</span>
     </div>
 
 </div>

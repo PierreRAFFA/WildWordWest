@@ -110,6 +110,9 @@ function Board(locale,numColumns,numRows)
      */
     this.isGameOver = false;
 
+    //create levels
+    this._createLevels();
+
     //load the letter informations
     this.loadLetterFrequency(locale);
 }
@@ -131,8 +134,8 @@ Board.prototype.loadLetterFrequency = function(locale)
     {
         for(var iL = 0 ; iL < letters.length ; iL++)
         {
-            var lLetter = letters[iL];
-            self.letterFrequency[lLetter["letter"]] = lLetter["frequency"];
+            var letter = letters[iL];
+            self.letterFrequency[letter["letter"]] = letter["frequency"];
         }
 
         self._initialize();
@@ -145,16 +148,14 @@ Board.prototype._initialize = function()
     this.grid.columns = [];
     for(var iC = 0 ; iC < this.numColumns ; iC++)
     {
-        var lColumn = [];
-        this.grid.columns.push(lColumn);
+        var column = [];
+        this.grid.columns.push(column);
         for(var iR = 0 ; iR < this.numRows ; iR++)
         {
             var block = this.addBlockToColumn(iC);
             block.__row = iR;
         }
     }
-
-    this._createLevels();
 
     this.emit('initialized', {
         blocks: this._getNonSynchronizedBlocks(),
@@ -164,7 +165,9 @@ Board.prototype._initialize = function()
         speed: this.levels[this.currentLevel].getDecrementPoints()
     });
 
-    this.launchCountdown();
+
+    //wait 4 sec, then launch countdown
+    setTimeout(this._launchCountdown.bind(this) , 4000);
 }
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// CREATE LEVELS
@@ -214,7 +217,7 @@ Board.prototype.createBlock = function(letter,type)
 /**
  * Returns the block recently created and not yet synchronized with the client-side.
  * Note that this methods initializes the array of new blocks.
- * 
+ *
  * @returns {Array}
  * @private
  */
@@ -265,9 +268,9 @@ Board.prototype.defineBlockLetter = function ()
     var pointer = 0;
     for(var letter in this.letterFrequency)
     {
-        var lLetterPercent = this.letterFrequency[letter];
+        var letterPercent = this.letterFrequency[letter];
 
-        pointer += lLetterPercent;
+        pointer += letterPercent;
 
         if ( pointer > float)
         {
@@ -288,24 +291,24 @@ Board.prototype.renewBlocks = function(blockPositions)
     var self = this;
 
     //add closest block of bomb blocks
-    var lExplodedBlockPositions = [];
+    var explodedBlockPositions = [];
     blockPositions.forEach(function(blockPosition)
     {
-        var lColumn = blockPosition[0];
-        var lRow    = blockPosition[1];
+        var column = blockPosition[0];
+        var row    = blockPosition[1];
 
-        var block = self.grid.columns[lColumn][lRow];
+        var block = self.grid.columns[column][row];
         console.log(block.getLetter() + " " + block.getType());
 
         if ( block.getType() == BlockType.BOMB)
         {
-            var lClosestBlocks = self.getClosestBlockPositions(lColumn,lRow );
-            lExplodedBlockPositions = lExplodedBlockPositions.concat(lClosestBlocks);
+            var closestBlocks = self.getClosestBlockPositions(column,row );
+            explodedBlockPositions = explodedBlockPositions.concat(closestBlocks);
         }
     })
 
     //concat selected blocks positions and the exploded block positions
-    blockPositions = blockPositions.concat(lExplodedBlockPositions);
+    blockPositions = blockPositions.concat(explodedBlockPositions);
 
     //make the array with unique values
     blockPositions = this.getUniquePositions(blockPositions);
@@ -329,12 +332,12 @@ Board.prototype.renewBlocks = function(blockPositions)
     for(var iP = 0 ; iP < blockPositions.length ; iP++)
     {
         var lPosition = blockPositions[iP];
-        var lColumn = lPosition[0];
-        var lRow    = lPosition[1];
+        var column = lPosition[0];
+        var row    = lPosition[1];
 
-        this.grid.columns[lColumn].splice(lRow,1);
+        this.grid.columns[column].splice(row,1);
 
-        this.addBlockToColumn(lColumn);
+        this.addBlockToColumn(column);
     }
 }
 
@@ -388,7 +391,7 @@ Board.prototype.getUniquePositions = function(positions)
  * Decrements points depending on the current level with the optimized way
  * @return void
  */
-Board.prototype.launchCountdown = function()
+Board.prototype._launchCountdown = function()
 {
     var self = this;
 
@@ -532,10 +535,10 @@ Board.prototype.getPointsFromSelectedBlocks = function(selectedBlocks)
     for(var iP = 0 ; iP < selectedBlocks.length ; iP++)
     {
         var lPosition = selectedBlocks[iP];
-        var lColumn = lPosition[0];
-        var lRow    = lPosition[1];
+        var column = lPosition[0];
+        var row    = lPosition[1];
 
-        var block = this.grid.columns[lColumn][lRow];
+        var block = this.grid.columns[column][row];
 
         points += this.getPointFromBlock(block);
         //console.log("points total:"+points);
@@ -574,10 +577,10 @@ Board.prototype.getWordFromSelectedBlocks = function(selectedBlocks)
     for(var iP = 0 ; iP < selectedBlocks.length ; iP++)
     {
         var lPosition = selectedBlocks[iP];
-        var lColumn = lPosition[0];
-        var lRow    = lPosition[1];
+        var column = lPosition[0];
+        var row    = lPosition[1];
 
-        var block = this.grid.columns[lColumn][lRow];
+        var block = this.grid.columns[column][row];
 
         lWord += block.getLetter();
     }
@@ -623,13 +626,13 @@ Board.prototype.visualize = function()
     console.log("=============");
     for(var iR = lNumRows-1 ; iR >= 0  ; iR--)
     {
-        var lRow = "";
+        var row = "";
         for(var iC = 0 ; iC < this.grid.columns.length ; iC++)
         {
-            var lColumn = this.grid.columns[iC];
-            lRow += lColumn[iR].getLetter().toUpperCase() + " ";
+            var column = this.grid.columns[iC];
+            row += column[iR].getLetter().toUpperCase() + " ";
         }
-        console.log(lRow);
+        console.log(row);
 
     }
     console.log("=============");

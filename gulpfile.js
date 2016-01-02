@@ -57,7 +57,7 @@ if (options.cordova) {
 }
 
 options.socketIoUrl = {
-  'dev' : 'http://192.168.0.10:3000/socket.io/socket.io.js',
+  'dev' : 'http://localhost:3000/socket.io/socket.io.js',
   'prod': 'http://www.wildwordwest.com:3001/socket.io/socket.io.js'
 }
 
