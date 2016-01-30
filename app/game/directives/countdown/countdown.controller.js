@@ -1,43 +1,65 @@
 'use strict';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function CountdownController(gameService)
+function CountdownController($element, gameService)
 {
-    /**
-     * The best word found by the gamer
-     * @type {string}
-     */
-    this.word = '';
 
     /**
-     * Specifies the best points winned for a word.
-     * @type {number}
+     * $element
      */
-    this.points = 0;
+    this.$element = $element;
 
     /**
-     * socket service
+     * game service
      */
     this.gameService = gameService;
 
+    /**
+     * Number of seconds remaining before the game really starts.
+     * @type {number}
+     */
+    this.numSecondsRemaining = 3;
+
+    /**
+     * Countdown text displayed
+     * @type {string}
+     */
+    this.countdownText = '3';
+
     //socket events
-    this.gameService.on('updateGame', this._onUpdate.bind(this));
+    this.gameService.on('countdown', this._onCountdown.bind(this));
+
+    this.$countdownText = angular.element(this.$element[0].querySelector('.text'));
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  ON SELECTION CHANGED
-CountdownController.prototype._onSelectionValidated = function()
+CountdownController.prototype._onCountdown = function()
 {
-    //var word = this.selectionService.getWord();
+    this._decrementCountdown();
+
 }
-CountdownController.prototype._onUpdate = function(update)
+CountdownController.prototype._decrementCountdown = function()
 {
-    if (update.hasOwnProperty('highestWord') && update.hasOwnProperty('highestWordPoints')) {
-        this.word = update.highestWord;
-        this.points = update.highestWordPoints;
+    this.numSecondsRemaining--;
+
+    if (this.numSecondsRemaining >= 0)
+    {
+        this.$countdownText.text(this.numSecondsRemaining+1);
+        TweenMax.set(this.$countdownText, {scale:1.5, alpha:1});
+        TweenMax.to(this.$countdownText, 1, {ease: Expo.easeOut, scale:0.1, alpha:0, onComplete: this._decrementCountdown.bind(this) });
+    }else{
+        this.$countdownText.addClass('go');
+        this.$countdownText.text('GO !!');
+        TweenMax.set(this.$countdownText, {scale:0, alpha:0.5});
+        TweenMax.to(this.$countdownText, 1, {ease: Expo.easeOut, scale:1.5, alpha:1, onComplete: this._undisplayCountdown.bind(this)});
     }
+}
+CountdownController.prototype._undisplayCountdown = function()
+{
+    this.$element.css('display' , 'none');
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-CountdownController.$inject = ['gameService'];
+CountdownController.$inject = ['$element', 'gameService'];
 angular.module('game').controller('CountdownController', CountdownController);
 

@@ -34,7 +34,6 @@ function GameService(eventEmitter, socketService, $timeout)
 GameService.prototype.bindSocketEvents = function()
 {
     var self = this;
-
     this.socketService.on('start', function(update)
     {
         self.emit('countdown');
@@ -70,6 +69,7 @@ GameService.prototype.newGame = function(numColumns, numRows, locale, platform, 
     this.numColumns = numColumns;
     this.numRows = numRows;
 
+    this._listeners = {};
     this.socketService.newGame(this.numColumns, this.numRows, locale, platform, gameCenterId, name);
 }
 

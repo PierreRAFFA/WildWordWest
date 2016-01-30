@@ -8,8 +8,6 @@ angular.module('game').directive('wildCountdown', [
             replace: false,
             scope: {},
             bindToController: {
-                word: '@',
-                points: '@',
             },
             controller: 'CountdownController',
             controllerAs: 'vm'

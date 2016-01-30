@@ -62,6 +62,7 @@ BlockAllocatorService.prototype.init = function(numColumns, numRows, blockSize, 
     this._blockSize = blockSize;
     this._scope = scope;
 
+    this._columns = [];
     for (var iC = 0 ; iC < this._numColumns ; iC++)
     {
         this._columns.push(this.Column.getInstance());
@@ -80,6 +81,8 @@ BlockAllocatorService.prototype.allocate = function(blockInfo)
     //create the block
     var blockElement = this._createBlock(blockInfo);
 
+    console.log(blockInfo);
+
     //store
     var coordinates = this._addBlockToColumInNeed(blockInfo, blockElement);
 
@@ -87,12 +90,15 @@ BlockAllocatorService.prototype.allocate = function(blockInfo)
     {
         var column = this._columns[coordinates.columnIndex];
 
+        if ( !column)
+            debugger;
         var left = coordinates.columnIndex * this._blockSize;
         var top = ((this._numRows - 1) * this._blockSize - column.getBlockIndex(blockElement) * this._blockSize);
 
         blockElement.css('left', left + 'px');
         blockElement.css('top', top + 'px');
         blockElement.css('position', 'absolute');
+
     } else {
         angular.$log.warn('Some blocks have to be added but no column can accept them.');
     }
@@ -142,7 +148,7 @@ BlockAllocatorService.prototype._createBlock = function(blockInfo)
  */
 BlockAllocatorService.prototype._guid = function(blockInfo)
 {
-    return blockInfo._letter + '-' + Date.now() + '-' + Math.floor(Math.random() * 1000000000000000000000000);
+    return blockInfo._letter + '-' + Date.now() + '-' + Math.floor(Math.random() * 100000000) + Math.floor(Math.random() * 100000000);
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  COLUMN MANAGEMENT
@@ -182,6 +188,7 @@ BlockAllocatorService.prototype._getColumnIndexInNeed = function()
     for (var iC = 0 ; iC < this._columns.length ; iC++)
     {
         var column = this._columns[iC];
+        console.log('column.getNumBlocks():' , column.getNumBlocks());
         if ( column.getNumBlocks() < this._numRows)
         {
             returnedColumnIndex = iC;

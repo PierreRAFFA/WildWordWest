@@ -23,7 +23,6 @@ function BlastController($scope, $element)
     var self = this;
     $scope.$watch('vm.active', function(value) {
 
-        console.log(value);
         if (value === true)
         {
             self.play();
@@ -34,8 +33,6 @@ function BlastController($scope, $element)
 ///////////////////////////////////////////////////////////  ON SELECTION CHANGED
 BlastController.prototype.play = function()
 {
-    console.log('play');
-
     //the backgroundPosition is computed depending on the size of the blast
     //the blast image size is 12288 x 192px
     var initialBackgroundPosition = this.size / 192 * -12288;
@@ -50,7 +47,6 @@ BlastController.prototype.play = function()
 }
 BlastController.prototype._onAnimationComplete = function()
 {
-    console.log('_onAnimationComplete');
     this.$blast.css('display', 'none');
     this.$scope.$emit('blastComplete');
 }
