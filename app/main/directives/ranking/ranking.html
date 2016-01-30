@@ -1,7 +1,8 @@
 <div class="ranking">
     <div class="score" data-ng-repeat="($index,score) in vm.scores">
-        <div class="scoreIndex">{{$index+1}}</div>
-        <div class="rankingScoreValue" ng-bind-html="score.highestTime | toHumanTimeMs"></div>
+        <div class="scoreIndex">{{$index+1}}.</div>
+        <img ng-src="{{score.avatar}}" class="avatar"/>
         <div class="scoreUsername">{{score.name}}</div>
+        <div class="rankingScoreValue" ng-bind-html="score.highestTime | toHumanTimeMs"></div>
     </div>
 </div>

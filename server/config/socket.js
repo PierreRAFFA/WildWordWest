@@ -97,7 +97,7 @@ Socket.prototype.listen = function()
                 console.log('on:new');
 
                 //create a new game
-                var game = new Game(data.numColumns, data.numRows, data.locale, data.platform, data.gameCenterId, data.name );
+                var game = new Game(data.numColumns, data.numRows, data.locale, data.platform, data.gameCenterId, data.name, data.avatar );
 
                 game.getBoard().once('initialized' , function(update)
                 {

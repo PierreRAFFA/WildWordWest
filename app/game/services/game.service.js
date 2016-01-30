@@ -64,13 +64,13 @@ GameService.prototype.bindSocketEvents = function()
  * @param numRows
  * @param locale
  */
-GameService.prototype.newGame = function(numColumns, numRows, locale, platform, gameCenterId, name)
+GameService.prototype.newGame = function(numColumns, numRows, locale, platform, gameCenterId, name, avatar)
 {
     this.numColumns = numColumns;
     this.numRows = numRows;
 
     this._listeners = {};
-    this.socketService.newGame(this.numColumns, this.numRows, locale, platform, gameCenterId, name);
+    this.socketService.newGame(this.numColumns, this.numRows, locale, platform, gameCenterId, name, avatar);
 }
 
 GameService.prototype.submitWord = function (data)

@@ -9,7 +9,7 @@ var accounts = require('../../app/controllers/accounts.server.controller');
 module.exports = Game;
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// CONSTRUCTOR
-function Game(numColumns, numRows, locale, platform, gameCenterId, name)
+function Game(numColumns, numRows, locale, platform, gameCenterId, name, avatar)
 {
     /**
      * UUID send by the application ( Apple GameCenter, GooglePlay )
@@ -27,7 +27,7 @@ function Game(numColumns, numRows, locale, platform, gameCenterId, name)
      */
     this._board;
 
-    this._updateAccount(platform, gameCenterId, name);
+    this._updateAccount(platform, gameCenterId, name, avatar);
 
     this._createBoard(locale, numColumns, numRows);
 }
@@ -41,14 +41,15 @@ Game.prototype.constructor = Game;
  * @param uuid
  * @private
  */
-Game.prototype._updateAccount = function(platform, gameCenterId, name)
+Game.prototype._updateAccount = function(platform, gameCenterId, name, avatar)
 {
     console.log('_updateAccount');
 
     var params = {
         platform: platform,
         gameCenterId: gameCenterId,
-        name: name
+        name: name,
+        avatar: avatar
     }
     accounts.createOrUpdate(params, function(success) {
 
@@ -124,6 +125,8 @@ Game.prototype._saveStatistics = function()
     var self = this;
 
     var params = {
+        platform: this._platform,
+        gameCenterId: this._gameCenterId,
         locale: this._locale,
         time: this._board.getScore(),
         points: this._board.getTotalPointsWon(),
@@ -132,8 +135,14 @@ Game.prototype._saveStatistics = function()
     };
 
     //create the account if needed
+    console.log('params' , params);
+    console.log('this._gameCenterId:' , this._gameCenterId);
+    console.log('this._platform:' , this._platform);
     accounts.findByGameCenterId(this._platform, this._gameCenterId , function(account)
     {
+        console.log('account');
+        console.log(account);
+
         if (account)
         {
             self._doSaveStatistics(params);
@@ -157,6 +166,9 @@ Game.prototype._saveStatistics = function()
 Game.prototype._doSaveStatistics = function(params)
 {
     var self = this;
+    console.log('_doSaveStatistics');
+    console.log(params);
+
     accounts.saveStatistics(params, function(result)
     {
         self.emit('statisticsSaved', result);

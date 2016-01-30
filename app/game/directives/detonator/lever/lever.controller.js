@@ -15,8 +15,7 @@ function LeverController($element)
 LeverController.prototype.updateLever = function()
 {
     var height = this.$element[0].querySelector('.wildLever').clientHeight;
-    console.log('height:'+height);
-    
+
     var maxY = height * 0.75;
 
     var a = -maxY / 3500;
@@ -24,8 +23,6 @@ LeverController.prototype.updateLever = function()
     var newY = a * this.value + b;
     newY = Math.max(0, newY);
     newY = newY + 'px';
-
-    console.log('newY:'+newY);
 
     TweenLite.to(this.$element[0].querySelector('.wildLever'), 0.25, {top: newY, ease: Linear.easeOut});
     this.counter = 10;

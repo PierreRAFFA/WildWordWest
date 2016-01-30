@@ -95,7 +95,7 @@
         position: absolute;
         top: 24vh;
         left: 11%;
-        width: 65%;
+        width: 78%;
         height: 27vh;
         overflow: auto;
 
@@ -108,30 +108,41 @@
           margin-bottom: 0px;
           float: left;
           width: 100%;
-        }
-        .scoreIndex{
-          position: relative;
-          font: 2.2vh FuturaStd-Book;
-          float: left;
-          width: 21%;
-          line-height: 3vh;
-        }
-        .rankingScoreValue{
-          position:relative;
-          font: 2.2vh FuturaStd-Bold;
-          float:left;
-          width: 44%;
-          line-height: 3vh;
+          height: 25px;
 
-          .ms {
-            font: 1.5vh FuturaStd-Book;
+          .scoreIndex{
+            position: relative;
+            float: left;
+            font: 1.8vh FuturaStd-Bold;
+            width: 5.9vh;
+            line-height: 4.8vh;
           }
-        }
-        .scoreUsername {
-          position:relative;
-          font: 2.2vh FuturaStd-Book;
-          float:left;
-          line-height: 3vh;
+          .avatar {
+            position: relative;
+            float: left;
+            width: 20px;
+            height: 20px;
+          }
+          .scoreUsername {
+            position:relative;
+            float:left;
+            font: 2.2vh FuturaStd-Bold;
+            margin-left: 5px;
+            line-height: 4.8vh;
+            width: 18vh;
+          }
+          .rankingScoreValue{
+            position:relative;
+            float:left;
+            font: 2.2vh FuturaStd-Bold;
+            width: 12vh;
+            line-height: 4.8vh;
+
+            .ms {
+              font: 1.9vh FuturaStd-Book;
+            }
+          }
+
         }
       }
 

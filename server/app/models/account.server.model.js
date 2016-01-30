@@ -10,12 +10,13 @@ var mongoose = require('mongoose'),
  * Platform Schema
  * @type {mongoose.Schema}
  */
-var PlatformSchema = new Schema({
+var UserPlatformSchema = new Schema({
     gameCenterId: { type: String, default: '', require: true},
     name: { type: String, default: '', require: true},
+    avatar: { type: String, default: ''},
     version: { type: String, default: '', require: true}
 });
-mongoose.model('Platform', PlatformSchema);
+mongoose.model('UserPlatformSchema', UserPlatformSchema);
 
 /**
  * Statistics Schema
@@ -39,8 +40,8 @@ mongoose.model('Statistics', StatisticsSchema);
 var AccountSchema = new Schema({
     name: String,
     platforms: {
-        ios: PlatformSchema,
-        android: PlatformSchema
+        ios: UserPlatformSchema,
+        android: UserPlatformSchema
     },
     email: String,
     selectedLocale: String,

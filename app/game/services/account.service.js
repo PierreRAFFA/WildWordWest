@@ -20,6 +20,11 @@ function AccountService()
     this.name = null;
 
     /**
+     * Account Avatar
+     */
+    this.avatar = null;
+
+    /**
      *  Account Statistics
      *  Contains best time, word, wordPoints per locale
      * @type {{}}

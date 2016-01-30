@@ -29,7 +29,8 @@ GameController.prototype.newGame = function() {
         this.accountService.selectedLocale,
         this.accountService.platform,
         this.accountService.gameCenterId,
-        this.accountService.name);
+        this.accountService.name,
+        this.accountService.avatar);
 }
 
 GameController.$inject = ['gameService', 'accountService'];

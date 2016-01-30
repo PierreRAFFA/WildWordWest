@@ -30,7 +30,10 @@ exports.read = function (req, res) {
         if (!account)
         {
             account = new Account(req.params);
+            console.log('create account');
         }
+
+        console.log(account);
 
         var totalPoints = 0;
 
@@ -72,7 +75,7 @@ exports.getHighestTime = function (req, res) {
         //clauses.active = true;
         console.log(clauses);
 
-        var select = '-_id name ' + localeStatisticsField + '.highestTime';
+        var select = '-_id name platforms ' + localeStatisticsField + '.highestTime';
         console.log(select);
 
         var sort = {};
@@ -96,7 +99,8 @@ exports.getHighestTime = function (req, res) {
                 {
                     json.push({
                         name: account.name,
-                        highestTime:  account.statistics[req.params.locale].highestTime
+                        highestTime:  account.statistics[req.params.locale].highestTime,
+                        avatar: account.platforms.ios.avatar, // @TODO because the platform name is hardcoded as 'ios'
                     });
                 });
 
@@ -143,7 +147,8 @@ exports.create = function (params, callback)
             var newAccount = new Account(params);
             newAccount.platforms[params.platform] = {
                 gameCenterId: params.gameCenterId,
-                name: params.name
+                name: params.name,
+                avatar: params.avatar,
             };
 
             newAccount.save(function(err) {
@@ -176,6 +181,8 @@ exports.findByGameCenterId = function(platform, gameCenterId, callback)
  */
 exports.createOrUpdate = function(params, callback)
 {
+    console.log('createOrUpdate');
+    console.log(params);
     if ( params.hasOwnProperty('platform') && params.hasOwnProperty('gameCenterId'))
     {
         Account.findByGameCenterId(params.platform, params.gameCenterId).exec(function(err, account)
@@ -190,6 +197,8 @@ exports.createOrUpdate = function(params, callback)
                 {
                     //update the name for the specific platform
                     account.platforms[params.platform].name = params.name;
+                    account.platforms[params.platform].avatar = params.avatar;
+
                     account.save(function(err)
                     {
                         if (err)

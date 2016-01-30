@@ -39,7 +39,7 @@ function SocketService(eventEmitter, socket) {
  * @param name username. May be updated
  * @param platform ios/android
  */
-SocketService.prototype.newGame = function (numColumns, numRows, locale, platform, gameCenterId, name) {
+SocketService.prototype.newGame = function (numColumns, numRows, locale, platform, gameCenterId, name, avatar) {
     if (numColumns && numColumns > 0) {
         if (numRows && numRows > 0) {
             if (locale) {
@@ -51,6 +51,7 @@ SocketService.prototype.newGame = function (numColumns, numRows, locale, platfor
                         locale: locale,
                         gameCenterId: gameCenterId,
                         name: name,
+                        avatar: avatar,
                         platform: platform
                     };
                     this._socket.emit('new', data, this._startGame.bind(this));
