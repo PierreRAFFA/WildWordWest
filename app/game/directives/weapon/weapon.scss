@@ -1,0 +1,38 @@
+.wildWeapon {
+  width: 100%;
+  position: relative;
+
+  img.weaponImage {
+    position: absolute;
+    width: 100%;
+  }
+
+  .quantity {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    width: 43%;
+
+    img {
+      width: 100%;
+      position: absolute;
+    }
+
+    .quantityValue {
+      width: 100%;
+      text-align: center;
+      font: 120% FuturaStd-Bold;
+      color: #FFFFFF;
+      height: 100%;
+      margin-top: 50%;
+      transform: translateY(-50%);
+      top: 0.8vh;
+
+      p {
+        margin: 0;
+      }
+    }
+
+  }
+
+}

@@ -135,6 +135,12 @@ BlockNormalController.prototype._onGameOver = function ()
         BlockNormalController.prototype.remove.call(self);
     }});
 }
+
+BlockNormalController.prototype.onHold = function()
+{
+    debugger;
+    console.log();
+}
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 BlockNormalController.$inject = ['$element', '$window', 'selectionService', 'gameService'];

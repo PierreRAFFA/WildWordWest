@@ -1,0 +1,16 @@
+.wildWeaponSelector {
+  width: 100%;
+
+  .panel {
+    position: absolute;
+
+    img {
+      width: 100%;
+    }
+  }
+  .weaponContainer {
+    position: absolute;
+    width: 26%;
+    top: 9%;
+  }
+}

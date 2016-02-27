@@ -1,7 +1,7 @@
 'use strict';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////  CONSTRUCTOR
-function WeaponController()
+function WeaponSelectorController()
 {
     /**
      * [Binded] Weapon Type
@@ -10,12 +10,12 @@ function WeaponController()
     this.type = '';
 }
 
-WeaponController.prototype.selectWeapon = function() {
+WeaponSelectorController.prototype.selectWeapon = function() {
 
     alert(this.type);
 }
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-WeaponController.$inject = [];
-angular.module('game').controller('WeaponController', WeaponController);
+WeaponSelectorController.$inject = [];
+angular.module('game').controller('WeaponSelectorController', WeaponSelectorController);
 

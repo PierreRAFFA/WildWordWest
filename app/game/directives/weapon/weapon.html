@@ -1,9 +1,11 @@
 <div class="wildWeapon">
 
-    <img ng-src="main/assets/images/weapon{{vm.type}}@2x.png"/>
+    <img class="weaponImage" ng-src="main/assets/images/weapon{{vm.type}}@2x.png"/>
 
     <div class="quantity">
         <img ng-src="main/assets/images/weaponQuantity@2x.png"/>
-        <div class="quantityValue">{{vm.quantity}}</div>
+        <div class="quantityValue">
+            <p>{{vm.quantity}}</p>
+        </div>
     </div>
 </div>

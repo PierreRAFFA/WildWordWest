@@ -49,19 +49,28 @@
 .wildBoard{
 
   position: absolute;
-  bottom: -2.9vh;
+  bottom: 0.7vh;
   width: 100%;
 
-  img {
+  img.boardGrid {
     width: 100%;
     vertical-align: bottom;
   }
+
+  .wildWeaponSelector {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 17vh;
+    z-index: 1;
+  }
+
   .grid {
 
     position: absolute;
-    top: 7.4%;
+    top: 9.4%;
     width: 92%;
-    left: 9.8%;
+    left: 12.8%;
 
     wild-block-normal, wild-block-bomb, wild-block-bonus {
 

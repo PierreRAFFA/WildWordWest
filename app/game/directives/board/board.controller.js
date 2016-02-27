@@ -50,7 +50,7 @@ BoardController.prototype.init = function()
 BoardController.prototype._defineBlockRenderProperties = function()
 {
     var boardW = this.$element[0].querySelector('.grid').clientWidth;
-    this.blockSize = Math.round(boardW / this.numColumns);
+    this.blockSize = Math.round((boardW / (parseInt(this.numColumns))* 0.95))
 }
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////// ON UPDATE (FROM THE SOCKET)
