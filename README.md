@@ -5,5 +5,5 @@ http://www.wildwordwest.com
 
 
 ##Technical Overview
-AngularJS 1.5
-SASS
+AngularJS 1.5  
+SASS  
